@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>流行的MVC | wqxc&#39;s code world</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="牛叉的思想 MVC有人说 MVC 是一种框架，其实 MVC 更算是一种思想，或者叫做 设计典范 或者是 设计模式 MVC 的厉害之处就在于，将原本混做一团的东西，分为条理清晰的不同层次，不同的层次之间有管道相连，高内聚的前提下而又低耦合。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="流行的MVC">
+<meta property="og:url" content="http://yoursite.com/2020/05/25/MVC%E6%80%9D%E6%83%B3/index.html">
+<meta property="og:site_name" content="wqxc&#39;s code world">
+<meta property="og:description" content="牛叉的思想 MVC有人说 MVC 是一种框架，其实 MVC 更算是一种思想，或者叫做 设计典范 或者是 设计模式 MVC 的厉害之处就在于，将原本混做一团的东西，分为条理清晰的不同层次，不同的层次之间有管道相连，高内聚的前提下而又低耦合。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-25T08:37:07.284Z">
+<meta property="article:modified_time" content="2020-05-25T09:04:42.651Z">
+<meta property="article:author" content="WQXC">
+<meta property="article:tag" content="状态">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="wqxc&#39;s code world" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">wqxc&#39;s code world</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-MVC思想" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/25/MVC%E6%80%9D%E6%83%B3/" class="article-date">
+  <time datetime="2020-05-25T08:37:07.284Z" itemprop="datePublished">2020-05-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      流行的MVC
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="牛叉的思想-MVC"><a href="#牛叉的思想-MVC" class="headerlink" title="牛叉的思想 MVC"></a>牛叉的思想 MVC</h2><p>有人说 MVC 是一种框架，其实 MVC 更算是一种思想，或者叫做 <strong>设计典范</strong> 或者是 <strong>设计模式</strong></p>
+<p>MVC 的厉害之处就在于，将原本混做一团的东西，分为条理清晰的不同层次，不同的层次之间有管道相连，高内聚的前提下而又低耦合。</p>
+<a id="more"></a>
+
+<h3 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h3><p>MVC 是比较普遍的前端框架设计模式。</p>
+<p>框架的作用是为了代码的重用，而设计典范或者是设计模式是设计的重用。</p>
+<p>一般来说 MVC 框架 核心分为三个部分。</p>
+<h4 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h4><p>负责管理数据。大部分的业务都应该在 model 中进行，比如 ajax 请求。</p>
+<h4 id="View"><a href="#View" class="headerlink" title="View"></a>View</h4><p>也叫做视图部分，负责展示页面。也就是 Html，虽然，HTML 中可以进行事件以及数据的操作。但是，最好要避免在这里进行涉及业务逻辑的操作。</p>
+<h4 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h4><p>负责接受用户的输入。根据用户行为调用特定的 Model 部分逻辑。最后 Model 生成了数据，通过 Controller 交给 View。最终展现在用户面前。</p>
+<h3 id="MVC-的特点-–-前端-。"><a href="#MVC-的特点-–-前端-。" class="headerlink" title="MVC 的特点 – 前端 。"></a>MVC 的特点 – 前端 。</h3><p>1、优势： MVC 框架很好的做到了分层的概念。不同的部分只做自己应该做的事情。相互独立，却又紧密联系。也就是高内聚，低耦合。分而治之，避免将逻辑和界面的渲染混杂在一起。</p>
+<p>2、缺点：世界上本身就不存在完美的事务，对于 MVC 来说也是。MVC 框架只是希望开发人员遵守：不要进行 View 和 Model 进行通信。但是，View 和 Mode 通信的便利总是在不经意间诱惑开发人员去破坏这一条规则。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">正常来说，View的事件触发一定是经过Controller进行分发到特定的Model层来处理，处理完成之后又经过Controller回到View中。</span><br><span class="line"></span><br><span class="line">每一个View的业务都需要一个 Controller，一个Model来与之对应。</span><br><span class="line"></span><br><span class="line">一些复杂的业务逻辑如此操作倒是无可厚非，但是，一些非常简单的逻辑，也如此做一遍操作，</span><br><span class="line">明显的让人觉得繁琐。不如直接进行View和Model进行通信来的简单快捷。没有多少人能抵挡住这种诱惑，尤其是开发者在面对堆积如山的工作的时候。</span><br><span class="line"></span><br><span class="line">一旦开始进行View和Model的通信，MVC的优势便不存在了。大量的View和Model的通信会造成灾难的后果。</span><br></pre></td></tr></table></figure>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>如果能够完全按照 MVC 的思想来编写代码，依旧能够保证分层，代码逻辑清晰。但是，每新增一个业务就要新增 Controller 和 Model，这会导致项目臃肿。</p>
+<p>因为 MVC 在前端有这些缺点，所以才有了抛开 MVC 的一些创造，于是也就有了前端的状态管理设计模式，基于此，也有了后来的很多状态管理框架。比如 Redux，Vuex 等。</p>
+<p>而前端状态管理的设计模式便是 Flux。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/25/MVC%E6%80%9D%E6%83%B3/" data-id="ckam9sgu300002eqefwe0aqo8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%8A%B6%E6%80%81/" rel="tag">状态</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/25/Flux%E6%80%9D%E6%83%B3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          越过MVC的Flux思想
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/25/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%9A%84%E8%83%8C%E6%99%AF/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">状态管理的背景</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81/" rel="tag">状态</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/React-Redux/" style="font-size: 10px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/%E7%8A%B6%E6%80%81/" style="font-size: 20px;">状态</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/25/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux 使用</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/25/React-Redux/">React-Redux 对 Redux 的升华</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/25/Redux%E8%BF%9B%E9%98%B6/">Redux 的进阶</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/25/Redux/">Flux思想的升华</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/25/Flux%E6%80%9D%E6%83%B3/">越过MVC的Flux思想</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 WQXC<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

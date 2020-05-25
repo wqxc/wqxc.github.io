@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Flux思想的升华 | wqxc&#39;s code world</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Flux 思想的继承者—Redux背景Flux 的思想是值得肯定的，但是，Flux 框架本身确实是饱受争议，Redux 在 Flux 的基础上进行了改进，成为了最受欢迎的框架，而且，没有之一。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flux思想的升华">
+<meta property="og:url" content="http://yoursite.com/2020/05/25/Redux/index.html">
+<meta property="og:site_name" content="wqxc&#39;s code world">
+<meta property="og:description" content="Flux 思想的继承者—Redux背景Flux 的思想是值得肯定的，但是，Flux 框架本身确实是饱受争议，Redux 在 Flux 的基础上进行了改进，成为了最受欢迎的框架，而且，没有之一。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-25T08:39:26.475Z">
+<meta property="article:modified_time" content="2020-05-25T09:08:18.197Z">
+<meta property="article:author" content="WQXC">
+<meta property="article:tag" content="Redux">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="wqxc&#39;s code world" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">wqxc&#39;s code world</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Redux" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/25/Redux/" class="article-date">
+  <time datetime="2020-05-25T08:39:26.475Z" itemprop="datePublished">2020-05-25</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Flux思想的升华
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Flux-思想的继承者—Redux"><a href="#Flux-思想的继承者—Redux" class="headerlink" title="Flux 思想的继承者—Redux"></a>Flux 思想的继承者—Redux</h2><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>Flux 的思想是值得肯定的，但是，Flux 框架本身确实是饱受争议，Redux 在 Flux 的基础上进行了改进，成为了最受欢迎的框架，而且，没有之一。</p>
+<a id="more"></a>
+
+<p>其他的实现者比如：Reflux Fluxible 等。</p>
+<p>一般我们看到 Redux 就会想当然的认为他是 React 的附属品。但是。这里实际上是不是的。其中 Redux 的 首字母 R 本身和 React 的首字母 R 是没有任何关系的。</p>
+<h2 id="基本原则"><a href="#基本原则" class="headerlink" title="基本原则"></a>基本原则</h2><h3 id="唯一数据源"><a href="#唯一数据源" class="headerlink" title="唯一数据源"></a>唯一数据源</h3><h3 id="保持状态为只读"><a href="#保持状态为只读" class="headerlink" title="保持状态为只读"></a>保持状态为只读</h3><h3 id="数据的改变只能通过纯函数完成"><a href="#数据的改变只能通过纯函数完成" class="headerlink" title="数据的改变只能通过纯函数完成"></a>数据的改变只能通过纯函数完成</h3><h2 id="解释一下"><a href="#解释一下" class="headerlink" title="解释一下"></a>解释一下</h2><h3 id="唯一数据源-1"><a href="#唯一数据源-1" class="headerlink" title="唯一数据源"></a>唯一数据源</h3><p>不像是 Flux 那样允许存在多个 Store，Redux 从一开始就说明最好的处理方式是 只存在一个 Store，所有要接受管理的状态都挂载这个 Store 上。 当然，Redux 不会阻止你创建多个 Store，只是，多个 Store 本身不会有任何的好处，还不如只使用一个 Store 更容易组织代码。</p>
+<h3 id="保持状态只读"><a href="#保持状态只读" class="headerlink" title="保持状态只读"></a>保持状态只读</h3><p>要想修改 Store 的状态，就必须要派发一个 Action 来完成。这一点和 Flux 是一样的。这里的只读不是，完全不能修改，而是要改变一个状态不是去直接修改这个状态，而是返回一个新的状态给 Redux，由 Redux 来完成新状态的组装。这一点和第三个原则关系密切。</p>
+<h3 id="数据的改变只能通过纯函数完成-1"><a href="#数据的改变只能通过纯函数完成-1" class="headerlink" title="数据的改变只能通过纯函数完成"></a>数据的改变只能通过纯函数完成</h3><p>纯函数 就是 Reducer 。</p>
+<p>据说 Redux 这个名字的 前三个字 Red 就是指的 Reducer。</p>
+<p>而 Redux 就是 Reducer + Flux</p>
+<p>Reducer 是计算机中很常用的一个概念，比较贴切的解释是 归纳。无论你有多少个值，经过 Reducer 之后 最后只会有一个结果。同样的值，无论调用多少次 Reducer 的结果是一样的。</p>
+<p>Redux 中 Reducer 如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Reducer(state,action)</span><br></pre></td></tr></table></figure>
+
+<p>第一个参数 State 是当前的状态，第二个参数 action 是接收到的 action 对象，而 Reducer 要做的就是 根据 当前的 state 和 action 对象来产生一个新的 state。</p>
+<p>Reducer 是一个纯函数，也就是没有任何副作用的函数。结果完全由两个参数决定，同样的参数产生同样的结果。</p>
+<p>我们可以看到 Reducer 只是负责计算，不负责存储状态</p>
+<h2 id="Redux-的-几个部分"><a href="#Redux-的-几个部分" class="headerlink" title="Redux 的 几个部分"></a>Redux 的 几个部分</h2><h3 id="Action"><a href="#Action" class="headerlink" title="Action"></a>Action</h3><p>和 Flux 一样，Redux 的 Action 也习惯性的分为两个部分 ActionType.js 和 Action.js</p>
+<p>ActionType.js 与 FLux 一样,如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export const ADD &#x3D; &#39;add&#39;</span><br></pre></td></tr></table></figure>
+
+<p>而 Action 构造函数则是不同</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">export const add &#x3D; (param)&#x3D;&gt;&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	return &#123;</span><br><span class="line"></span><br><span class="line">		type:ActionTypes.ADD,</span><br><span class="line">		param:param</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如上是 Redux 的 Action 构造函数，不像是 Flux 的 Action 构造函数 触发了一个 Dispatcher.dispatch() 方法。FLux 因为有多个 Store 的存在，所以需要 Dispatcher 对象来将一个 Action 对象分发给多个 Store。</p>
+<p>Redux 的 Action 构造函数在是简单的 return 一个 Action 对象。不需要触发 dispatch 方法是因为，Redux 只有一个 Store，就无需创造一个 Dispatcher 来辅助 dispatch 了。Redux 里 dispatch 是存在于 Store 上，直接在 Store 上进行 dispatch 就好了。</p>
+<p>Redux 在很多的地方都是如此，不做多余的处理，而是简简单单的返回一个对象。</p>
+<h3 id="Store"><a href="#Store" class="headerlink" title="Store"></a>Store</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import &#123;createStore&#125; from &#39;redux&#39;;</span><br><span class="line"></span><br><span class="line">import reducer form &#39;.&#x2F;Reducer.js&#39;;</span><br><span class="line"></span><br><span class="line">const state &#x3D; &#123;</span><br><span class="line"></span><br><span class="line">	value:1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">const store &#x3D; createStore(reducer,state);</span><br><span class="line"></span><br><span class="line">export default store</span><br></pre></td></tr></table></figure>
+
+<p>如上，我们使用 Redux 提供的 createStore 方法创造了 Store，createStore 方法接收两个参数，一个是 reducer(我们自己建的 Reducer 文件)和一个 state。</p>
+<p>主要是要看一下 Reducer 是什么？</p>
+<h3 id="Reducer"><a href="#Reducer" class="headerlink" title="Reducer"></a>Reducer</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import * as  ActionTypes from &#39;.&#x2F;ActionTypes.js&#39;;</span><br><span class="line"></span><br><span class="line">export default (state,action)&#x3D;&gt;&#123;</span><br><span class="line"></span><br><span class="line">	const &#123;param &#125; &#x3D; action</span><br><span class="line"></span><br><span class="line">	if(action.type &#x3D;&#x3D; ActionTypes.ADD)&#123;</span><br><span class="line"></span><br><span class="line">		return &#123;</span><br><span class="line">			...state,</span><br><span class="line">			state.value++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Reducer 也像是 Flux 的应用中 Store 注册的回调函数一样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Store.register((action)&#x3D;&gt;&#123;</span><br><span class="line"></span><br><span class="line">	if(action&#x3D;&#x3D;ActionTypes.ADD)&#123;</span><br><span class="line"></span><br><span class="line">		state.value++</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>如上，flux 中我们直接修改了 state.value</p>
+<p>而 Redux 里则是根据旧的 state 返回了一个新的 state。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">return &#123;</span><br><span class="line">			...state,</span><br><span class="line">			state.value++;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">等价于</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">const newState &#x3D; Object.assign(&#123;&#125;,state);</span><br><span class="line"></span><br><span class="line">newState.value ++;</span><br><span class="line"></span><br><span class="line">return newState;</span><br></pre></td></tr></table></figure>
+
+<p>如上，Reducer 是一个纯函数，我们不能直接的去修改 state，而是 copy 了一下，而后处理、返回。这里 Reducer 只负责处理，不负责存储。</p>
+<h3 id="View"><a href="#View" class="headerlink" title="View"></a>View</h3><p>如何在 View 中使用 Store 呢？如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">impport Store from &#39;.&#x2F;Store.js&#39;；</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class AComponent extends Component&#123;</span><br><span class="line"></span><br><span class="line">	constructor(props)&#123;</span><br><span class="line"></span><br><span class="line">		super(props);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	getStoreValue()&#123;</span><br><span class="line"></span><br><span class="line">		return &#123;</span><br><span class="line">			value:Store.getState()[&#39;value&#39;];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 Store 的 getState 方法就能够获得 Store 上存储的所有的状态。</p>
+<p>仅仅是获取 store 上存储的 状态还不够。最重要的是保持 store 上的状态与 View 的 state 同步。这就要用到 subscribe 方法。</p>
+<p>同样是在 View 的组件中,承接上边的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">onChange ()&#123;</span><br><span class="line"></span><br><span class="line">	this.setState(this.getStoreValue)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">componentDidMount()&#123;</span><br><span class="line">	store.subscribe(this.onChange)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>那么，Store 里的状态，我们想要进行更改，如何触发 Action 来进行更改呢？如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">onAdd()&#123;</span><br><span class="line"></span><br><span class="line">	store.dispatch(Actions.add(3))</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里 Actions 就是上边我们定义的 Action 如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">export const add &#x3D; (param)&#x3D;&gt;&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	return &#123;</span><br><span class="line"></span><br><span class="line">		type:ActionTypes.ADD,</span><br><span class="line">		param:param</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当然，你在使用的时候一定要在 View 中引入 Store，引入要使用的 Action</p>
+<p>如上所示的 我们使用 store.dispatch()方法触发了一个 叫做 ADD 的 Action 而后呢，会去到 Reducer 进行处理（这里的 Reducer 有点像是 Flux 的 _callback 被 遍历调用。）Reducer 会根据 action 对象来分别处理。最终根据旧的 state 返回一个新的 state。</p>
+<p>Reducer 返回的 state 会被更新到 Store 状态树中，而后触发 所有的 由 store.subscribe() 注册的监听函数。</p>
+<p>当 Store 的 state 更新了之后 我们再 View 注册的监听函数就被执行了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">store.subscribe(this.onChange)</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h2><p>与 Flux 相比之下</p>
+<p>ActionType 是一样的</p>
+<p>Action 是不同的</p>
+<pre><code>Flux的Action 会调用Dispatcher的dispatch方法分发 action对象
+
+
+Redux 则只会返回一个普通的action对象</code></pre><p>Store 是不同的</p>
+<pre><code>Flux可以有多个Store，而且需要Dispatcher类来辅助
+
+Redux 则是只有一个Store，无需其他的辅助</code></pre><p>分发 action 对象的方式不同</p>
+<pre><code>Flux 需要使用辅助类 Dispatcher来辅助分发
+
+Redux则是完全在Store上进行分发</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/25/Redux/" data-id="ckam9sgur00052eqe0lm8hd1z" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/25/Redux%E8%BF%9B%E9%98%B6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Redux 的进阶
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/25/Flux%E6%80%9D%E6%83%B3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">越过MVC的Flux思想</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81/" rel="tag">状态</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/React-Redux/" style="font-size: 10px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/%E7%8A%B6%E6%80%81/" style="font-size: 20px;">状态</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/25/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux 使用</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/25/React-Redux/">React-Redux 对 Redux 的升华</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/25/Redux%E8%BF%9B%E9%98%B6/">Redux 的进阶</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/25/Redux/">Flux思想的升华</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/25/Flux%E6%80%9D%E6%83%B3/">越过MVC的Flux思想</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 WQXC<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

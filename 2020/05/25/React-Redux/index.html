@@ -5,14 +5,19 @@
   
 
   
-  <title>归档: 2020 | wqxc&#39;s code world</title>
+  <title>React-Redux 对 Redux 的升华 | wqxc&#39;s code world</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="wqxc&#39;s code world">
-<meta property="og:url" content="http://yoursite.com/archives/2020/index.html">
+  <meta name="description" content="React-redux 产生的背景容器组件和傻瓜组件背景为什么要将组件分为容器最近和傻瓜组件呢？这个要从 Redux 框架下来看。 在 React 中使用 Redux 框架，一个 React 组件基本上就要完成以下两个功能。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React-Redux 对 Redux 的升华">
+<meta property="og:url" content="http://yoursite.com/2020/05/25/React-Redux/index.html">
 <meta property="og:site_name" content="wqxc&#39;s code world">
+<meta property="og:description" content="React-redux 产生的背景容器组件和傻瓜组件背景为什么要将组件分为容器最近和傻瓜组件呢？这个要从 Redux 框架下来看。 在 React 中使用 Redux 框架，一个 React 组件基本上就要完成以下两个功能。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-25T08:55:01.987Z">
+<meta property="article:modified_time" content="2020-05-25T09:08:30.756Z">
 <meta property="article:author" content="WQXC">
+<meta property="article:tag" content="React-Redux">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="wqxc&#39;s code world" type="application/atom+xml">
@@ -62,154 +67,81 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/05/25/React-Redux%E8%BF%9B%E9%98%B6/" class="archive-article-date">
-  <time datetime="2020-05-25T08:56:06.500Z" itemprop="datePublished">5月 25</time>
+        <section id="main"><article id="post-React-Redux" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/25/React-Redux/" class="article-date">
+  <time datetime="2020-05-25T08:55:01.987Z" itemprop="datePublished">2020-05-25</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/25/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux 使用</a>
+    <h1 class="article-title" itemprop="name">
+      React-Redux 对 Redux 的升华
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/05/25/React-Redux/" class="archive-article-date">
-  <time datetime="2020-05-25T08:55:01.987Z" itemprop="datePublished">5月 25</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/25/React-Redux/">React-Redux 对 Redux 的升华</a>
-    </h1>
-  
+        <h1 id="React-redux-产生的背景"><a href="#React-redux-产生的背景" class="headerlink" title="React-redux 产生的背景"></a>React-redux 产生的背景</h1><h2 id="容器组件和傻瓜组件"><a href="#容器组件和傻瓜组件" class="headerlink" title="容器组件和傻瓜组件"></a>容器组件和傻瓜组件</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>为什么要将组件分为容器最近和傻瓜组件呢？这个要从 Redux 框架下来看。</p>
+<p>在 React 中使用 Redux 框架，一个 React 组件基本上就要完成以下两个功能。</p>
+<a id="more"></a>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/05/25/Redux%E8%BF%9B%E9%98%B6/" class="archive-article-date">
-  <time datetime="2020-05-25T08:43:09.337Z" itemprop="datePublished">5月 25</time>
-</a>
+<p>1、和 Redux Store 打交道，读取 Store 的状态，同时要监听 Store 的状态改变，在 Store 发生改变的时候渲染组件，而在需要更新 Store 的时候，就要派发 action 对象。</p>
+<p>2、根据 props 和 state 渲染用户界面</p>
+<p>我们知道，组件的核心原则是，一个组件只做一件事。如果一个组件做的事情太多，就需要考虑拆分了。</p>
+<p>而这也是，为什么我们要在这里拆分为容器组件和傻瓜组件。</p>
+<h3 id="容器组件"><a href="#容器组件" class="headerlink" title="容器组件"></a>容器组件</h3><p>我们将承担 第一个功能的的组件称之为容器组件。也就是说，容器组件主要是负责和 Redux Store 打交道。</p>
+<p>他主要处在最外层，所以叫做容器组件。</p>
+<h3 id="傻瓜组件"><a href="#傻瓜组件" class="headerlink" title="傻瓜组件"></a>傻瓜组件</h3><p>也就是容器组件内的组件，这个被容器组件包裹的组件叫做傻瓜组件，因为这个组件主要是根据容器组件给的数据进行无脑的展示就好，所以也叫做傻瓜组件。</p>
+<h3 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h3><p>如果我们的项目中有多个组件都需要使用 Store，那么我们也都应该将其抽离为 容器组件和傻瓜组件的结合。</p>
+<p>而多个容器组件和傻瓜组件的拆分会产生很多的相似代码，这些相似的代码其实还可以进一步的抽离。</p>
+<p>比如一个容器组件，主要是 获取 store，并监听 store 里状态变动等等。这些其实都可以抽离出来以减少重复的代码的。</p>
+<p>而这减少重复代码 就是 react-redux 库的拿手戏了。</p>
+
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/25/Redux%E8%BF%9B%E9%98%B6/">Redux 的进阶</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/05/25/Redux/" class="archive-article-date">
-  <time datetime="2020-05-25T08:39:26.475Z" itemprop="datePublished">5月 25</time>
-</a>
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/25/React-Redux/" data-id="ckam9sgui00012eqe4tmka4u7" class="article-share-link">Share</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/25/Redux/">Flux思想的升华</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/05/25/Flux%E6%80%9D%E6%83%B3/" class="archive-article-date">
-  <time datetime="2020-05-25T08:38:06.347Z" itemprop="datePublished">5月 25</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/25/Flux%E6%80%9D%E6%83%B3/">越过MVC的Flux思想</a>
-    </h1>
-  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li></ul>
 
-    </header>
+    </footer>
   </div>
-</article>
   
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/05/25/MVC%E6%80%9D%E6%83%B3/" class="archive-article-date">
-  <time datetime="2020-05-25T08:37:07.284Z" itemprop="datePublished">5月 25</time>
-</a>
-      
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/25/MVC%E6%80%9D%E6%83%B3/">流行的MVC</a>
-    </h1>
+    <a href="/2020/05/25/React-Redux%E8%BF%9B%E9%98%B6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          React-Redux 使用
+        
+      </div>
+    </a>
   
+  
+    <a href="/2020/05/25/Redux%E8%BF%9B%E9%98%B6/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Redux 的进阶</div>
+    </a>
+  
+</nav>
 
-    </header>
-  </div>
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/05/25/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%9A%84%E8%83%8C%E6%99%AF/" class="archive-article-date">
-  <time datetime="2020-05-25T08:29:24.923Z" itemprop="datePublished">5月 25</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/05/25/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%9A%84%E8%83%8C%E6%99%AF/">状态管理的背景</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
 
 </section>
         
