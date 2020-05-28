@@ -5,17 +5,17 @@
   
 
   
-  <title>流行的MVC | wqxc&#39;s code world</title>
+  <title>状态管理的背景 | wqxc&#39;s code world</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="牛叉的思想 MVC有人说 MVC 是一种框架，其实 MVC 更算是一种思想，或者叫做 设计典范 或者是 设计模式 MVC 的厉害之处就在于，将原本混做一团的东西，分为条理清晰的不同层次，不同的层次之间有管道相连，高内聚的前提下而又低耦合。">
+  <meta name="description" content="状态管理背景借鉴伟人的一句话：一切的前端高深概念都是纸老虎。 先说说背景吧。所谓的状态就是数据。 为什么会有状态管理这个东西呢？">
 <meta property="og:type" content="article">
-<meta property="og:title" content="流行的MVC">
-<meta property="og:url" content="http://yoursite.com/2020/05/25/MVC%E6%80%9D%E6%83%B3/index.html">
+<meta property="og:title" content="状态管理的背景">
+<meta property="og:url" content="http://yoursite.com/2020/05/25/Store/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%9A%84%E8%83%8C%E6%99%AF/index.html">
 <meta property="og:site_name" content="wqxc&#39;s code world">
-<meta property="og:description" content="牛叉的思想 MVC有人说 MVC 是一种框架，其实 MVC 更算是一种思想，或者叫做 设计典范 或者是 设计模式 MVC 的厉害之处就在于，将原本混做一团的东西，分为条理清晰的不同层次，不同的层次之间有管道相连，高内聚的前提下而又低耦合。">
+<meta property="og:description" content="状态管理背景借鉴伟人的一句话：一切的前端高深概念都是纸老虎。 先说说背景吧。所谓的状态就是数据。 为什么会有状态管理这个东西呢？">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-05-25T08:37:07.284Z">
-<meta property="article:modified_time" content="2020-05-25T09:11:23.879Z">
+<meta property="article:published_time" content="2020-05-25T08:29:24.923Z">
+<meta property="article:modified_time" content="2020-05-26T04:31:52.226Z">
 <meta property="article:author" content="WQXC">
 <meta property="article:tag" content="状态管理">
 <meta name="twitter:card" content="summary">
@@ -67,14 +67,14 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-MVC思想" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Store/状态管理的背景" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/05/25/MVC%E6%80%9D%E6%83%B3/" class="article-date">
-  <time datetime="2020-05-25T08:37:07.284Z" itemprop="datePublished">2020-05-25</time>
+    <a href="/2020/05/25/Store/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%9A%84%E8%83%8C%E6%99%AF/" class="article-date">
+  <time datetime="2020-05-25T08:29:24.923Z" itemprop="datePublished">2020-05-25</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a>
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a>
   </div>
 
   </div>
@@ -85,7 +85,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      流行的MVC
+      状态管理的背景
     </h1>
   
 
@@ -93,28 +93,39 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="牛叉的思想-MVC"><a href="#牛叉的思想-MVC" class="headerlink" title="牛叉的思想 MVC"></a>牛叉的思想 MVC</h2><p>有人说 MVC 是一种框架，其实 MVC 更算是一种思想，或者叫做 <strong>设计典范</strong> 或者是 <strong>设计模式</strong></p>
-<p>MVC 的厉害之处就在于，将原本混做一团的东西，分为条理清晰的不同层次，不同的层次之间有管道相连，高内聚的前提下而又低耦合。</p>
+        <h2 id="状态管理"><a href="#状态管理" class="headerlink" title="状态管理"></a>状态管理</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>借鉴伟人的一句话：一切的前端高深概念都是纸老虎。</p>
+<p>先说说背景吧。所谓的状态就是数据。</p>
+<p>为什么会有状态管理这个东西呢？</p>
 <a id="more"></a>
 
-<h3 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h3><p>MVC 是比较普遍的前端框架设计模式。</p>
-<p>框架的作用是为了代码的重用，而设计典范或者是设计模式是设计的重用。</p>
-<p>一般来说 MVC 框架 核心分为三个部分。</p>
-<h4 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h4><p>负责管理数据。大部分的业务都应该在 model 中进行，比如 ajax 请求。</p>
-<h4 id="View"><a href="#View" class="headerlink" title="View"></a>View</h4><p>也叫做视图部分，负责展示页面。也就是 Html，虽然，HTML 中可以进行事件以及数据的操作。但是，最好要避免在这里进行涉及业务逻辑的操作。</p>
-<h4 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h4><p>负责接受用户的输入。根据用户行为调用特定的 Model 部分逻辑。最后 Model 生成了数据，通过 Controller 交给 View。最终展现在用户面前。</p>
-<h3 id="MVC-的特点-–-前端-。"><a href="#MVC-的特点-–-前端-。" class="headerlink" title="MVC 的特点 – 前端 。"></a>MVC 的特点 – 前端 。</h3><p>1、优势： MVC 框架很好的做到了分层的概念。不同的部分只做自己应该做的事情。相互独立，却又紧密联系。也就是高内聚，低耦合。分而治之，避免将逻辑和界面的渲染混杂在一起。</p>
-<p>2、缺点：世界上本身就不存在完美的事务，对于 MVC 来说也是。MVC 框架只是希望开发人员遵守：不要进行 View 和 Model 进行通信。但是，View 和 Mode 通信的便利总是在不经意间诱惑开发人员去破坏这一条规则。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">正常来说，View的事件触发一定是经过Controller进行分发到特定的Model层来处理，处理完成之后又经过Controller回到View中。</span><br><span class="line"></span><br><span class="line">每一个View的业务都需要一个 Controller，一个Model来与之对应。</span><br><span class="line"></span><br><span class="line">一些复杂的业务逻辑如此操作倒是无可厚非，但是，一些非常简单的逻辑，也如此做一遍操作，</span><br><span class="line">明显的让人觉得繁琐。不如直接进行View和Model进行通信来的简单快捷。没有多少人能抵挡住这种诱惑，尤其是开发者在面对堆积如山的工作的时候。</span><br><span class="line"></span><br><span class="line">一旦开始进行View和Model的通信，MVC的优势便不存在了。大量的View和Model的通信会造成灾难的后果。</span><br></pre></td></tr></table></figure>
-
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>如果能够完全按照 MVC 的思想来编写代码，依旧能够保证分层，代码逻辑清晰。但是，每新增一个业务就要新增 Controller 和 Model，这会导致项目臃肿。</p>
-<p>因为 MVC 在前端有这些缺点，所以才有了抛开 MVC 的一些创造，于是也就有了前端的状态管理设计模式，基于此，也有了后来的很多状态管理框架。比如 Redux，Vuex 等。</p>
-<p>而前端状态管理的设计模式便是 Flux。</p>
+<p>我们先从简单的开始。</p>
+<p>想象一下 一个组件 Parent 有俩子组件 Child1 和 Child2</p>
+<p>俩子组件内都有一个计数器，每当用户点一下，计数器就加 1.</p>
+<p>这个时候呢，我想要在 Parent 组件里计算出 俩计数器的和。</p>
+<p>你咋办？</p>
+<p>简单的来说，就是 每当用户点击的时候 将计数器的值传给 父组件 Parent 就好了。Vue 或者 React 等现代的框架都很容易做到。</p>
+<p>这很简单。但是，如果 计数器存在的组件 不是 parent 的 组件怎么办？或者干脆是两个八竿子打不着的组件怎么办？</p>
+<p>其实也有办法。我们定义一个全局的变量。</p>
+<p>比如 建一个文件 叫做 global.js 在这个里边定义变量 count1 count2 对应两个计数器的值。</p>
+<p>在两个计数器的组件引入这个文件。当计数器加 1，就将 count1 或者 count2 加 1</p>
+<p>最后在 Parent 组件里也引入 global.js 将两个 count 加一块。</p>
+<p>这也很简单。</p>
+<p>但是，问题来了，计数器组件改动了数据，parent 怎么知道该不该做加法计算出来值。</p>
+<p>因为是全局变量，谁都可以改动，那很容易出现问题。而且出现了错误也不容易查找。</p>
+<p>所以才有了状态管理的框架。</p>
+<p>其实简单的来说，这些状态管理的框架其基本的原理也只是一个全局变量而已，只是这个全局变量的访问更为严格，不是谁想访问就能访问的。即使访问也要按照规矩来一步一步的进行。</p>
+<h3 id="后来"><a href="#后来" class="headerlink" title="后来"></a>后来</h3><p>Flux 框架 更像是一个规范，虽然他本身也是一个状态管理的库。但是，他的伟大之处在于，提出了状态管理应该遵循的规范。</p>
+<p>而 Redux Vuex 等状态管理框架只是遵循 Flux 的基本规范的前提下进行的升华。</p>
+<p>他们本质上是一样的。</p>
+<h3 id="追本溯源"><a href="#追本溯源" class="headerlink" title="追本溯源"></a>追本溯源</h3><p>我们知道所谓的 <strong>状态管理</strong> 这个牛掰轰轰的概念，其实也就是 全局变量管理。</p>
+<p>无论是 Redux 还是 Vuex 都是遵循了 Flux 提出的理论。</p>
+<p>而 Flux 提出的理论是为了解决 MVC 思想在前端应用的问题。</p>
+<p>接下来我们再看看 MVC 和 Flux</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/25/MVC%E6%80%9D%E6%83%B3/" data-id="ckam9uf3a0001coqegcw75j84" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/05/25/Store/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%9A%84%E8%83%8C%E6%99%AF/" data-id="ckaqjfmfu000cn3qeab9d261o" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li></ul>
@@ -125,20 +136,15 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/05/25/Flux%E6%80%9D%E6%83%B3/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/05/25/Store/MVC%E6%80%9D%E6%83%B3/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          越过MVC的Flux思想
+          流行的MVC
         
       </div>
     </a>
   
-  
-    <a href="/2020/05/25/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%9A%84%E8%83%8C%E6%99%AF/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">状态管理的背景</div>
-    </a>
   
 </nav>
 
@@ -195,23 +201,23 @@
       <ul>
         
           <li>
-            <a href="/2020/05/25/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux 使用</a>
+            <a href="/2020/05/28/JS/%E7%BB%A7%E6%89%BF/">JS/继承</a>
           </li>
         
           <li>
-            <a href="/2020/05/25/React-Redux/">React-Redux 对 Redux 的升华</a>
+            <a href="/2020/05/28/JS/%E6%80%9D%E6%83%B3/">JS/思想</a>
           </li>
         
           <li>
-            <a href="/2020/05/25/Redux%E8%BF%9B%E9%98%B6/">Redux 的进阶</a>
+            <a href="/2020/05/28/JS/JS%E6%8A%80%E5%B7%A7/">JS/JS技巧</a>
           </li>
         
           <li>
-            <a href="/2020/05/25/Redux/">Flux思想的升华</a>
+            <a href="/2020/05/25/Store/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux 使用</a>
           </li>
         
           <li>
-            <a href="/2020/05/25/Flux%E6%80%9D%E6%83%B3/">越过MVC的Flux思想</a>
+            <a href="/2020/05/25/Store/React-Redux/">React-Redux 对 Redux 的升华</a>
           </li>
         
       </ul>

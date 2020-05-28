@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>JS/继承 | wqxc&#39;s code world</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="继承前言继承是面向对象语言的一大特性，用来让一个类继承另外一个类，以此来复用代码。 在这里需要明白一个关系：类与实例。 继承是类与类之间的一种关系。 而一个类要想使用，首先是要进行实例化。 一个类就如同汽车设计图，实例则是一个真实的汽车，汽车设计图是有用的，但是，你不能拿汽车设计图来履行，所以需要实例化，也就是根据设计图来生成一辆真正的汽车，一个真正的汽车就是一个实例。 当然，一个设计图理论上可以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS&#x2F;继承">
+<meta property="og:url" content="http://yoursite.com/2020/05/28/JS/%E7%BB%A7%E6%89%BF/index.html">
+<meta property="og:site_name" content="wqxc&#39;s code world">
+<meta property="og:description" content="继承前言继承是面向对象语言的一大特性，用来让一个类继承另外一个类，以此来复用代码。 在这里需要明白一个关系：类与实例。 继承是类与类之间的一种关系。 而一个类要想使用，首先是要进行实例化。 一个类就如同汽车设计图，实例则是一个真实的汽车，汽车设计图是有用的，但是，你不能拿汽车设计图来履行，所以需要实例化，也就是根据设计图来生成一辆真正的汽车，一个真正的汽车就是一个实例。 当然，一个设计图理论上可以">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-05-28T08:50:27.373Z">
+<meta property="article:modified_time" content="2020-05-28T08:50:27.374Z">
+<meta property="article:author" content="WQXC">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="wqxc&#39;s code world" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">wqxc&#39;s code world</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-JS/继承" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/28/JS/%E7%BB%A7%E6%89%BF/" class="article-date">
+  <time datetime="2020-05-28T08:50:27.373Z" itemprop="datePublished">2020-05-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JS/继承
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>继承是面向对象语言的一大特性，用来让一个类继承另外一个类，以此来复用代码。</p>
+<p>在这里需要明白一个关系：类与实例。</p>
+<p>继承是类与类之间的一种关系。</p>
+<p>而一个类要想使用，首先是要进行实例化。</p>
+<p>一个类就如同汽车设计图，实例则是一个真实的汽车，汽车设计图是有用的，但是，你不能拿汽车设计图来履行，所以需要实例化，也就是根据设计图来生成一辆真正的汽车，一个真正的汽车就是一个实例。</p>
+<p>当然，一个设计图理论上可以生成无限个汽车。</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>JS严格的来说不是面向对象的语言，没有像面向对象语言（比如JAVA）自身实现了继承，JS语言需要使用特定的技术（也就是特定的代码编写方式）来实现继承。</p>
+<p>JS中没有JAVA等面向对象语言的那种真正的类的概念，但是，JS是很灵活的，我们一般使用构造函数来模拟一个类。比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function Person(name)&#123;</span><br><span class="line">        this.name&#x3D;name</span><br><span class="line">        this.say&#x3D; function()&#123;</span><br><span class="line">            console.log(&#39;this&#39;s name is &#39;+this.name)</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如上，便是 一个 Person类。</p>
+<p>再看一下java中定然的类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public  class Person&#123;</span><br><span class="line">	String name;</span><br><span class="line">	public Person(String myName) &#123; </span><br><span class="line">        name &#x3D; myName; </span><br><span class="line">    &#125; </span><br><span class="line">	void say()&#123;</span><br><span class="line">		System.out.print(name);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上，也是定义了一个Person类，内部有一个name是字符串类型的。一个构造函数Person(该函数会在类被实例化的时候自动调用，用来初始化赋值)，一个方法say</p>
+<p>虽然他们的样子不一样，但是，js的构造函数是能够用来模拟一个类的。</p>
+<p>好了，基础的信息说完，我们就来说js中三种经典的继承技术。</p>
+<p>首先我们先提供一个父类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">function Parent(name)&#123;</span><br><span class="line">    this.name&#x3D;name</span><br><span class="line">    this.say&#x3D; function()&#123;</span><br><span class="line">        console.log(&#39;this&#39;s name is &#39;+this.name)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">Parent.prototype.say&#x3D; function()&#123;</span><br><span class="line">        console.log(&#39;this\&#39;s name is &#39;+this.name)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="原型链继承"><a href="#原型链继承" class="headerlink" title="原型链继承"></a>原型链继承</h3><p>原型链继承的核心是基于JS语言的 <strong>proto</strong> 查找机制。</p>
+<p>举个🌰<br>我们有一个子类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function Child(age)&#123;</span><br><span class="line">    this.age&#x3D;age</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们让上边的子类 Child 继承 父类 Parent</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Child.prototype&#x3D;new Parent(&#39;原型链继承&#39;)</span><br></pre></td></tr></table></figure>
+<p>如上，我们将子类 Child 的原型指向父类 Parent的一个实例。<br>如此一来，子类 Child就能访问到父类Parent的属性和方法。</p>
+<p>如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line">   </span><br><span class="line">   var c1 &#x3D; new Child(12)</span><br><span class="line">c1.name&#x2F;&#x2F;&#39;原型链继承&#39;</span><br><span class="line">   </span><br><span class="line">   c1 instanceof Parent  &#x2F;&#x2F;true</span><br></pre></td></tr></table></figure>
+
+<p>子类Child的实例c1就能访问到父类 Parent的属性 name 和方法 say</p>
+<p>语法规则是：</p>
+<p>CHILD.prototype = new PARENT()</p>
+<p>CHILD.prototype.construct = CHILD</p>
+<p>注意：</p>
+<p>之所以要加 CHILD.prototype.construct = CHILD是因为</p>
+<p>原因：</p>
+<p>constructor 是 函数的 prototype 的一个属性，这个属性指向函数自身身。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Parent.prototype.constructor &#x3D;&#x3D; Parent  &#x2F;&#x2F; true</span><br></pre></td></tr></table></figure>
+
+<p>而在我们让 Child 类 继承 Parent 的时候改变了 Child 的 prototype（Child.prototype=new Parent(‘原型链继承’)）。</p>
+<p>所以 Child类的实例 c1.constructor 等价于 Child.prototype.constructor ==&gt;new PARENT().constructor===&gt;Parent.prototype.constructor==&gt;Person.</p>
+<p>所以，我们需要纠正这个错误。</p>
+<p>CHILD.prototype.construct = CHILD</p>
+<p>注意：</p>
+<p>我们说过，只有函数才有可能有 prototype属性。</p>
+<p>c1.constructor 其实并不是说c1 也有prototype属性，c1.constructor 其实是等价于 c1.<strong>proto</strong>.constructor.</p>
+<p>而 c1.<strong>prtoto</strong> == Child.prototype（对象的原型属性<strong>proto</strong> 指向其构造函数的原型对象prototype）</p>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function Parent(list)&#123;</span><br><span class="line">    this.NBMan&#x3D; list</span><br><span class="line">&#125;</span><br><span class="line">Parent.prototype.say&#x3D; function()&#123;</span><br><span class="line">    console.log(this.NBMan)</span><br><span class="line">&#125;</span><br><span class="line">function Child(age)&#123;</span><br><span class="line">    this.age&#x3D;age</span><br><span class="line">&#125;</span><br><span class="line">Child.prototype &#x3D; new Parent([&#39;成龙&#39;,&#39;李连杰&#39;])</span><br><span class="line">var c1 &#x3D; new Child(12)</span><br><span class="line">c1.NBMan &#x2F;&#x2F;[&#39;成龙&#39;,&#39;李连杰&#39;]</span><br><span class="line">var c2 &#x3D; new Child(12)</span><br><span class="line">c2.NBMan.push(&#39;吴京&#39;)</span><br><span class="line">c1.say()&#x2F;&#x2F; [&quot;成龙&quot;, &quot;李连杰&quot;, &quot;吴京&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>如上所示，子类Child的实例都可以访问到父类Parent的属性NBMan ，而且都能对其进行修改。</p>
+<p>这就会为以后的开发埋下祸患，不经意间一个子类实例修改了父类属性，那么所有其他的子类实例访问到的父类属性都变了，这明显是有问题的。</p>
+<p>缺陷：本应该是私有的属性被公开了。</p>
+<h3 id="call继承"><a href="#call继承" class="headerlink" title="call继承"></a>call继承</h3><h3 id="语法："><a href="#语法：" class="headerlink" title="语法："></a>语法：</h3><p>PARENT.call(this,[arguments])</p>
+<p>举个🌰</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function Parent(list)&#123;</span><br><span class="line">    this.NBMan&#x3D; list</span><br><span class="line">&#125;</span><br><span class="line">Parent.prototype.say&#x3D; function()&#123;</span><br><span class="line">            console.log( this.NBMan)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function Child2(age)&#123;</span><br><span class="line">    Parent.call(this,[&#39;秦始皇&#39;,&#39;汉武帝&#39;,&#39;唐太宗&#39;])</span><br><span class="line">     this.age &#x3D; age</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var c1 &#x3D; new Child2(1000)</span><br><span class="line">var c2 &#x3D; new Child2(200)</span><br></pre></td></tr></table></figure>
+
+<p>看一下c1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">   c1.say()&#x2F;&#x2F;Error</span><br><span class="line">c1.NBMan&#x2F;&#x2F;[&quot;秦始皇&quot;, &quot;汉武帝&quot;, &quot;唐太宗&quot;]</span><br><span class="line">c1.age &#x2F;&#x2F;1000</span><br></pre></td></tr></table></figure>
+<p>看一下c2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">   c2.say()&#x2F;&#x2F;Error</span><br><span class="line">c2.NBMan&#x2F;&#x2F;[&quot;秦始皇&quot;, &quot;汉武帝&quot;, &quot;唐太宗&quot;]</span><br><span class="line">c2.NBMan.push(&#39;宋太祖&#39;)</span><br><span class="line">c2.age &#x2F;&#x2F;200</span><br></pre></td></tr></table></figure>
+
+<p>再来看一下c1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c1.NBMan&#x2F;&#x2F;[&quot;秦始皇&quot;, &quot;汉武帝&quot;, &quot;唐太宗&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>子类Child2 的实例都会有属于自己的父类属性，随便的修改是不会影响到其他的子类实例的。</p>
+<p>解释：</p>
+<p>简单的来说就是，将父类 当做普通函数来调用，只是将this指向了CHILD的实例。</p>
+<p>这种继承方式的特点</p>
+<p>1 只继承了父类构造函数的私有属性，而没有继承父类的原型属性（因为是将PARENT当做普通函数来执行了，没有影响到PARENT的prototype属性）。</p>
+<p>2 没有继承PARENT的prototype上公有的属性。</p>
+<h3 id="寄生组合继承"><a href="#寄生组合继承" class="headerlink" title="寄生组合继承"></a>寄生组合继承</h3><h4 id="语法：-1"><a href="#语法：-1" class="headerlink" title="语法："></a>语法：</h4><p>PARENT.call(this,[arguments])<br>CHILD.prototype = Object.create(PARENT.prototype)<br>CHILD.prototype.constructor = CHILD</p>
+<p>原型链继承将父类的私有属性当做公有的继承了过来，公有的属性也继承了。</p>
+<p>call继承是将父类的私有属性，变为自己的私有属性，但是没有继承公有属性。</p>
+<p>寄生组合继承则是结合两者的优势。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function Child2 (title)&#123;</span><br><span class="line">    Parent.call(this,[&#39;李白&#39;,&#39;杜甫&#39;,&#39;王维&#39;])</span><br><span class="line">    this.title &#x3D; title</span><br><span class="line">&#125;</span><br><span class="line">Child2.prototype&#x3D;Object.create(Parent.prototype)</span><br><span class="line">Child2.prototype.constructor &#x3D; Child2</span><br></pre></td></tr></table></figure>
+
+
+<p>先看看 c1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var c1 &#x3D; new Child2(&#39;大唐&#39;)</span><br><span class="line">c1.NBMan&#x2F;&#x2F;[&#39;李白&#39;,&#39;杜甫&#39;,&#39;王维&#39;]</span><br><span class="line">c1.say()&#x2F;&#x2F;[&#39;李白&#39;,&#39;杜甫&#39;,&#39;王维&#39;]</span><br></pre></td></tr></table></figure>
+
+<p>再看看 c2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var c2 &#x3D; new Child2(&#39;诗人&#39;)</span><br><span class="line">c2.NBMan&#x2F;&#x2F;[&#39;李白&#39;,&#39;杜甫&#39;,&#39;王维&#39;]</span><br><span class="line">c2.say()&#x2F;&#x2F;[&#39;李白&#39;,&#39;杜甫&#39;,&#39;王维&#39;]</span><br><span class="line">c2.NBMan.push(&#39;汪伦&#39;)</span><br><span class="line">c2.say()&#x2F;&#x2F;[&#39;李白&#39;,&#39;杜甫&#39;,&#39;王维&#39;,&#39;汪伦&#39;]</span><br></pre></td></tr></table></figure>
+
+<p>再看看 c1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">c1.say()&#x2F;&#x2F;&#39;李白&#39;,&#39;杜甫&#39;,&#39;王维&#39;]</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="ES6中js语言的继承"><a href="#ES6中js语言的继承" class="headerlink" title="ES6中js语言的继承"></a>ES6中js语言的继承</h3><p>核心就一个词 extends。</p>
+<p>语法规则 :</p>
+<p>Class A extends Class B{}</p>
+<p>如此，A类就继承了B类。<br>其核心的原理依旧是使用了寄生组合式的继承，extends只是es6下的语法糖。</p>
+<p>举个🌰</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;</span><br><span class="line">    </span><br><span class="line">    constructor(name,age)&#123;</span><br><span class="line">        this.name &#x3D; name</span><br><span class="line">        this.age &#x3D; age</span><br><span class="line">    &#125;</span><br><span class="line">    getName()&#123;</span><br><span class="line">        console.log(this.name,this.age)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class B extends A &#123;</span><br><span class="line">    </span><br><span class="line">    constructor(y)&#123;</span><br><span class="line">        super(&#39;张三&#39;,23)</span><br><span class="line">        this.y &#x3D; y</span><br><span class="line">    &#125;</span><br><span class="line">    getY()&#123;</span><br><span class="line">        console.log(this.y)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var b &#x3D; new B(222)</span><br><span class="line">console.log(b)</span><br></pre></td></tr></table></figure>
+
+<p>最终的b如下所示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;name: &quot;张三&quot;, age: 23, y: 222&#125;</span><br><span class="line">    name: &quot;张三&quot;</span><br><span class="line">    age: 23</span><br><span class="line">    y: 222</span><br><span class="line">        __proto__: A</span><br><span class="line">        constructor: class B</span><br><span class="line">        getY: ƒ getY()</span><br><span class="line">            __proto__:</span><br><span class="line">            constructor: class A</span><br><span class="line">            getName: ƒ getName()</span><br><span class="line">            __proto__: Object</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/28/JS/%E7%BB%A7%E6%89%BF/" data-id="ckaqjfmfe0001n3qee1z55ver" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/05/28/JS/%E6%80%9D%E6%83%B3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JS/思想</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/React-Redux/" style="font-size: 10px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 10px;">Redux</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" style="font-size: 20px;">状态管理</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/05/28/JS/%E7%BB%A7%E6%89%BF/">JS/继承</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/28/JS/%E6%80%9D%E6%83%B3/">JS/思想</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/28/JS/JS%E6%8A%80%E5%B7%A7/">JS/JS技巧</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/25/Store/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux 使用</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/25/Store/React-Redux/">React-Redux 对 Redux 的升华</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 WQXC<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
