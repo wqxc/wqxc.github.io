@@ -64,14 +64,14 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-JS/继承" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-React/Hooks" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/05/28/JS/%E7%BB%A7%E6%89%BF/" class="article-date">
-  <time datetime="2020-05-28T08:50:27.373Z" itemprop="datePublished">2020-05-28</time>
+    <a href="/2020/06/06/React/Hooks/" class="article-date">
+  <time datetime="2020-06-06T09:38:50.000Z" itemprop="datePublished">2020-06-06</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/JS/">JS</a>►<a class="article-category-link" href="/categories/JS/%E7%BB%A7%E6%89%BF/">继承</a>
+    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81Hooks%E6%84%9F%E6%82%9F/">4、Hooks感悟</a>
   </div>
 
   </div>
@@ -82,7 +82,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/28/JS/%E7%BB%A7%E6%89%BF/">JS的几种继承方式</a>
+      <a class="article-title" href="/2020/06/06/React/Hooks/">React-Hooks</a>
     </h1>
   
 
@@ -90,21 +90,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>继承是面向对象语言的一大特性，用来让一个类继承另外一个类，以此来复用代码。</p>
-<p>在这里需要明白一个关系：类与实例。</p>
-<p>继承是类与类之间的一种关系。</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/05/28/JS/%E7%BB%A7%E6%89%BF/#more">Read More</a>
-          </p>
-        
+        <h2 id="一些感悟"><a href="#一些感悟" class="headerlink" title="一些感悟"></a>一些感悟</h2><p>我们知道，函数组件其实就是 一个函数，函数不像是 类实例那样可以保存下来，无需重复的实例化，而<br>函数组件每一次的加载都是重新执行了一遍函数，所以函数内的hook其实也是重新被执行了，</p>
+<p>只是，React在内部的机制中将其保存了一下，</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/28/JS/%E7%BB%A7%E6%89%BF/" data-id="ckaqjjgu50001v5qe3i88bv48" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/06/React/Hooks/" data-id="ckb4folbb000b14zkbj4169c7" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
 
     </footer>
   </div>
@@ -113,14 +108,14 @@
 
 
   
-    <article id="post-JS/思想" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-React/Effect-hooks" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/05/28/JS/%E6%80%9D%E6%83%B3/" class="article-date">
-  <time datetime="2020-05-28T08:50:27.371Z" itemprop="datePublished">2020-05-28</time>
+    <a href="/2020/06/06/React/Effect-hooks/" class="article-date">
+  <time datetime="2020-06-06T08:36:14.000Z" itemprop="datePublished">2020-06-06</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/JS/">JS</a>►<a class="article-category-link" href="/categories/JS/%E6%80%9D%E6%83%B3/">思想</a>
+    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/3%E3%80%81Effect-Hooks/">3、Effect-Hooks</a>
   </div>
 
   </div>
@@ -131,7 +126,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/28/JS/%E6%80%9D%E6%83%B3/">一些JS思想</a>
+      <a class="article-title" href="/2020/06/06/React/Effect-hooks/">Effect-Hooks</a>
     </h1>
   
 
@@ -139,20 +134,75 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="思想"><a href="#思想" class="headerlink" title="思想"></a>思想</h1><h2 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h2><p>该模式定义一系列对象之间的一对多关系，一个对象改变，更新状态时，依赖它的都会收到通知改变或者更新。</p>
-<p>一个简单的观察者模式代码：</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/05/28/JS/%E6%80%9D%E6%83%B3/#more">Read More</a>
-          </p>
-        
+        <h1 id="Effect-Hooks"><a href="#Effect-Hooks" class="headerlink" title="Effect-Hooks"></a>Effect-Hooks</h1><p>我们知道 React  提出 hook的概念主要是为了让无状态组件 进阶为 函数组件，以此获得像</p>
+<p>类组件一样的能力，但是，却别类组件的性能要高。</p>
+<p>State-hooks 主要是辅助 无状态组件 可以像类组件一样 保存自己的状态。</p>
+<p>但是，类组件的另一个特点是 生命周期。</p>
+<p>其实声明周期本质上也是 钩子函数。而且，生命周期中最重要的其实就三个：</p>
+<pre><code>componentDidMount
+
+componentDidUpdate
+
+componentWillUnmount</code></pre><p>而 Effect-Hoos 就可以看做是这是三个声明周期函数的汇合版本。</p>
+<p>Effect-Hoos  顾名思义就是 副作用钩子函数，主要是处理副作用。</p>
+<h2 id="副作用"><a href="#副作用" class="headerlink" title="副作用"></a>副作用</h2><p>什么是副作用呢？ 比如在组件中获取数据，修改DOM等都是副作用。</p>
+<p>而React 中的副作用 一般分为两类，需要清除的和不需要清除的。</p>
+<p>不需要清除的：</p>
+<pre><code>比如请求数据
+
+手动变更DOM
+
+记录日志等</code></pre><p>需要清除的：</p>
+<pre><code>监听、订阅了外部的数据源
+
+需要清除的副作用，如果不清除的话就有可能造成内存泄露等。</code></pre><h2 id="Effect-做一些-无需清除-的副作用操作"><a href="#Effect-做一些-无需清除-的副作用操作" class="headerlink" title="Effect 做一些 无需清除 的副作用操作"></a>Effect 做一些 无需清除 的副作用操作</h2><p>比如有个需求是 在组件加载完成的时候 执行一下更新DOM的操作，而且，每一次组件更新<br>都需要执行 更新DOM的操作。</p>
+<p>那么如果在类组件中我们就要这么做</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">componentDidMount()&#123;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;更新DOM 的操作</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">componentDidUpdate()&#123;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;更新DOM 的操作</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如上所示，就是在两个 不同的生命周期函数中写了相同的代码。这是类组件的常规处理方式。</p>
+<p>而同样的需要，如果我们使用 Effect 的话就是如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">useEffect(()&#x3D;&gt;&#123;</span><br><span class="line">    &#x2F;&#x2F; 更新DOM 的操作</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>很简单一个Effect 就搞定了，代码更内聚了不是？</p>
+<p>如上 useEffect 函数相当于注册了一个函数，这个函数可以直接访问 state，props，而且</p>
+<p>React会将这个函数保存一下，每当<br>组件加载或者是更新完成的 的时候都会拿出来执行一下（当然，第一次加载的时候也是会执行一下的）</p>
+<p>如此一来，我们就无需考虑组件是更新还是 首次加载了。</p>
+<h2 id="Effect-做一些-需清除-的副作用操作"><a href="#Effect-做一些-需清除-的副作用操作" class="headerlink" title="Effect 做一些 需清除 的副作用操作"></a>Effect 做一些 需清除 的副作用操作</h2><p>举个例子，我们需要监听页面的滚动，并根据滚动做相应的操作。</p>
+<p>类组件的做法是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">componentDidMount()&#123;</span><br><span class="line"></span><br><span class="line">    addEventListener(&#39;scroll&#39;,myFunc)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">componentWillUnmount()&#123;</span><br><span class="line"></span><br><span class="line">    removeEventListener(&#39;scroll&#39;,myFunc)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在组件挂载完成的时候开始监听，当组件要被销毁的时候取消监听（不取消就会造成内存的泄露）</p>
+<p>再来看看 Effect是怎么处理的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">useEffect(()&#x3D;&gt;&#123;</span><br><span class="line">    addEventListener(&#39;scroll&#39;,myFunc)</span><br><span class="line">    return ()&#x3D;&gt;&#123;</span><br><span class="line">        removeEventListener(&#39;scroll&#39;,myFunc)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>useEffect 返回了一个函数，这个函数叫做清除函数，也就是做一些清理的活儿。</p>
+<p>这个参数是可选的。</p>
+<p>我们在 类组件中是 组件在要被卸载的时候做了一下清除操作，而在 Effect中</p>
+<p>我们是给Effect 返回了一个清理函数，这个清理函数是什么时候执行呢？</p>
+<p>答案是：每次 Effect 执行的时候，会将上一次 Effect返回的清理函数 执行。</p>
+<h2 id="Effect-hook的作用"><a href="#Effect-hook的作用" class="headerlink" title="Effect hook的作用"></a>Effect hook的作用</h2><p>Effect 主要是为了解决React的类组件中，相互关联的逻辑被分割在不同的生命周期函数之中，而同一个生命周期中又包含不同的逻辑。</p>
+<p>而 Effect 的存在可以将相互关联的逻辑聚合在一起，而不关联的逻辑各自分离。</p>
+<p>具体的实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">useEffect(()&#x3D;&gt;&#123;</span><br><span class="line">    addEventListener(&#39;scroll&#39;,myFunc)</span><br><span class="line">    return ()&#x3D;&gt;&#123;</span><br><span class="line">        removeEventListener(&#39;scroll&#39;,myFunc)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">useEffect(()&#x3D;&gt;&#123;</span><br><span class="line">    &#x2F;&#x2F;ajax请求数据</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">useEffect(()&#x3D;&gt;&#123;</span><br><span class="line">    &#x2F;&#x2F;ajax请求另外的数据</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>你可以写多个 Effect 来将不同的逻辑分割在不同的位置，这些Effect的执行顺序是按照定义的先后顺序来进行。</p>
+<h2 id="Effect-的-特点"><a href="#Effect-的-特点" class="headerlink" title="Effect 的 特点"></a>Effect 的 特点</h2><p>Effect会在 组件渲染的时候将 上一次 Effect返回的清理函数执行一遍，每一次都是在渲染的时候执行一下清理函数，</p>
+<p>而不是在卸载的时候执行一次。</p>
+<p>最后呢，Effect 可以像  componentShouldUpdate 生命函数那样，决定组件是否更新</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">useEffect(()&#x3D;&gt;&#123;</span><br><span class="line">    &#x2F;&#x2F; 某种操作</span><br><span class="line">&#125;,[count])</span><br></pre></td></tr></table></figure>
+
+<p>如上所示，就是在 count 变化了之后才会执行 ‘某种操作’.</p>
+<p>如果只想让 Effect 只执行一次，就如下写法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">useEffect(()&#x3D;&gt;&#123;</span><br><span class="line">    &#x2F;&#x2F; 某种操作</span><br><span class="line">&#125;,[])</span><br></pre></td></tr></table></figure>
+<p>给一个空的数组，那么这个 Effect就只会执行一次。</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/28/JS/%E6%80%9D%E6%83%B3/" data-id="ckaqjjgtw0000v5qe575g54vb" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/06/React/Effect-hooks/" data-id="ckb4fol9s000014zk9s41duld" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" rel="tag">js的一些思想</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
 
     </footer>
   </div>
@@ -161,14 +211,14 @@
 
 
   
-    <article id="post-JS/JS技巧" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-React/State-hooks" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/05/28/JS/JS%E6%8A%80%E5%B7%A7/" class="article-date">
-  <time datetime="2020-05-28T08:50:27.369Z" itemprop="datePublished">2020-05-28</time>
+    <a href="/2020/06/05/React/State-hooks/" class="article-date">
+  <time datetime="2020-06-05T08:44:10.000Z" itemprop="datePublished">2020-06-05</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/JS/">JS</a>►<a class="article-category-link" href="/categories/JS/%E6%8A%80%E5%B7%A7/">技巧</a>
+    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/2%E3%80%81State-hooks%E4%BD%BF%E7%94%A8/">2、State-hooks使用</a>
   </div>
 
   </div>
@@ -179,7 +229,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/28/JS/JS%E6%8A%80%E5%B7%A7/">JS开发的一些小技巧</a>
+      <a class="article-title" href="/2020/06/05/React/State-hooks/">React-Hooks</a>
     </h1>
   
 
@@ -187,22 +237,21 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="JS-技巧"><a href="#JS-技巧" class="headerlink" title="JS 技巧"></a>JS 技巧</h1><h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><h3 id="escape-unescape"><a href="#escape-unescape" class="headerlink" title="escape/unescape"></a>escape/unescape</h3><p>escape/unescape 编码/解码 也叫做 %u 编码，u 代表的是 Unicode 也就是一个字符的 UTF-16E 模式。</p>
-<p>这种编码就是字符对应的 UTF-16 16 进制表示方式前 加 u%</p>
-<p>比如 上海的 上 字符的 UTF-16 的表示方式是 \u4E0A 所以上字被编码之后为： %u4EoA。可以看下边的例子。</p>
-<p>作用是 对文字进行编码/解码,如此便可以在所有的计算机上读取该字符串。</p>
+        <h1 id="State-hooks"><a href="#State-hooks" class="headerlink" title="State-hooks"></a>State-hooks</h1><p>我们知道 函数组件无法保存状态，所以在函数组件中无法使用状态。</p>
+<p>但是，在State Hooks加持下，函数组件就完全可以有自己的状态去操做。</p>
+<p>举个例子：</p>
         
           <p class="article-more-link">
-            <a href="/2020/05/28/JS/JS%E6%8A%80%E5%B7%A7/#more">Read More</a>
+            <a href="/2020/06/05/React/State-hooks/#more">Read More</a>
           </p>
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/28/JS/JS%E6%8A%80%E5%B7%A7/" data-id="ckaqjjgvb001zv5qeermqhih1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/05/React/State-hooks/" data-id="ckb4folaj000114zk33179axx" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">js的一些技巧</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
 
     </footer>
   </div>
@@ -211,14 +260,14 @@
 
 
   
-    <article id="post-Store/React-Redux进阶" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-React/Mixins" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/05/25/Store/React-Redux%E8%BF%9B%E9%98%B6/" class="article-date">
-  <time datetime="2020-05-25T08:56:06.500Z" itemprop="datePublished">2020-05-25</time>
+    <a href="/2020/06/05/React/Mixins/" class="article-date">
+  <time datetime="2020-06-05T08:37:40.000Z" itemprop="datePublished">2020-06-05</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a>
+    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81Mixin/">4、Mixin</a>
   </div>
 
   </div>
@@ -229,7 +278,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/25/Store/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux 使用</a>
+      <a class="article-title" href="/2020/06/05/React/Mixins/">Mixin</a>
     </h1>
   
 
@@ -237,20 +286,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="React-Redux"><a href="#React-Redux" class="headerlink" title="React-Redux"></a>React-Redux</h1><h2 id="为什么会有-React-Redux"><a href="#为什么会有-React-Redux" class="headerlink" title="为什么会有 React-Redux"></a>为什么会有 React-Redux</h2><p>之前我们说过， 使用 Context 和 Redux 的结合来解决 Redux store 在使用的时候多次被引用的问题。</p>
-<p>另外的，在 React 中使用 Redux 进行状态管理的时候，将组件拆分为容器组件和傻瓜组件，也是一种比较有用的方式。</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/05/25/Store/React-Redux%E8%BF%9B%E9%98%B6/#more">Read More</a>
-          </p>
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/25/Store/React-Redux%E8%BF%9B%E9%98%B6/" data-id="ckaqjjgud0006v5qea3c8580t" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/05/React/Mixins/" data-id="ckb1yiepi0000riqe0mscfb1x" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
 
     </footer>
   </div>
@@ -259,14 +302,14 @@
 
 
   
-    <article id="post-Store/React-Redux" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-React/React-hooks背景" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/05/25/Store/React-Redux/" class="article-date">
-  <time datetime="2020-05-25T08:55:01.987Z" itemprop="datePublished">2020-05-25</time>
+    <a href="/2020/06/05/React/React-hooks%E8%83%8C%E6%99%AF/" class="article-date">
+  <time datetime="2020-06-05T08:37:40.000Z" itemprop="datePublished">2020-06-05</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a>
+    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/1%E3%80%81React-Hooks%E8%83%8C%E6%99%AF/">1、React-Hooks背景</a>
   </div>
 
   </div>
@@ -277,7 +320,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/25/Store/React-Redux/">React-Redux 对 Redux 的升华</a>
+      <a class="article-title" href="/2020/06/05/React/React-hooks%E8%83%8C%E6%99%AF/">React-Hooks</a>
     </h1>
   
 
@@ -285,20 +328,20 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="React-redux-产生的背景"><a href="#React-redux-产生的背景" class="headerlink" title="React-redux 产生的背景"></a>React-redux 产生的背景</h1><h2 id="容器组件和傻瓜组件"><a href="#容器组件和傻瓜组件" class="headerlink" title="容器组件和傻瓜组件"></a>容器组件和傻瓜组件</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>为什么要将组件分为容器最近和傻瓜组件呢？这个要从 Redux 框架下来看。</p>
-<p>在 React 中使用 Redux 框架，一个 React 组件基本上就要完成以下两个功能。</p>
+        <h1 id="React-Hooks"><a href="#React-Hooks" class="headerlink" title="React Hooks"></a>React Hooks</h1><h2 id="为什么要有React-Hooks"><a href="#为什么要有React-Hooks" class="headerlink" title="为什么要有React Hooks"></a>为什么要有React Hooks</h2><p>以往，出现了一门新技术，总想着拿来就开始尝鲜，但是，却很少去考虑，为什么要有这一门技术，以及，这一门技术是怎样的？</p>
+<p>后来慢慢的发现，开始接受一项新的技术的时候，第一个要考虑的不是怎么使用这个技术，而是，为什么会有这个技术？</p>
         
           <p class="article-more-link">
-            <a href="/2020/05/25/Store/React-Redux/#more">Read More</a>
+            <a href="/2020/06/05/React/React-hooks%E8%83%8C%E6%99%AF/#more">Read More</a>
           </p>
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/25/Store/React-Redux/" data-id="ckaqjjgua0004v5qe8d5gf1am" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/05/React/React-hooks%E8%83%8C%E6%99%AF/" data-id="ckb3a8qad0000nazk1kmcboxt" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
 
     </footer>
   </div>
@@ -307,14 +350,14 @@
 
 
   
-    <article id="post-Store/Redux进阶" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-React/高阶组件" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/05/25/Store/Redux%E8%BF%9B%E9%98%B6/" class="article-date">
-  <time datetime="2020-05-25T08:43:09.337Z" itemprop="datePublished">2020-05-25</time>
+    <a href="/2020/06/05/React/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" class="article-date">
+  <time datetime="2020-06-05T08:37:40.000Z" itemprop="datePublished">2020-06-05</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a>
+    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/3%E3%80%81%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">3、高阶组件</a>
   </div>
 
   </div>
@@ -325,7 +368,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/25/Store/Redux%E8%BF%9B%E9%98%B6/">Redux 的进阶</a>
+      <a class="article-title" href="/2020/06/05/React/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">高阶组件</a>
     </h1>
   
 
@@ -333,19 +376,206 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="优化-Redux"><a href="#优化-Redux" class="headerlink" title="优化 Redux"></a>优化 Redux</h1><h2 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h2><p>Redux 中 Store 是 唯一的 ，而且，store 承担了很多的内容。</p>
-<p>状态树</p>
-<p>dispatch 一个 action</p>
-<p>合并所有的 Reducer</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/05/25/Store/Redux%E8%BF%9B%E9%98%B6/#more">Read More</a>
-          </p>
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/25/Store/Redux%E8%BF%9B%E9%98%B6/" data-id="ckaqjjguh000bv5qeevwc3nf6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/06/05/React/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" data-id="ckb1yieqc0005riqeg5n7csln" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-React/组件" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/05/React/%E7%BB%84%E4%BB%B6/" class="article-date">
+  <time datetime="2020-06-05T08:37:40.000Z" itemprop="datePublished">2020-06-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E7%BB%84%E4%BB%B6/">组件</a>►<a class="article-category-link" href="/categories/React/%E7%BB%84%E4%BB%B6/1%E3%80%81%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E5%92%8C%E7%B1%BB%E7%BB%84%E4%BB%B6/">1、函数组件和类组件</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/05/React/%E7%BB%84%E4%BB%B6/">React 组件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="React中的组件"><a href="#React中的组件" class="headerlink" title="React中的组件"></a>React中的组件</h1><p>React中的组件粗略的分类的话，有两种：</p>
+<pre><code>函数组件
+
+类组件</code></pre><h2 id="函数组件"><a href="#函数组件" class="headerlink" title="函数组件"></a>函数组件</h2><p>函数组件很简单，就是一个函数，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">function Welcome (props) &#123;</span><br><span class="line">  return &lt;h1&gt;Welcome &#123;props.name&#125;&lt;&#x2F;h1&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数组件的作用很简单，就是返回一个 DOM 出来，这个DOM的复杂度是不一定的，有时候很复杂，有时候很简单。但是，无论是简单还是复杂，与同样的 类组件相比，函数组件的性能是更优越的。</p>
+<h3 id="函数组件的特点"><a href="#函数组件的特点" class="headerlink" title="函数组件的特点"></a>函数组件的特点</h3><pre><code>1、函数组件是没有 this这个对象的
+
+2、函数组件没有生命周期
+
+3、函数组件没有状态</code></pre><p>函数组件的根源是一个返回 类DOM的函数。我们知道，函数被调用完成之后就会被回收。所以，函数组件不会有 状态可供操作。</p>
+<p>另外的，函数组件的思想是无状态组件，函数组件没有生命周期，也无需去考虑什么情况下用什么钩子函数。这就是说，函数组件只是一个展示组件</p>
+<pre><code>这里说一下，所谓的展示组件，就是，并非是完全没有处理逻辑，    比如Ajax等还是要有的。
+
+所谓的没有处理逻辑是不会有 比如 填写表单之类的交互逻辑</code></pre><h3 id="函数组件的用处"><a href="#函数组件的用处" class="headerlink" title="函数组件的用处"></a>函数组件的用处</h3><p>在最理想的情况下所有的组件都应该是函数组件，这样的应用性能是最佳的。函数组件有自己的特点，这也是我们在写组件的时候要首先考虑一下，是否要使用函数组件而不是一定要用类组件。</p>
+<h2 id="类组件"><a href="#类组件" class="headerlink" title="类组件"></a>类组件</h2><p>类组件就是使用 类的方式来构建组件,如下所示。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Welcome extends React.Component &#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;h1&gt;Welcome &#123; this.props.name &#125;&lt;&#x2F;h1&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="类组件的特点"><a href="#类组件的特点" class="headerlink" title="类组件的特点"></a>类组件的特点</h3><pre><code>1、有this
+
+2、有生命周期
+
+3、有状态</code></pre><p>类组件的核心是一个类，这个类的核心是 render方法，render方法就是用来返回一个类DOM结构。</p>
+<p>类组件在使用的时候首先要进行实例化，而这也是类组件相对于函数组件性能要稍微差劲一些的原因。</p>
+<h3 id="类组件的用处"><a href="#类组件的用处" class="headerlink" title="类组件的用处"></a>类组件的用处</h3><p>类组件为我们定义了 生命周期方法，并且提供了 状态，使得我们可以在组件内部进行方便的逻辑交互。</p>
+<pre><code>比如，表单的交互</code></pre><p>在我看来类组件的最大特点就是他可以保存状态，而函数组件无法保存状态。</p>
+<h3 id="为什么类组件可以保存状态而函数组件不行"><a href="#为什么类组件可以保存状态而函数组件不行" class="headerlink" title="为什么类组件可以保存状态而函数组件不行"></a>为什么类组件可以保存状态而函数组件不行</h3><p>这里我们将类组件 简化为 ==&gt;  类</p>
+<p>将 函数组件 简化为 ==&gt; 函数 </p>
+<p>类在使用的时候首先要进行实例化 也就是 js中常用的 new</p>
+<p>实例化之后的类实例是一个对象  比如这样的 obj = {}</p>
+<p>obj 对象里完全可以放置任何你想要的属性，</p>
+<pre><code>比如 类组件就是放置了  render函数，生命函数，state等</code></pre><p>obj 是对象，只要其内的属性被引用了的话，它便不会被当做垃圾回收</p>
+<p>再来看函数，我们完全可以在 函数内放置一个变量 state，但是，函数执行完毕之后，还剩下什么？定然是被当做垃圾回收了。什么都不会剩下。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/05/React/%E7%BB%84%E4%BB%B6/" data-id="ckb1yieqa0004riqee5fm9jg2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-React/渲染属性" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/05/React/%E6%B8%B2%E6%9F%93%E5%B1%9E%E6%80%A7/" class="article-date">
+  <time datetime="2020-06-05T08:37:40.000Z" itemprop="datePublished">2020-06-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/1%E3%80%81-Render-Props/">1、 Render-Props</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/05/React/%E6%B8%B2%E6%9F%93%E5%B1%9E%E6%80%A7/">Render Props</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Render-Props"><a href="#Render-Props" class="headerlink" title="Render Props"></a>Render Props</h1>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/05/React/%E6%B8%B2%E6%9F%93%E5%B1%9E%E6%80%A7/" data-id="ckb1yieq00001riqeau441rzd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Store/React-Redux再进阶" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/03/Store/React-Redux%E5%86%8D%E8%BF%9B%E9%98%B6/" class="article-date">
+  <time datetime="2020-06-03T07:49:30.419Z" itemprop="datePublished">2020-06-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/03/Store/React-Redux%E5%86%8D%E8%BF%9B%E9%98%B6/">React-Redux 的再次进阶</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="优化-Redux"><a href="#优化-Redux" class="headerlink" title="优化 Redux"></a>优化 Redux</h1><h2 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h2><p>回顾一下，React-redux 提供了 Provider 和 connect  来 生成 容器组件和 传递 store。</p>
+<p>Provider的使用已经是足够简洁了，但是，connect的使用却是有一些奇怪，先看看它是怎么使用的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &#123; connect &#125; from &quot;react-redux&quot;;</span><br><span class="line">import &#123; increment, decrement, reset &#125; from &quot;.&#x2F;actionCreators&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Class MyComponent extends Component&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const mapStateToProps &#x3D; (state &#x2F;*, ownProps*&#x2F;) &#x3D;&gt; &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    counter: state.counter</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const mapDispatchToProps &#x3D; &#123; increment, decrement, reset &#125;;</span><br><span class="line"></span><br><span class="line">export default connect(</span><br><span class="line">  mapStateToProps,</span><br><span class="line">  mapDispatchToProps</span><br><span class="line">)(MyComponent);</span><br></pre></td></tr></table></figure>
+
+<p>我们通过 mapStateToProps mapDispatchToProps 两个方法，将store内的内容映射到 组件中，如此一来，便可以在组件中愉快的更新 状态了。</p>
+<p>这样的写法看起来不是很美观，</p>
+<p>所以有了 </p>
+<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p>上边的connect写法就是典型的 wrapper ，所以需要使用 装饰器来搞定这个东西,有如下两种模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import &#123; connect &#125; from &quot;react-redux&quot;;</span><br><span class="line">import &#123; increment, decrement, reset &#125; from &quot;.&#x2F;actionCreators&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">const mapStateToProps &#x3D; (state &#x2F;*, ownProps*&#x2F;) &#x3D;&gt; &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    counter: state.counter</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const mapDispatchToProps &#x3D; &#123; increment, decrement, reset &#125;;</span><br><span class="line"></span><br><span class="line">@connect(mapStateToProps, mapDispatchToProps)</span><br><span class="line">export default class MyComponent extends React.Component &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &#123; connect &#125; from &quot;react-redux&quot;;</span><br><span class="line">import &#123; increment, decrement, reset &#125; from &quot;.&#x2F;actionCreators&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@connect(</span><br><span class="line">	(&#123; counter, address &#125;) &#x3D;&gt; (&#123;</span><br><span class="line">    	address,</span><br><span class="line">    	counter,</span><br><span class="line">  	&#125;),</span><br><span class="line">	dispatch &#x3D;&gt; (&#123;</span><br><span class="line">    increment(data) &#123;</span><br><span class="line">      dispatch(increment(data));</span><br><span class="line">    &#125;,</span><br><span class="line">    decrement(data) &#123;</span><br><span class="line">      decrement(decrement(data));</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">export default class MyComponent extends React.Component &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>使用的话就和 Wrapper 一样，直接从 this.props中拿。</p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>要使用装饰器还需要依赖一些库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">babel-plugin-transform-decorators-legacy</span><br></pre></td></tr></table></figure>
+
+
+<p>而且package.json文件中要配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;plugins&quot;: [</span><br><span class="line">	[&quot;@babel&#x2F;plugin-proposal-decorators&quot;, &#123; &quot;legacy&quot;: true &#125;],</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/03/Store/React-Redux%E5%86%8D%E8%BF%9B%E9%98%B6/" data-id="ckb1yieqh000ariqegrml6q2g" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li></ul>
@@ -357,14 +587,14 @@
 
 
   
-    <article id="post-Store/Redux" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-JS/前端的模块化" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/05/25/Store/Redux/" class="article-date">
-  <time datetime="2020-05-25T08:39:26.475Z" itemprop="datePublished">2020-05-25</time>
+    <a href="/2020/05/30/JS/%E5%89%8D%E7%AB%AF%E7%9A%84%E6%A8%A1%E5%9D%97%E5%8C%96/" class="article-date">
+  <time datetime="2020-05-30T07:26:55.039Z" itemprop="datePublished">2020-05-30</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a>
+    <a class="article-category-link" href="/categories/JS/">JS</a>►<a class="article-category-link" href="/categories/JS/%E6%A8%A1%E5%9D%97%E5%8C%96/">模块化</a>
   </div>
 
   </div>
@@ -375,7 +605,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/25/Store/Redux/">Flux思想的升华</a>
+      <a class="article-title" href="/2020/05/30/JS/%E5%89%8D%E7%AB%AF%E7%9A%84%E6%A8%A1%E5%9D%97%E5%8C%96/">前端的模块化进程</a>
     </h1>
   
 
@@ -383,163 +613,20 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Flux-思想的继承者—Redux"><a href="#Flux-思想的继承者—Redux" class="headerlink" title="Flux 思想的继承者—Redux"></a>Flux 思想的继承者—Redux</h2><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>Flux 的思想是值得肯定的，但是，Flux 框架本身确实是饱受争议，Redux 在 Flux 的基础上进行了改进，成为了最受欢迎的框架，而且，没有之一。</p>
+        <h1 id="模块化"><a href="#模块化" class="headerlink" title="模块化"></a>模块化</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>所谓的模块化，就是拆分和归类，将原本成百上千行代码放在一个文件拆分后重新组合为一个个独立的模块。</p>
+<p>一个模块就是实现了某种功能的代码，有了模块化之后就能更方便的使用别人的工具。也叫做–轮子</p>
         
           <p class="article-more-link">
-            <a href="/2020/05/25/Store/Redux/#more">Read More</a>
+            <a href="/2020/05/30/JS/%E5%89%8D%E7%AB%AF%E7%9A%84%E6%A8%A1%E5%9D%97%E5%8C%96/#more">Read More</a>
           </p>
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/25/Store/Redux/" data-id="ckaqjjgug000av5qeb0vadccf" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/05/30/JS/%E5%89%8D%E7%AB%AF%E7%9A%84%E6%A8%A1%E5%9D%97%E5%8C%96/" data-id="ckb1yier1001criqe4jgj1o6y" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Store/Flux思想" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/05/25/Store/Flux%E6%80%9D%E6%83%B3/" class="article-date">
-  <time datetime="2020-05-25T08:38:06.347Z" itemprop="datePublished">2020-05-25</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/25/Store/Flux%E6%80%9D%E6%83%B3/">越过MVC的Flux思想</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Flux-思想"><a href="#Flux-思想" class="headerlink" title="Flux 思想"></a>Flux 思想</h2><p>起初 Flux 被认为是对数据流的控制更为严格的 MVC。但是，实际上，Flux 是脱离了 MVC 思想的范畴，Flux 与 MVC 虽然相似，当时他们绝对不是一个东西。</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/05/25/Store/Flux%E6%80%9D%E6%83%B3/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/25/Store/Flux%E6%80%9D%E6%83%B3/" data-id="ckaqjjgvc0020v5qe5ell6o28" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Store/MVC思想" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/05/25/Store/MVC%E6%80%9D%E6%83%B3/" class="article-date">
-  <time datetime="2020-05-25T08:37:07.284Z" itemprop="datePublished">2020-05-25</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/25/Store/MVC%E6%80%9D%E6%83%B3/">流行的MVC</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="牛叉的思想-MVC"><a href="#牛叉的思想-MVC" class="headerlink" title="牛叉的思想 MVC"></a>牛叉的思想 MVC</h2><p>有人说 MVC 是一种框架，其实 MVC 更算是一种思想，或者叫做 <strong>设计典范</strong> 或者是 <strong>设计模式</strong></p>
-<p>MVC 的厉害之处就在于，将原本混做一团的东西，分为条理清晰的不同层次，不同的层次之间有管道相连，高内聚的前提下而又低耦合。</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/05/25/Store/MVC%E6%80%9D%E6%83%B3/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/25/Store/MVC%E6%80%9D%E6%83%B3/" data-id="ckaqjjguc0005v5qeb8evbyrv" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Store/状态管理的背景" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/05/25/Store/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%9A%84%E8%83%8C%E6%99%AF/" class="article-date">
-  <time datetime="2020-05-25T08:29:24.923Z" itemprop="datePublished">2020-05-25</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/25/Store/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%9A%84%E8%83%8C%E6%99%AF/">状态管理的背景</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="状态管理"><a href="#状态管理" class="headerlink" title="状态管理"></a>状态管理</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>借鉴伟人的一句话：一切的前端高深概念都是纸老虎。</p>
-<p>先说说背景吧。所谓的状态就是数据。</p>
-<p>为什么会有状态管理这个东西呢？</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/05/25/Store/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%9A%84%E8%83%8C%E6%99%AF/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/05/25/Store/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E7%9A%84%E8%83%8C%E6%99%AF/" data-id="ckaqjjguk000ev5qe8vt86bcg" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li></ul>
 
     </footer>
   </div>
@@ -549,6 +636,11 @@
 
   
 
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页 &amp;raquo;</a>
+  </nav>
 
 </section>
         
@@ -558,7 +650,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JS/">JS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%80%9D%E6%83%B3/">思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%8A%80%E5%B7%A7/">技巧</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E7%BB%A7%E6%89%BF/">继承</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JS/">JS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%80%9D%E6%83%B3/">思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%8A%80%E5%B7%A7/">技巧</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%A8%A1%E5%9D%97%E5%8C%96/">模块化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E7%BB%A7%E6%89%BF/">继承</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/1%E3%80%81-Render-Props/">1、 Render-Props</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/1%E3%80%81React-Hooks%E8%83%8C%E6%99%AF/">1、React-Hooks背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/2%E3%80%81State-hooks%E4%BD%BF%E7%94%A8/">2、State-hooks使用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/3%E3%80%81Effect-Hooks/">3、Effect-Hooks</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/3%E3%80%81%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">3、高阶组件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81Hooks%E6%84%9F%E6%82%9F/">4、Hooks感悟</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81Mixin/">4、Mixin</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E7%BB%84%E4%BB%B6/">组件</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E7%BB%84%E4%BB%B6/1%E3%80%81%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E5%92%8C%E7%B1%BB%E7%BB%84%E4%BB%B6/">1、函数组件和类组件</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li></ul>
     </div>
   </div>
 
@@ -568,7 +660,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" rel="tag">js的一些思想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">js的一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" rel="tag">js的一些思想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">js的一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li></ul>
     </div>
   </div>
 
@@ -578,7 +670,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/React-Redux/" style="font-size: 15px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 15px;">Redux</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" style="font-size: 10px;">js的一些思想</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">js的一些技巧</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" style="font-size: 20px;">状态管理</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 10px;">继承</a>
+      <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/React-Redux/" style="font-size: 13.33px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 16.67px;">Redux</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" style="font-size: 10px;">js的一些思想</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">js的一些技巧</a> <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">模块化</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" style="font-size: 16.67px;">状态管理</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 10px;">继承</a>
     </div>
   </div>
 
@@ -587,7 +679,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
     </div>
   </div>
 
@@ -600,23 +692,23 @@
       <ul>
         
           <li>
-            <a href="/2020/05/28/JS/%E7%BB%A7%E6%89%BF/">JS的几种继承方式</a>
+            <a href="/2020/06/06/React/Hooks/">React-Hooks</a>
           </li>
         
           <li>
-            <a href="/2020/05/28/JS/%E6%80%9D%E6%83%B3/">一些JS思想</a>
+            <a href="/2020/06/06/React/Effect-hooks/">Effect-Hooks</a>
           </li>
         
           <li>
-            <a href="/2020/05/28/JS/JS%E6%8A%80%E5%B7%A7/">JS开发的一些小技巧</a>
+            <a href="/2020/06/05/React/State-hooks/">React-Hooks</a>
           </li>
         
           <li>
-            <a href="/2020/05/25/Store/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux 使用</a>
+            <a href="/2020/06/05/React/Mixins/">Mixin</a>
           </li>
         
           <li>
-            <a href="/2020/05/25/Store/React-Redux/">React-Redux 对 Redux 的升华</a>
+            <a href="/2020/06/05/React/React-hooks%E8%83%8C%E6%99%AF/">React-Hooks</a>
           </li>
         
       </ul>

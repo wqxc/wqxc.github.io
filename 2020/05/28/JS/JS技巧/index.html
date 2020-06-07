@@ -15,7 +15,7 @@
 <meta property="og:description" content="JS 技巧编码escape&#x2F;unescapeescape&#x2F;unescape 编码&#x2F;解码 也叫做 %u 编码，u 代表的是 Unicode 也就是一个字符的 UTF-16E 模式。 这种编码就是字符对应的 UTF-16 16 进制表示方式前 加 u% 比如 上海的 上 字符的 UTF-16 的表示方式是 \u4E0A 所以上字被编码之后为： %u4EoA。可以看下边的例子。 作用是 对文字进行编码&#x2F;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-28T08:50:27.369Z">
-<meta property="article:modified_time" content="2020-05-28T08:53:12.342Z">
+<meta property="article:modified_time" content="2020-06-03T05:09:38.948Z">
 <meta property="article:author" content="WQXC">
 <meta property="article:tag" content="js的一些技巧">
 <meta name="twitter:card" content="summary">
@@ -170,6 +170,18 @@
 <p>参数 mustRun 表示在 mustRun 毫秒内必然会触发一次。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">function throttle(func, wait, mustRun) &#123;</span><br><span class="line">    var timeout,</span><br><span class="line">        startTime &#x3D; new Date();</span><br><span class="line"></span><br><span class="line">    return function() &#123;</span><br><span class="line">        var context &#x3D; this,</span><br><span class="line">            args &#x3D; arguments,</span><br><span class="line">            curTime &#x3D; new Date();</span><br><span class="line"></span><br><span class="line">        clearTimeout(timeout);</span><br><span class="line">        &#x2F;&#x2F; 如果达到了规定的触发时间间隔，触发 handler</span><br><span class="line">        if(curTime - startTime &gt;&#x3D; mustRun)&#123;</span><br><span class="line">            func.apply(context,args);</span><br><span class="line">            startTime &#x3D; curTime;</span><br><span class="line">        &#x2F;&#x2F; 没达到触发间隔，重新设定定时器</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            timeout &#x3D; setTimeout(func, wait);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 实际想绑定在 scroll 事件上的 handler</span><br><span class="line">function realFunc()&#123;</span><br><span class="line">    console.log(&quot;Success&quot;);</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 采用了节流函数</span><br><span class="line">window.addEventListener(&#39;scroll&#39;,throttle(realFunc,500,1000));</span><br></pre></td></tr></table></figure>
 
+<h2 id="HTTP-Head-方法"><a href="#HTTP-Head-方法" class="headerlink" title="HTTP Head 方法"></a>HTTP Head 方法</h2><p>head 方法是 http 的一个方法，主要的作用与 GET 方法相同，只是不会返回响应体，也就是请求成功了，啥也不会返回。</p>
+<p>Head 请求常被忽略，但是他能提供很多有用的信息。</p>
+<p>主要的作用是：</p>
+<p>1、只请求资源的首部</p>
+<p>2、检查超链接的有效性（也就是检查超链接资源是否存在，比如一个图片）</p>
+<p>3、检查网页是否被修改</p>
+<p>举个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">var  myNewAjax&#x3D;function(url)&#123;</span><br><span class="line">  return new Promise(function(resolve,reject)&#123;</span><br><span class="line">      var xhr &#x3D; new XMLHttpRequest();</span><br><span class="line">      xhr.open(&#39;head&#39;,url);</span><br><span class="line">      xhr.send();</span><br><span class="line">      xhr.onreadystatechange&#x3D;function()&#123;</span><br><span class="line">           if(xhr.status&#x3D;&#x3D;200&amp;&amp;xhr.readyState&#x3D;&#x3D;4)&#123;</span><br><span class="line">                resolve(xhr.getResponseHeader(&#39;Content-Length&#39;))&#x2F;&#x2F;跨域的情况下是不允许拿到这个header的</span><br><span class="line">           &#125;else if(xhr.readyState&#x3D;&#x3D;4&amp;&amp;xhr.status!&#x3D;200)&#123;</span><br><span class="line">                reject(xhr.status);</span><br><span class="line">           &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line">var noExit &#x3D; &quot;xxxx.jpg&quot;</span><br><span class="line">var exist &#x3D; &quot;xxxx.jpg&quot;</span><br><span class="line"></span><br><span class="line">myNewAjax(exist).then(function(data)&#123;</span><br><span class="line">  console.log(&quot;执行成功&quot;,data)</span><br><span class="line">&#125;,function(error)&#123;</span><br><span class="line">  console.log(&quot;执行失败&quot;,error)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">如上所示，如果资源存在，那么会返回资源的长度（B），</span><br><span class="line">如果不存在则会返回状态码 404；</span><br><span class="line">如果是请求失败，则是别的状态码</span><br></pre></td></tr></table></figure>
+
+<p>Head 请求的一个比较经典的使用场景是 ：</p>
+<p>在下载一个大文件前先获取其大小再决定是否要下载, 以此可以节约带宽资源.</p>
+
       
     </div>
     <footer class="article-footer">
@@ -212,7 +224,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JS/">JS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%80%9D%E6%83%B3/">思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%8A%80%E5%B7%A7/">技巧</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E7%BB%A7%E6%89%BF/">继承</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JS/">JS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%80%9D%E6%83%B3/">思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%8A%80%E5%B7%A7/">技巧</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%A8%A1%E5%9D%97%E5%8C%96/">模块化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E7%BB%A7%E6%89%BF/">继承</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/1%E3%80%81-Render-Props/">1、 Render-Props</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/1%E3%80%81React-Hooks%E8%83%8C%E6%99%AF/">1、React-Hooks背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/2%E3%80%81State-hooks%E4%BD%BF%E7%94%A8/">2、State-hooks使用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/3%E3%80%81Effect-Hooks/">3、Effect-Hooks</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/3%E3%80%81%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">3、高阶组件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81Hooks%E6%84%9F%E6%82%9F/">4、Hooks感悟</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81Mixin/">4、Mixin</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E7%BB%84%E4%BB%B6/">组件</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E7%BB%84%E4%BB%B6/1%E3%80%81%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E5%92%8C%E7%B1%BB%E7%BB%84%E4%BB%B6/">1、函数组件和类组件</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li></ul>
     </div>
   </div>
 
@@ -222,7 +234,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" rel="tag">js的一些思想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">js的一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" rel="tag">js的一些思想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">js的一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li></ul>
     </div>
   </div>
 
@@ -232,7 +244,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/React-Redux/" style="font-size: 15px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 15px;">Redux</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" style="font-size: 10px;">js的一些思想</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">js的一些技巧</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" style="font-size: 20px;">状态管理</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 10px;">继承</a>
+      <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/React-Redux/" style="font-size: 13.33px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 16.67px;">Redux</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" style="font-size: 10px;">js的一些思想</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">js的一些技巧</a> <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">模块化</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" style="font-size: 16.67px;">状态管理</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 10px;">继承</a>
     </div>
   </div>
 
@@ -241,7 +253,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
     </div>
   </div>
 
@@ -254,23 +266,23 @@
       <ul>
         
           <li>
-            <a href="/2020/05/28/JS/%E7%BB%A7%E6%89%BF/">JS的几种继承方式</a>
+            <a href="/2020/06/06/React/Hooks/">React-Hooks</a>
           </li>
         
           <li>
-            <a href="/2020/05/28/JS/%E6%80%9D%E6%83%B3/">一些JS思想</a>
+            <a href="/2020/06/06/React/Effect-hooks/">Effect-Hooks</a>
           </li>
         
           <li>
-            <a href="/2020/05/28/JS/JS%E6%8A%80%E5%B7%A7/">JS开发的一些小技巧</a>
+            <a href="/2020/06/05/React/State-hooks/">React-Hooks</a>
           </li>
         
           <li>
-            <a href="/2020/05/25/Store/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux 使用</a>
+            <a href="/2020/06/05/React/Mixins/">Mixin</a>
           </li>
         
           <li>
-            <a href="/2020/05/25/Store/React-Redux/">React-Redux 对 Redux 的升华</a>
+            <a href="/2020/06/05/React/React-hooks%E8%83%8C%E6%99%AF/">React-Hooks</a>
           </li>
         
       </ul>
