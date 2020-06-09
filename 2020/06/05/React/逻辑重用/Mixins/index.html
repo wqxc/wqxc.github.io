@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Mixin | wqxc&#39;s code world</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="MixinMixin 背景Mixin 的概念有些类似于 AOP，也叫做面向切面编程，也就是将与主逻辑无关的代码，放在外边去做， 当需要的时候，注入进来，对原代码毫无入侵性。 简单的来说 mixin 相当于组件的一个扩展。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mixin">
+<meta property="og:url" content="http://yoursite.com/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Mixins/index.html">
+<meta property="og:site_name" content="wqxc&#39;s code world">
+<meta property="og:description" content="MixinMixin 背景Mixin 的概念有些类似于 AOP，也叫做面向切面编程，也就是将与主逻辑无关的代码，放在外边去做， 当需要的时候，注入进来，对原代码毫无入侵性。 简单的来说 mixin 相当于组件的一个扩展。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-05T08:37:40.000Z">
+<meta property="article:modified_time" content="2020-06-09T03:48:36.000Z">
+<meta property="article:author" content="WQXC">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="wqxc&#39;s code world" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">wqxc&#39;s code world</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-React/逻辑重用/Mixins" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Mixins/" class="article-date">
+  <time datetime="2020-06-05T08:37:40.000Z" itemprop="datePublished">2020-06-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/1%E3%80%81Mixin/">1、Mixin</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Mixin
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Mixin"><a href="#Mixin" class="headerlink" title="Mixin"></a>Mixin</h1><h2 id="Mixin-背景"><a href="#Mixin-背景" class="headerlink" title="Mixin 背景"></a>Mixin 背景</h2><p>Mixin 的概念有些类似于 AOP，也叫做面向切面编程，也就是将与主逻辑无关的代码，放在外边去做，</p>
+<p>当需要的时候，注入进来，对原代码毫无入侵性。</p>
+<p>简单的来说 mixin 相当于组件的一个扩展。</p>
+<a id="more"></a>
+
+<h2 id="前端的-Mixin"><a href="#前端的-Mixin" class="headerlink" title="前端的 Mixin"></a>前端的 Mixin</h2><p>而前端用到的 Mixins 就是想组建里的公共方法抽离出来。就像是我们再 自定义 hook 中说的那些一样。</p>
+<p>比如，我们有多个 组建都需要在 组建挂载的时候监听 scroll 方法，而后在组件卸载的时候取消监听。如果我们不用</p>
+<p>Mixins 的话，我们就只能在每一个 组件里都写一遍监听方法，再写一遍移除监听方法。</p>
+<p>但是，使用 Mixins 就可以简单的解决这个问题。</p>
+<p>看一下例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">定义一个 Mixins</span><br><span class="line"></span><br><span class="line">var Mixins &#x3D; &#123;</span><br><span class="line"></span><br><span class="line">    componentDidUpdate()&#123;</span><br><span class="line"></span><br><span class="line">        window.addEventListener(&#39;scroll&#39;,handle)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    componentWillUnMount()&#123;</span><br><span class="line"></span><br><span class="line">        window.removeListener(&#39;scroll&#39;,handle)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而后是 使用</p>
+<p>A 组件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var AComponent &#x3D; React.createClass(&#123;</span><br><span class="line">    mixins: [Mixins],</span><br><span class="line">    render: function () &#123;</span><br><span class="line">        return (</span><br><span class="line">            &lt;div&gt;AComponent&lt;&#x2F;div&gt;</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>B 组件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var BComponent &#x3D; React.createClass(&#123;</span><br><span class="line">    mixins: [Mixins],</span><br><span class="line">    render: function () &#123;</span><br><span class="line">        return (</span><br><span class="line">            &lt;div&gt;BComponent&lt;&#x2F;div&gt;</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这里要使用 mixins 就必须要使用 React.createClass 的方式来创建组件。</p>
+<p>如上所示的，A，B 两个组件会在执行的时候先后执行 Mixins 里定义的 生命周期方法。</p>
+<p>如此一来，我们就不必在 A 或者是 B 组件里再重复的写生命周期方法了。</p>
+<p>同样的 Mixins 可以定义公共的方法来使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var loginMixins &#x3D; &#123;</span><br><span class="line">    log:function(param)&#123;</span><br><span class="line">        console.log(&#39;打印日志&#39;+param)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而后使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var CComponent &#x3D; React.createClass(&#123;</span><br><span class="line">    mixins: [loginMixins],</span><br><span class="line">    componentDidUdate()&#123;</span><br><span class="line">        this.log(&#39;Error&#39;)</span><br><span class="line">    &#125;</span><br><span class="line">    render: function () &#123;</span><br><span class="line">        return (</span><br><span class="line">            &lt;div&gt;CComponent&lt;&#x2F;div&gt;</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>我们使用 this.log 来访问 loginMixins 的方法，这是因为，mixins 就是将 mixins 里的内容挂载在 组件的 this 上。</p>
+<h2 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h2><p>1、 Mixins 的生命周期与组件的生命周期不冲突</p>
+<pre><code>Mixins 里的生命周期方法不会覆盖组件的生命周期方法，而是，两者都会执行，并且是
+
+优先于组件的生命周期执行。</code></pre><p>2、多个 Mixins</p>
+<pre><code>mixins 可以有多个，多个注入的 Mixins的执行顺序是按照，注入的先后顺序来的。
+
+mixins:[mixins1，mixins2]</code></pre><p>3、Mixins 里的方法名不能重复</p>
+<pre><code>除了生命周期函数之外，其他的方法都不能重复，也就是你注入的 Mixins
+
+里的方法，都不能重名，而且Mixins里的方法与组件里的方法也不能重名，否则会报错。</code></pre><h2 id="劣势"><a href="#劣势" class="headerlink" title="劣势"></a>劣势</h2><p>1、依赖加深</p>
+<pre><code>Mixins 引入了隐式的依赖关系，这些依赖关系随着代码的增多，维护的难度越来越大。</code></pre><p>2、命名冲突</p>
+<pre><code>不同的Mixins的命名不能相同，否则会造成冲突。</code></pre><p>3、复杂性</p>
+<pre><code>少数的mixin 的确可以做到代码的复用，但是，mixin 的数量越来越多的话，就会越来越复杂</code></pre><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>Mixins 要做到的是状态逻辑的复用，也就是将一些在很多地方使用到的逻辑抽离出来。在需要使用的时候，将其 copy 到 需要使用的对象上。</p>
+<p>Mixins 的原理其实就是 copy。将一个对象的属性拷贝到另外一个对象上，你可以拷贝任意多个属性到另外一个对象上。</p>
+<p>这不是继承所能做到的。</p>
+<p>我们手动实现一个 mixins</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function setMixin(target,mixin)&#123;</span><br><span class="line">    for(var methodName in mixin.prototype)&#123;</span><br><span class="line">        if (!Object.hasOwnProperty(target.prototype, methodName)) &#123;</span><br><span class="line">        target.prototype[methodName] &#x3D; mixin[methodName];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var loginMixins &#x3D; &#123;</span><br><span class="line">    log:function(param)&#123;</span><br><span class="line">        console.log(&#39;打印日志&#39;+param)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function User()&#123;&#125;</span><br><span class="line"></span><br><span class="line">setMixin(User,loginMixins)</span><br><span class="line"></span><br><span class="line">var user &#x3D; new User()</span><br><span class="line"></span><br><span class="line">user.log(1)&#x2F;&#x2F; 打印日志1</span><br></pre></td></tr></table></figure>
+
+<p>看一下 setMixin 里有一句代码是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">!Object.hasOwnProperty(target.prototype, methodName)</span><br></pre></td></tr></table></figure>
+
+<p>也就是 target.prototype 自身没有 mixins 里的属性。这也就是为什么 mixin 里的熟悉名不能重复的原因。</p>
+<p>这里说一下 for in</p>
+<p>for in 一般我们用来遍历对象，不仅能遍历自身所拥有的对象，而且还可以遍历当前对象原型链上的对象。</p>
+<p>Object.assign 也常常被用来做对象融合，但是，他不会融合 原型链上的属性</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Mixins/" data-id="ckb7e9a92002vs6qegqfpbo49" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%B8%B2%E6%9F%93%E5%B1%9E%E6%80%A7/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Render Props
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/03/Store/React-Redux%E5%86%8D%E8%BF%9B%E9%98%B6/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">React-Redux 的再次进阶</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JS/">JS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%80%9D%E6%83%B3/">思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%8A%80%E5%B7%A7/">技巧</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%A8%A1%E5%9D%97%E5%8C%96/">模块化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E7%BB%A7%E6%89%BF/">继承</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/0%E3%80%81%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/">0、逻辑重用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/1%E3%80%81Mixin/">1、Mixin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/2%E3%80%81-Render-Props/">2、 Render-Props</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/3%E3%80%81%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">3、高阶组件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/">4、React-Hooks</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/1%E3%80%81React-Hooks%E8%83%8C%E6%99%AF/">1、React-Hooks背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/2%E3%80%81State-Hook/">2、State-Hook</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/3%E3%80%81Effect-Hook/">3、Effect-Hook</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/4%E3%80%81Hook%E6%84%9F%E6%82%9F/">4、Hook感悟</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E7%BB%84%E4%BB%B6/">组件</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E7%BB%84%E4%BB%B6/1%E3%80%81%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E5%92%8C%E7%B1%BB%E7%BB%84%E4%BB%B6/">1、函数组件和类组件</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" rel="tag">js的一些思想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">js的一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/React-Redux/" style="font-size: 13.33px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 16.67px;">Redux</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" style="font-size: 10px;">js的一些思想</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">js的一些技巧</a> <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">模块化</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" style="font-size: 16.67px;">状态管理</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 10px;">继承</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/09/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%A6%82%E6%8B%AC/">逻辑重用</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Hooks%E6%84%9F%E6%82%9F/">React-Hooks</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Effect-hooks/">React-Hooks</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/State-hooks/">React-Hooks</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">高阶组件</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 WQXC<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>React-Hooks | wqxc&#39;s code world</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一些感悟我们知道，函数组件其实就是 一个函数，函数不像是 类实例那样可以保存下来，无需重复的实例化，而函数组件每一次的加载都是重新执行了一遍函数，所以函数内的 hook 其实也是重新被执行了， 只是，React 在内部的机制中将其保存了一下，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React-Hooks">
+<meta property="og:url" content="http://yoursite.com/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Hooks%E6%84%9F%E6%82%9F/index.html">
+<meta property="og:site_name" content="wqxc&#39;s code world">
+<meta property="og:description" content="一些感悟我们知道，函数组件其实就是 一个函数，函数不像是 类实例那样可以保存下来，无需重复的实例化，而函数组件每一次的加载都是重新执行了一遍函数，所以函数内的 hook 其实也是重新被执行了， 只是，React 在内部的机制中将其保存了一下，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-06T09:38:50.000Z">
+<meta property="article:modified_time" content="2020-06-09T03:50:52.000Z">
+<meta property="article:author" content="WQXC">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="wqxc&#39;s code world" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">wqxc&#39;s code world</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-React/逻辑重用/Hooks感悟" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Hooks%E6%84%9F%E6%82%9F/" class="article-date">
+  <time datetime="2020-06-06T09:38:50.000Z" itemprop="datePublished">2020-06-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/">4、React-Hooks</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/4%E3%80%81Hook%E6%84%9F%E6%82%9F/">4、Hook感悟</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      React-Hooks
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一些感悟"><a href="#一些感悟" class="headerlink" title="一些感悟"></a>一些感悟</h2><p>我们知道，函数组件其实就是 一个函数，函数不像是 类实例那样可以保存下来，无需重复的实例化，而<br>函数组件每一次的加载都是重新执行了一遍函数，所以函数内的 hook 其实也是重新被执行了，</p>
+<p>只是，React 在内部的机制中将其保存了一下，</p>
+<a id="more"></a>
+
+<h2 id="自定义-Hooks"><a href="#自定义-Hooks" class="headerlink" title="自定义 Hooks"></a>自定义 Hooks</h2><p>所谓的 Hooks 完全就可以被认为是一个函数，我们完全可以通过自定义 hooks 的方式抽离公共的内容。</p>
+<p>比如两个以至多个组件都会用到登录状态。</p>
+<p>我们将登录的状态抽离出来为 useLoginStatus</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import React, &#123; useState &#125; from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">function useLoginStatus()&#123;</span><br><span class="line">    const [isLogin,setLoginStatus] &#x3D; useState(null)</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; ...</span><br><span class="line"></span><br><span class="line">    return isLogin;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default useLoginStatus;</span><br></pre></td></tr></table></figure>
+
+<p>而后，在使用 状态的组件中引入。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import React from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">import useLoginStatus from &#39;.&#x2F;useLoginStatus&#39;;</span><br><span class="line"></span><br><span class="line">function downloadSecretFile()&#123;</span><br><span class="line">    const isLogin &#x3D; useLoginStatus();</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">import React from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">import useLoginStatus from &#39;.&#x2F;useLoginStatus&#39;;</span><br><span class="line"></span><br><span class="line">function uploadSecretFile()&#123;</span><br><span class="line">    const isLogin &#x3D; useLoginStatus();</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; ...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如上所示，useLoginStatus 是我们自定义的 hook，其内一个状态 isLogin，这个状态被 uploadSecretFile，</p>
+<p>downloadSecretFile 两个组件需要，而 isLogin 的 值需要通过某种逻辑获取到，比如，请求后台等等。</p>
+<p>而 获取是否登录的逻辑 两个组件都无需去关心，只需要拿到最终的值就行了，如此经过我们自定义的 hook 之后，</p>
+<p>状态就被抽离了。如此一来，不就实现了代码的重用，逻辑的重用，状态的重用了。</p>
+<p>自定义 Hook 本身就是一个函数而已</p>
+<p>如果，没有 hook 我们想要共享这些 状态逻辑的话，就只能使用 HOC（高阶组件） Mixin 或者 Render Props 几种方式。</p>
+<p>但是这几种方式都没有 hook 优越。</p>
+<h2 id="同样的-state"><a href="#同样的-state" class="headerlink" title="同样的 state"></a>同样的 state</h2><p>我们可以在不同的 函数组件中使用相同的 state hook。</p>
+<p>比如 A 函数组件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const [count, setCount] &#x3D; useState(0);</span><br></pre></td></tr></table></figure>
+
+<p>B 函数组件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const [count, setCount] &#x3D; useState(0);</span><br></pre></td></tr></table></figure>
+
+<p>俩组件都使用 count 作为 state hook，但是，实际上两个组件是相互隔离的，两个 setCount 也是各自控制</p>
+<p>各自的 count，而不会混淆。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Hooks%E6%84%9F%E6%82%9F/" data-id="ckb7e9a950030s6qef80vcyoo" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/09/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%A6%82%E6%8B%AC/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          逻辑重用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Effect-hooks/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">React-Hooks</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JS/">JS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%80%9D%E6%83%B3/">思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%8A%80%E5%B7%A7/">技巧</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%A8%A1%E5%9D%97%E5%8C%96/">模块化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E7%BB%A7%E6%89%BF/">继承</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/0%E3%80%81%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/">0、逻辑重用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/1%E3%80%81Mixin/">1、Mixin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/2%E3%80%81-Render-Props/">2、 Render-Props</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/3%E3%80%81%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">3、高阶组件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/">4、React-Hooks</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/1%E3%80%81React-Hooks%E8%83%8C%E6%99%AF/">1、React-Hooks背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/2%E3%80%81State-Hook/">2、State-Hook</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/3%E3%80%81Effect-Hook/">3、Effect-Hook</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/4%E3%80%81Hook%E6%84%9F%E6%82%9F/">4、Hook感悟</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E7%BB%84%E4%BB%B6/">组件</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E7%BB%84%E4%BB%B6/1%E3%80%81%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E5%92%8C%E7%B1%BB%E7%BB%84%E4%BB%B6/">1、函数组件和类组件</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" rel="tag">js的一些思想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">js的一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/React-Redux/" style="font-size: 13.33px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 16.67px;">Redux</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" style="font-size: 10px;">js的一些思想</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">js的一些技巧</a> <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">模块化</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" style="font-size: 16.67px;">状态管理</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 10px;">继承</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/09/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%A6%82%E6%8B%AC/">逻辑重用</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Hooks%E6%84%9F%E6%82%9F/">React-Hooks</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Effect-hooks/">React-Hooks</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/State-hooks/">React-Hooks</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">高阶组件</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 WQXC<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
