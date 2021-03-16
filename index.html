@@ -64,14 +64,14 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-React/逻辑重用/概括" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-React/更新/不可变值" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/09/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%A6%82%E6%8B%AC/" class="article-date">
-  <time datetime="2020-06-09T03:25:12.000Z" itemprop="datePublished">2020-06-09</time>
+    <a href="/2021/03/16/React/%E6%9B%B4%E6%96%B0/%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%80%BC/" class="article-date">
+  <time datetime="2021-03-16T06:28:44.000Z" itemprop="datePublished">2021-03-16</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/0%E3%80%81%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/">0、逻辑重用</a>
+    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%9B%B4%E6%96%B0/">更新</a>►<a class="article-category-link" href="/categories/React/%E6%9B%B4%E6%96%B0/1%E3%80%81%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%80%BC/">1、不可变值</a>
   </div>
 
   </div>
@@ -82,7 +82,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/09/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%A6%82%E6%8B%AC/">逻辑重用</a>
+      <a class="article-title" href="/2021/03/16/React/%E6%9B%B4%E6%96%B0/%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%80%BC/">React 更新逻辑</a>
     </h1>
   
 
@@ -90,18 +90,38 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="逻辑重用"><a href="#逻辑重用" class="headerlink" title="逻辑重用"></a>逻辑重用</h1><p>代码复用是一个很大的主题，React 社区也一直有各种各样的代码复用的技术。</p>
-<p>从 Mixins 到 Render Props 到 HOC 再到 Hook，对于 代码复用，我们一直在探索，</p>
-<p>每一种的技术在当时来说都是比较优秀的解决方案，但是，随着时间的推移，这些方案也都出现了</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/09/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%A6%82%E6%8B%AC/#more">Read More</a>
-          </p>
-        
+        <h2 id="不可变值"><a href="#不可变值" class="headerlink" title="不可变值"></a>不可变值</h2><p>setState 必须使用不可变值：</p>
+<p>举个例子吧：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">this.state &#x3D; &#123;</span><br><span class="line">    list: [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">this.setState(&#123;</span><br><span class="line">    list: this.state.list.push(&#39;d&#39;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>this.state.list.push(‘d’) 就不是 不可变量。</p>
+<p>push会修改原数组，当 this.state.list.push(‘d’) 的时候state.list 就已经被修改了</p>
+<p>如果使用了变量会发生什么。</p>
+<p>一般而言，即使在setState里使用了变量也没有影响，但是，在性能优化的时候就会有问题。</p>
+<p>也就是使用shouldComponent函数的时候</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">shouldComponentUpdate(nextProps, nextState) &#123;</span><br><span class="line"></span><br><span class="line">   if(isEqual(nextState.list,this.state.list))&#123;</span><br><span class="line">       return false</span><br><span class="line">   &#125;</span><br><span class="line">   return true</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>shouldComponentUpdate 中可以决定是否渲染组件，我们这里比较了 nextState.list 和 this.state.list</p>
+<p>因为使用了可变量 this.state.list ==[‘a’, ‘b’, ‘c’,’d’]</p>
+<p>nextState.list 也等于 [‘a’, ‘b’, ‘c’,’d’]  所以 shouldComponentUpdate 永远都返回false，组件不会渲染</p>
+<p>解释一下：nextState.list 和 this.state.list 为什么都等于 [‘a’, ‘b’, ‘c’,’d’]</p>
+<p>首先：nextState.list == [‘a’, ‘b’, ‘c’,’d’]  是因为 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">this.setState(&#123;</span><br><span class="line">    list: this.state.list.push(&#39;d&#39;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>而this.state.list == [‘a’, ‘b’, ‘c’,’d’]</p>
+<p>是因为 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">this.setState(&#123;</span><br><span class="line">    list: this.state.list.push(&#39;d&#39;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">中 this.state.list.push(&#39;d&#39;)使用了push方法，push是会修改原数组的</span><br></pre></td></tr></table></figure>
+
+
+<p>所以这里要使用不可变数据，<br>比如：</p>
+<p>this.setState({<br>    list: this.state.list.concat([‘d’])<br>})</p>
+<p>concat 方法不会修改原数组。</p>
+<p>这里的不可变两更多的是，对于引用数据的处理。</p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>在使用引用类型的数据的时候，一定要注意，修改的方式。</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/09/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%A6%82%E6%8B%AC/" data-id="ckb7e9a9c0037s6qeds0id0b1" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/16/React/%E6%9B%B4%E6%96%B0/%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%80%BC/" data-id="ckmbp25p70040aloa1n0l64vj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
@@ -113,14 +133,56 @@
 
 
   
-    <article id="post-React/逻辑重用/Hooks感悟" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-React/生命周期函数/shouldComponent" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Hooks%E6%84%9F%E6%82%9F/" class="article-date">
-  <time datetime="2020-06-06T09:38:50.000Z" itemprop="datePublished">2020-06-06</time>
+    <a href="/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/shouldComponent/" class="article-date">
+  <time datetime="2021-03-16T06:16:42.000Z" itemprop="datePublished">2021-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/shouldComponent/">React/生命周期函数/shouldComponent</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="shouldComponet-具有拦截渲染的租用"><a href="#shouldComponet-具有拦截渲染的租用" class="headerlink" title="shouldComponet 具有拦截渲染的租用"></a>shouldComponet 具有拦截渲染的租用</h2><p>shouldComponet 接收两个参数：</p>
+<p>nextProps，nextState</p>
+<p>nextProps:接下来要渲染的组件的props(父组件传来的,本次渲染是因为父组件传递的props发生变化而引起的)<br>nextState: 接下来要渲染的组件的 state（state是组件自身）</p>
+<p>一般我们会和 this.state来对比。</p>
+<p>渲染结束之后 this.state才会发生变化，所以，this.state我们可以将它认为是当前的state状态，nextState是接下来state的状态，<br>通过对比来确认是否需要更新。</p>
+<p>需要更新就返回 true<br>否则就返回false</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/shouldComponent/" data-id="ckmbp25p90045aload62v6bjw" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Vue3/https" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/13/Vue3/https/" class="article-date">
+  <time datetime="2021-03-13T05:18:38.000Z" itemprop="datePublished">2021-03-13</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/">4、React-Hooks</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/4%E3%80%81Hook%E6%84%9F%E6%82%9F/">4、Hook感悟</a>
+    <a class="article-category-link" href="/categories/Vue/">Vue</a>►<a class="article-category-link" href="/categories/Vue/Vue3/">Vue3</a>►<a class="article-category-link" href="/categories/Vue/Vue3/1%E3%80%81https/">1、https</a>
   </div>
 
   </div>
@@ -131,7 +193,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Hooks%E6%84%9F%E6%82%9F/">React-Hooks</a>
+      <a class="article-title" href="/2021/03/13/Vue3/https/">1、https</a>
     </h1>
   
 
@@ -139,17 +201,126 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="一些感悟"><a href="#一些感悟" class="headerlink" title="一些感悟"></a>一些感悟</h2><p>我们知道，函数组件其实就是 一个函数，函数不像是 类实例那样可以保存下来，无需重复的实例化，而<br>函数组件每一次的加载都是重新执行了一遍函数，所以函数内的 hook 其实也是重新被执行了，</p>
-<p>只是，React 在内部的机制中将其保存了一下，</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Hooks%E6%84%9F%E6%82%9F/#more">Read More</a>
-          </p>
-        
+        <h2 id="vue3中开启https会导致热更新失效"><a href="#vue3中开启https会导致热更新失效" class="headerlink" title="vue3中开启https会导致热更新失效"></a>vue3中开启https会导致热更新失效</h2><p>控制台报错</p>
+<p>VUE报错代码： sockjs.js:1606 GET <a href="https://192.168.1.102:8080/sockjs-node/info?t=1615612302391" target="_blank" rel="noopener">https://192.168.1.102:8080/sockjs-node/info?t=1615612302391</a> net::ERR_CONNECTION_REFUSED</p>
+<p>sockjs 是被用来和本地进行通信的，这个通信中断了，HMR就失效了，代码更改了之后，进行保存之后是无法热更新的，需要手动更新。</p>
+<p>我这里出现这个的问题是因为在本地开启了https，因为要测试Facebook登录，必须要使用https</p>
+<p>因为开启了https，但是没有证书所以通信是失败的。</p>
+<p>我们需要做的不是去node_modules里将代码注销掉，而是手动的安装一个证书</p>
+<h3 id="安装一个生产证书的工具-mkcert-环境是-Mac"><a href="#安装一个生产证书的工具-mkcert-环境是-Mac" class="headerlink" title="安装一个生产证书的工具 mkcert 环境是 Mac"></a>安装一个生产证书的工具 mkcert 环境是 Mac</h3><p>brew install mkcert</p>
+<h3 id="进入项目中（将证书生成存在项目的根目录下）"><a href="#进入项目中（将证书生成存在项目的根目录下）" class="headerlink" title="进入项目中（将证书生成存在项目的根目录下）"></a>进入项目中（将证书生成存在项目的根目录下）</h3><p>mkcert -install</p>
+<h3 id="配置一下vue-config-js"><a href="#配置一下vue-config-js" class="headerlink" title="配置一下vue.config.js"></a>配置一下vue.config.js</h3><p>devServer: {<br>    proxy: process.env.VUE_APP_PROXY,<br>    https: {<br>      key: fs.readFileSync(path.resolve(<strong>dirname, ‘./key.pem’)),<br>      cert: fs.readFileSync(path.resolve(</strong>dirname, ‘./cert.pem’))<br>    }<br>}</p>
+<p>mkcert local.shanyue.tech  命令可以查询生成的证书信息</p>
+<p>mkcert 生成的证书名字是<br>cer ====&gt; ./local.shanyue.tech.pem<br>key ====&gt;  ./local.shanyue.tech-key.pem<br>这里生成的证书名字我是修改cheng  key.pem  和  cert.pem</p>
+<p>如果配置之后发现控制台依旧在报错，查看一下 key  和 cert 对应的证书是否正确</p>
+<p>如果是正确的，依旧报错，重启一下电脑，重新跑一次项目，应该就OK了</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Hooks%E6%84%9F%E6%82%9F/" data-id="ckb7e9a950030s6qef80vcyoo" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/13/Vue3/https/" data-id="ckmbp25or002naloae1b85k4a" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue/" rel="tag">Vue</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Expo/参考文件/route" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/04/Expo/%E5%8F%82%E8%80%83%E6%96%87%E4%BB%B6/route/" class="article-date">
+  <time datetime="2021-03-04T07:51:04.000Z" itemprop="datePublished">2021-03-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/04/Expo/%E5%8F%82%E8%80%83%E6%96%87%E4%BB%B6/route/">Expo/参考文件/route</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">import &quot;react-native-gesture-handler&quot;;</span><br><span class="line">import * as React from &quot;react&quot;;</span><br><span class="line">&#x2F;&#x2F; import &#123; Text&#125; from &#39;react-native&#39;;</span><br><span class="line">import &#123; NavigationContainer &#125; from &quot;@react-navigation&#x2F;native&quot;;</span><br><span class="line">import &#123; createStackNavigator &#125; from &quot;@react-navigation&#x2F;stack&quot;;</span><br><span class="line">import HomeScreen from &quot;@pages&#x2F;home&quot;;</span><br><span class="line">import LoginScreen from &quot;@pages&#x2F;login&quot;;</span><br><span class="line">import UserCenterScreen from &quot;@pages&#x2F;userCenter&#x2F;index&quot;;</span><br><span class="line">import ShippingAddress from &quot;@pages&#x2F;userCenter&#x2F;shippingAddress&quot;;</span><br><span class="line">import ShippingAddressForm from &quot;@pages&#x2F;userCenter&#x2F;shippingAddress&#x2F;ShippingAddressForm&quot;;</span><br><span class="line">import OTPInitalScreen from &quot;@pages&#x2F;userCenter&#x2F;otp&#x2F;index&quot;;</span><br><span class="line">import VerifyScreen from &quot;@pages&#x2F;userCenter&#x2F;otp&#x2F;verify&quot;;</span><br><span class="line">import RobotScreen from &quot;@pages&#x2F;userCenter&#x2F;otp&#x2F;robot&quot;;</span><br><span class="line">import OrderScreen from &quot;@pages&#x2F;userCenter&#x2F;orders&#x2F;index&quot;;</span><br><span class="line">import BankAccount from &quot;@pages&#x2F;userCenter&#x2F;bankAccount&quot;;</span><br><span class="line">import BankAccountForm from &quot;@pages&#x2F;userCenter&#x2F;bankAccount&#x2F;BankAccountForm&quot;;</span><br><span class="line">import LogoutScreen from &quot;@pages&#x2F;setting&#x2F;logout&quot;</span><br><span class="line">import NavigationService from &#39;@util&#x2F;globalNavigation&#39;</span><br><span class="line">import &#123; CardStyleInterpolators &#125; from &#39;@react-navigation&#x2F;stack&#39;;</span><br><span class="line"></span><br><span class="line">const Stack &#x3D; createStackNavigator();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; const forFade &#x3D; (&#123; current &#125;) &#x3D;&gt; (&#123;</span><br><span class="line">&#x2F;&#x2F;   cardStyle: &#123;</span><br><span class="line">&#x2F;&#x2F;     opacity: current.progress,</span><br><span class="line">&#x2F;&#x2F;   &#125;,</span><br><span class="line">&#x2F;&#x2F; &#125;);</span><br><span class="line">export default function RouteNavagation() &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;NavigationContainer ref&#x3D;&#123;navigatorRef &#x3D;&gt; &#123;</span><br><span class="line">      NavigationService.setTopLevelNavigator(navigatorRef);</span><br><span class="line">    &#125;&#125;&gt;</span><br><span class="line">      &lt;Stack.Navigator initialRouteName&#x3D;&quot;Home&quot; mode&#x3D;&quot;modal&quot;</span><br><span class="line">      headerMode&#x3D;&quot;none&quot; </span><br><span class="line">      &gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;Home&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,</span><br><span class="line">          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,</span><br><span class="line">          &#125;&#125;</span><br><span class="line">          component&#x3D;&#123;HomeScreen&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;UserCenter&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,</span><br><span class="line">          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,</span><br><span class="line">          &#125;&#125;</span><br><span class="line">          component&#x3D;&#123;UserCenterScreen&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;ShippingAddress&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line">          component&#x3D;&#123;ShippingAddress&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;ShippingAddressForm&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line">          component&#x3D;&#123;ShippingAddressForm&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;OTPInital&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line">          component&#x3D;&#123;OTPInitalScreen&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;Verify&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line">          component&#x3D;&#123;VerifyScreen&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;Robot&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line">          component&#x3D;&#123;RobotScreen&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;Order&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line">          component&#x3D;&#123;OrderScreen&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;Login&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line"></span><br><span class="line">          component&#x3D;&#123;LoginScreen&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;BankAccount&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line"></span><br><span class="line">          component&#x3D;&#123;BankAccount&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;BankAccountForm&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line"></span><br><span class="line">          component&#x3D;&#123;BankAccountForm&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen name&#x3D;&quot;Logout&quot; options&#x3D;&#123;&#123;headerShown: false,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,&#125;&#125; component&#x3D;&#123;LogoutScreen&#125; &#x2F;&gt;</span><br><span class="line">      &lt;&#x2F;Stack.Navigator&gt;</span><br><span class="line">    &lt;&#x2F;NavigationContainer&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/03/04/Expo/%E5%8F%82%E8%80%83%E6%96%87%E4%BB%B6/route/" data-id="ckmbp25p6003yaloaawsmepee" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-React/更新/setState" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/02/26/React/%E6%9B%B4%E6%96%B0/setState/" class="article-date">
+  <time datetime="2021-02-26T10:33:48.000Z" itemprop="datePublished">2021-02-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%9B%B4%E6%96%B0/">更新</a>►<a class="article-category-link" href="/categories/React/%E6%9B%B4%E6%96%B0/3%E3%80%81setState/">3、setState</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/26/React/%E6%9B%B4%E6%96%B0/setState/">React 更新逻辑</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="setState"><a href="#setState" class="headerlink" title="setState"></a>setState</h2><p>关键点:</p>
+<p>setState不会立刻改变React组件中state的值；<br>setState通过引发一次组件的更新过程来引发重新绘制；<br>多次setState函数调用产生的效果会合并。</p>
+<h3 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h3><p>不像是是vue监听响应式属性的变化来引发watcher，进而重新渲染。<br>React 则是依靠setState 这个API来引发一次组件的更新过程，进而渲染页面</p>
+<p>多次调用setState 会引发批处理<br>isBatchingUpdate 会被设定为true</p>
+<p>setState 引发的生命周期函数</p>
+<p>shouldComponentUpdate<br>componentWillUpdate<br>render<br>componentDidUpdate</p>
+<p>+++++++<br>顺带一说，props变化引发渲染，所调用的的生命周期函数比state多了一个：</p>
+<p>componentWillReceiveProps<br>+++++++</p>
+<p>shouldComponentUpdate  return false 的时候 state就已经发生了变化</p>
+<p>shouldComponentUpdate return true 的时候 state还没有变化<br>componentWillUpdate  state也没有变化<br>render 这个阶段 state才更新了</p>
+<p>所以说，我们setState的时候，是没法立刻拿到更新后的state的值得</p>
+<h2 id="setState-缺点"><a href="#setState-缺点" class="headerlink" title="setState 缺点"></a>setState 缺点</h2><p>唯一的缺点就是 不像是字面上理解的那样理解修改state，而是延迟处理。</p>
+<p>但是，依旧有方法解决这个问题。</p>
+<p>那就是接受一个函数来作为参数</p>
+<p>setState({count: count + 1})<br>setState({count: count + 1})<br>setState({count: count + 1})</p>
+<p>同一时间调用三次，最终也只会执行一次 count +1</p>
+<p>想要达到加三次的效果，就需要使用函数参数</p>
+<p>function increment(state,props){<br>    retun {count: state.count + 1}<br>}</p>
+<p>setState(increment)</p>
+<p>setState(increment)</p>
+<p>就可以实现加两次。</p>
+<p>另外的一种方式是使用 addeventListener 添加事件，</p>
+<p>addeventListener 添加的事件，不会开启批处理，也就是不会合并state</p>
+<p>8  16  24  32  40  48<br>xs  sm  md lg xl   xxl                </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/02/26/React/%E6%9B%B4%E6%96%B0/setState/" data-id="ckmbp25p6003zaloaa5vs3i45" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
@@ -161,14 +332,14 @@
 
 
   
-    <article id="post-React/逻辑重用/Effect-hooks" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Expo/fb" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Effect-hooks/" class="article-date">
-  <time datetime="2020-06-06T08:36:14.000Z" itemprop="datePublished">2020-06-06</time>
+    <a href="/2021/02/26/Expo/fb/" class="article-date">
+  <time datetime="2021-02-26T09:52:54.000Z" itemprop="datePublished">2021-02-26</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/">4、React-Hooks</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/3%E3%80%81Effect-Hook/">3、Effect-Hook</a>
+    <a class="article-category-link" href="/categories/Expo/">Expo</a>
   </div>
 
   </div>
@@ -179,7 +350,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Effect-hooks/">React-Hooks</a>
+      <a class="article-title" href="/2021/02/26/Expo/fb/">FB</a>
     </h1>
   
 
@@ -187,19 +358,65 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Effect-Hooks"><a href="#Effect-Hooks" class="headerlink" title="Effect-Hooks"></a>Effect-Hooks</h1><p>我们知道 React 提出 hook 的概念主要是为了让无状态组件 进阶为 函数组件，以此获得像</p>
-<p>类组件一样的能力，但是，却别类组件的性能要高。</p>
-<p>State-hooks 主要是辅助 无状态组件 可以像类组件一样 保存自己的状态。</p>
-<p>但是，类组件的另一个特点是 生命周期。</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Effect-hooks/#more">Read More</a>
-          </p>
-        
+        <h2 id="返回想要的头像大小"><a href="#返回想要的头像大小" class="headerlink" title="返回想要的头像大小"></a>返回想要的头像大小</h2><pre><code>const response = await fetch(
+  `https://graph.facebook.com/me?scope=email&amp;fields=id,name,email,picture.width(400).height(400)&amp;access_token=${result.token}`
+);
+
+
+默认返回的用户的头像是50X50的，加参数就可以获取想要的头像大小
+
+picture.width(400).height(400)</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Effect-hooks/" data-id="ckb7e9a93002xs6qeht4hdz9b" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/02/26/Expo/fb/" data-id="ckmbp25n80000aloab2pa6nt6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FB/" rel="tag">FB</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-React/更新/更新" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/02/26/React/%E6%9B%B4%E6%96%B0/%E6%9B%B4%E6%96%B0/" class="article-date">
+  <time datetime="2021-02-26T07:16:48.000Z" itemprop="datePublished">2021-02-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%9B%B4%E6%96%B0/">更新</a>►<a class="article-category-link" href="/categories/React/%E6%9B%B4%E6%96%B0/2%E3%80%81%E6%9B%B4%E6%96%B0/">2、更新</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/26/React/%E6%9B%B4%E6%96%B0/%E6%9B%B4%E6%96%B0/">React 更新逻辑</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="更新逻辑"><a href="#更新逻辑" class="headerlink" title="更新逻辑"></a>更新逻辑</h2><p>React的组件分两种，类组件和函数组件。<br>类组件中state变动之后，就会执行render方法，<br>函数组件则会重新将函数执行一遍。</p>
+<p>函数组件里的一些问题：<br>函数组件里 在 hook里，使用 addEventListener 注册的点击事件，如果不清理的话，<br>则渲染一次就会绑定一个，渲染三次就绑定三个方法，点击一次，也会执行三次。</p>
+<p>因为函数执行，函数内的代码，也会被执行，执行前后的代码是一样的，但是在React看来则是不同的。</p>
+<h3 id="总结一下"><a href="#总结一下" class="headerlink" title="总结一下"></a>总结一下</h3><p>更新的时候：<br>类组件，只会执行组件内的render方法，渲染DOM</p>
+<p>函数组件，则会执行函数本身。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/02/26/React/%E6%9B%B4%E6%96%B0/%E6%9B%B4%E6%96%B0/" data-id="ckmbp25p80042aloa4z558dji" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
@@ -211,14 +428,14 @@
 
 
   
-    <article id="post-React/逻辑重用/State-hooks" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Expo/坑" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/State-hooks/" class="article-date">
-  <time datetime="2020-06-05T08:44:10.000Z" itemprop="datePublished">2020-06-05</time>
+    <a href="/2021/02/24/Expo/%E5%9D%91/" class="article-date">
+  <time datetime="2021-02-24T08:30:12.000Z" itemprop="datePublished">2021-02-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/">4、React-Hooks</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/2%E3%80%81State-Hook/">2、State-Hook</a>
+    <a class="article-category-link" href="/categories/Expo/">Expo</a>
   </div>
 
   </div>
@@ -229,7 +446,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/State-hooks/">React-Hooks</a>
+      <a class="article-title" href="/2021/02/24/Expo/%E5%9D%91/">问题</a>
     </h1>
   
 
@@ -237,21 +454,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="State-hooks"><a href="#State-hooks" class="headerlink" title="State-hooks"></a>State-hooks</h1><p>我们知道 函数组件无法保存状态，所以在函数组件中无法使用状态。</p>
-<p>但是，在 State Hooks 加持下，函数组件就完全可以有自己的状态去操做。</p>
-<p>举个例子：</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/State-hooks/#more">Read More</a>
-          </p>
-        
+        <h2 id="倒计时"><a href="#倒计时" class="headerlink" title="倒计时"></a>倒计时</h2><p>使用setTimeout 或者是setInterval  无效，总是隔很长时间跳一次，是因为开启了debugger模式导致的，关闭debugger模式就好了。</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/State-hooks/" data-id="ckb7e9a9b0035s6qe2x4t400t" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/02/24/Expo/%E5%9D%91/" data-id="ckmbp25nc0001aloa38vg6oll" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9D%91/" rel="tag">坑</a></li></ul>
 
     </footer>
   </div>
@@ -260,14 +471,14 @@
 
 
   
-    <article id="post-React/逻辑重用/高阶组件" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Expo/调试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" class="article-date">
-  <time datetime="2020-06-05T08:37:40.000Z" itemprop="datePublished">2020-06-05</time>
+    <a href="/2021/02/24/Expo/%E8%B0%83%E8%AF%95/" class="article-date">
+  <time datetime="2021-02-24T05:10:18.000Z" itemprop="datePublished">2021-02-24</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/3%E3%80%81%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">3、高阶组件</a>
+    <a class="article-category-link" href="/categories/Expo/">Expo</a>
   </div>
 
   </div>
@@ -278,7 +489,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">高阶组件</a>
+      <a class="article-title" href="/2021/02/24/Expo/%E8%B0%83%E8%AF%95/">Expo调试工具</a>
     </h1>
   
 
@@ -286,20 +497,24 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="高阶组件"><a href="#高阶组件" class="headerlink" title="高阶组件"></a>高阶组件</h1><p>高阶组件 英文名字是 HOC，所谓的高阶组件，其实就是一个以 组件作为参数的函数，该函数最终会返回一个 包裹 参数组件的新组件。</p>
-<p>高阶组件并非是一个 API 而是一种组织代码的方式。一种重用代码逻辑技术。、</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/#more">Read More</a>
-          </p>
-        
+        <h2 id="React-Native-Debugger"><a href="#React-Native-Debugger" class="headerlink" title="React Native Debugger"></a>React Native Debugger</h2><p>下载安装</p>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>“ios”: “react-native run-ios”,<br>“android”: “react-native run-android –variant devDebug –appIdSuffix=dev”</p>
+<p>app安装到真机上</p>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>1, 摇晃手机打开开发者菜单</p>
+<p>2, 点击进入Dev Settings</p>
+<p>3, 点击Debug server host &amp; port for device</p>
+<p>4, 输入本机当前电脑的ip和端口(8081)</p>
+<p>5, 再Reload JS</p>
+<h2 id="React-Native-Debugger-就可以链接了"><a href="#React-Native-Debugger-就可以链接了" class="headerlink" title="React Native Debugger 就可以链接了"></a>React Native Debugger 就可以链接了</h2><p>React Native Debugger  -  debugger – open config file – </p>
+<p>defaultNetworkInspect: true,  开启网络监控</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" data-id="ckb7e9a9k003es6qe91ccg7vv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/02/24/Expo/%E8%B0%83%E8%AF%95/" data-id="ckmbp25nh0005aloa1w60eubd" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" rel="tag">Expo调试工具</a></li></ul>
 
     </footer>
   </div>
@@ -308,14 +523,14 @@
 
 
   
-    <article id="post-React/组件" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Expo/库" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/05/React/%E7%BB%84%E4%BB%B6/" class="article-date">
-  <time datetime="2020-06-05T08:37:40.000Z" itemprop="datePublished">2020-06-05</time>
+    <a href="/2021/02/23/Expo/%E5%BA%93/" class="article-date">
+  <time datetime="2021-02-23T10:45:08.000Z" itemprop="datePublished">2021-02-23</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E7%BB%84%E4%BB%B6/">组件</a>►<a class="article-category-link" href="/categories/React/%E7%BB%84%E4%BB%B6/1%E3%80%81%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E5%92%8C%E7%B1%BB%E7%BB%84%E4%BB%B6/">1、函数组件和类组件</a>
+    <a class="article-category-link" href="/categories/Expo/">Expo</a>
   </div>
 
   </div>
@@ -326,7 +541,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/05/React/%E7%BB%84%E4%BB%B6/">React 组件</a>
+      <a class="article-title" href="/2021/02/23/Expo/%E5%BA%93/">库</a>
     </h1>
   
 
@@ -334,263 +549,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="React-中的组件"><a href="#React-中的组件" class="headerlink" title="React 中的组件"></a>React 中的组件</h1><p>React 中的组件粗略的分类的话，有两种：</p>
-<pre><code>函数组件
-
-类组件</code></pre><h2 id="函数组件"><a href="#函数组件" class="headerlink" title="函数组件"></a>函数组件</h2><p>函数组件很简单，就是一个函数，如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">function Welcome (props) &#123;</span><br><span class="line">  return &lt;h1&gt;Welcome &#123;props.name&#125;&lt;&#x2F;h1&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>函数组件的作用很简单，就是返回一个 DOM 出来，这个 DOM 的复杂度是不一定的，有时候很复杂，有时候很简单。但是，无论是简单还是复杂，与同样的 类组件相比，函数组件的性能是更优越的。</p>
-<h3 id="函数组件的特点"><a href="#函数组件的特点" class="headerlink" title="函数组件的特点"></a>函数组件的特点</h3><pre><code>1、函数组件是没有 this这个对象的
-
-2、函数组件没有生命周期
-
-3、函数组件没有状态</code></pre><p>函数组件的根源是一个返回 类 DOM 的函数。我们知道，函数被调用完成之后就会被回收。所以，函数组件不会有 状态可供操作。</p>
-<p>另外的，函数组件的思想是无状态组件，函数组件没有生命周期，也无需去考虑什么情况下用什么钩子函数。这就是说，函数组件只是一个展示组件</p>
-<pre><code>这里说一下，所谓的展示组件，就是，并非是完全没有处理逻辑，    比如Ajax等还是要有的。
-
-所谓的没有处理逻辑是不会有 比如 填写表单之类的交互逻辑</code></pre><h3 id="函数组件的用处"><a href="#函数组件的用处" class="headerlink" title="函数组件的用处"></a>函数组件的用处</h3><p>在最理想的情况下所有的组件都应该是函数组件，这样的应用性能是最佳的。函数组件有自己的特点，这也是我们在写组件的时候要首先考虑一下，是否要使用函数组件而不是一定要用类组件。</p>
-<h2 id="类组件"><a href="#类组件" class="headerlink" title="类组件"></a>类组件</h2><p>类组件就是使用 类的方式来构建组件,如下所示。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class Welcome extends React.Component &#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;h1&gt;Welcome &#123; this.props.name &#125;&lt;&#x2F;h1&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="类组件的特点"><a href="#类组件的特点" class="headerlink" title="类组件的特点"></a>类组件的特点</h3><pre><code>1、有this
-
-2、有生命周期
-
-3、有状态</code></pre><p>类组件的核心是一个类，这个类的核心是 render 方法，render 方法就是用来返回一个类 DOM 结构。</p>
-<p>类组件在使用的时候首先要进行实例化，而这也是类组件相对于函数组件性能要稍微差劲一些的原因。</p>
-<h3 id="类组件的用处"><a href="#类组件的用处" class="headerlink" title="类组件的用处"></a>类组件的用处</h3><p>类组件为我们定义了 生命周期方法，并且提供了 状态，使得我们可以在组件内部进行方便的逻辑交互。</p>
-<pre><code>比如，表单的交互</code></pre><p>在我看来类组件的最大特点就是他可以保存状态，而函数组件无法保存状态。</p>
-<h3 id="为什么类组件可以保存状态而函数组件不行"><a href="#为什么类组件可以保存状态而函数组件不行" class="headerlink" title="为什么类组件可以保存状态而函数组件不行"></a>为什么类组件可以保存状态而函数组件不行</h3><p>这里我们将类组件 简化为 ==&gt; 类</p>
-<p>将 函数组件 简化为 ==&gt; 函数</p>
-<p>类在使用的时候首先要进行实例化 也就是 js 中常用的 new</p>
-<p>实例化之后的类实例是一个对象 比如这样的 obj = {}</p>
-<p>obj 对象里完全可以放置任何你想要的属性，</p>
-<pre><code>比如 类组件就是放置了  render函数，生命函数，state等</code></pre><p>obj 是对象，只要其内的属性被引用了的话，它便不会被当做垃圾回收</p>
-<p>再来看函数，我们完全可以在 函数内放置一个变量 state，但是，函数执行完毕之后，还剩下什么？定然是被当做垃圾回收了。什么都不会剩下。</p>
+        <h2 id="存储库-async-storage"><a href="#存储库-async-storage" class="headerlink" title="存储库 async-storage"></a>存储库 async-storage</h2><h2 id="请求库-“axios”-“-0-21-1”"><a href="#请求库-“axios”-“-0-21-1”" class="headerlink" title="请求库 “axios”: “^0.21.1”,"></a>请求库 “axios”: “^0.21.1”,</h2><p>axios 自身不会携带cookie，需要手动设置，比如后端返回一个cookie，而后<br>在请求拦截器里添加cookie<br>config.headers.Cookie = cookie</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/05/React/%E7%BB%84%E4%BB%B6/" data-id="ckb7e9a7k0004s6qe4gkx9c5m" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/02/23/Expo/%E5%BA%93/" data-id="ckmbp25ng0004aloa0yvk35aa" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/逻辑重用/React-hooks背景" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/React-hooks%E8%83%8C%E6%99%AF/" class="article-date">
-  <time datetime="2020-06-05T08:37:40.000Z" itemprop="datePublished">2020-06-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/">4、React-Hooks</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/1%E3%80%81React-Hooks%E8%83%8C%E6%99%AF/">1、React-Hooks背景</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/React-hooks%E8%83%8C%E6%99%AF/">React-Hooks</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="React-Hooks"><a href="#React-Hooks" class="headerlink" title="React Hooks"></a>React Hooks</h1><h2 id="为什么要有-React-Hooks"><a href="#为什么要有-React-Hooks" class="headerlink" title="为什么要有 React Hooks"></a>为什么要有 React Hooks</h2><p>以往，出现了一门新技术，总想着拿来就开始尝鲜，但是，却很少去考虑，为什么要有这一门技术，以及，这一门技术是怎样的？</p>
-<p>后来慢慢的发现，开始接受一项新的技术的时候，第一个要考虑的不是怎么使用这个技术，而是，为什么会有这个技术？</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/React-hooks%E8%83%8C%E6%99%AF/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/React-hooks%E8%83%8C%E6%99%AF/" data-id="ckb7e9a990032s6qefztk49ie" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/逻辑重用/渲染属性" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%B8%B2%E6%9F%93%E5%B1%9E%E6%80%A7/" class="article-date">
-  <time datetime="2020-06-05T08:37:40.000Z" itemprop="datePublished">2020-06-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/2%E3%80%81-Render-Props/">2、 Render-Props</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%B8%B2%E6%9F%93%E5%B1%9E%E6%80%A7/">Render Props</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Render-Props"><a href="#Render-Props" class="headerlink" title="Render Props"></a>Render Props</h1>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%B8%B2%E6%9F%93%E5%B1%9E%E6%80%A7/" data-id="ckb7e9a9f003bs6qeboaoc38w" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/逻辑重用/Mixins" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Mixins/" class="article-date">
-  <time datetime="2020-06-05T08:37:40.000Z" itemprop="datePublished">2020-06-05</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a>►<a class="article-category-link" href="/categories/React/%E6%8A%80%E6%9C%AF/1%E3%80%81Mixin/">1、Mixin</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Mixins/">Mixin</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Mixin"><a href="#Mixin" class="headerlink" title="Mixin"></a>Mixin</h1><h2 id="Mixin-背景"><a href="#Mixin-背景" class="headerlink" title="Mixin 背景"></a>Mixin 背景</h2><p>Mixin 的概念有些类似于 AOP，也叫做面向切面编程，也就是将与主逻辑无关的代码，放在外边去做，</p>
-<p>当需要的时候，注入进来，对原代码毫无入侵性。</p>
-<p>简单的来说 mixin 相当于组件的一个扩展。</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Mixins/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Mixins/" data-id="ckb7e9a92002vs6qegqfpbo49" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Store/React-Redux再进阶" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/03/Store/React-Redux%E5%86%8D%E8%BF%9B%E9%98%B6/" class="article-date">
-  <time datetime="2020-06-03T07:49:30.000Z" itemprop="datePublished">2020-06-03</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/03/Store/React-Redux%E5%86%8D%E8%BF%9B%E9%98%B6/">React-Redux 的再次进阶</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="优化-Redux"><a href="#优化-Redux" class="headerlink" title="优化 Redux"></a>优化 Redux</h1><h2 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h2><p>回顾一下，React-redux 提供了 Provider 和 connect  来 生成 容器组件和 传递 store。</p>
-<p>Provider的使用已经是足够简洁了，但是，connect的使用却是有一些奇怪，先看看它是怎么使用的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &#123; connect &#125; from &quot;react-redux&quot;;</span><br><span class="line">import &#123; increment, decrement, reset &#125; from &quot;.&#x2F;actionCreators&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Class MyComponent extends Component&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const mapStateToProps &#x3D; (state &#x2F;*, ownProps*&#x2F;) &#x3D;&gt; &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    counter: state.counter</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const mapDispatchToProps &#x3D; &#123; increment, decrement, reset &#125;;</span><br><span class="line"></span><br><span class="line">export default connect(</span><br><span class="line">  mapStateToProps,</span><br><span class="line">  mapDispatchToProps</span><br><span class="line">)(MyComponent);</span><br></pre></td></tr></table></figure>
-
-<p>我们通过 mapStateToProps mapDispatchToProps 两个方法，将store内的内容映射到 组件中，如此一来，便可以在组件中愉快的更新 状态了。</p>
-<p>这样的写法看起来不是很美观，</p>
-<p>所以有了 </p>
-<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p>上边的connect写法就是典型的 wrapper ，所以需要使用 装饰器来搞定这个东西,有如下两种模式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import &#123; connect &#125; from &quot;react-redux&quot;;</span><br><span class="line">import &#123; increment, decrement, reset &#125; from &quot;.&#x2F;actionCreators&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">const mapStateToProps &#x3D; (state &#x2F;*, ownProps*&#x2F;) &#x3D;&gt; &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    counter: state.counter</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const mapDispatchToProps &#x3D; &#123; increment, decrement, reset &#125;;</span><br><span class="line"></span><br><span class="line">@connect(mapStateToProps, mapDispatchToProps)</span><br><span class="line">export default class MyComponent extends React.Component &#123;&#125;</span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &#123; connect &#125; from &quot;react-redux&quot;;</span><br><span class="line">import &#123; increment, decrement, reset &#125; from &quot;.&#x2F;actionCreators&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@connect(</span><br><span class="line">	(&#123; counter, address &#125;) &#x3D;&gt; (&#123;</span><br><span class="line">    	address,</span><br><span class="line">    	counter,</span><br><span class="line">  	&#125;),</span><br><span class="line">	dispatch &#x3D;&gt; (&#123;</span><br><span class="line">    increment(data) &#123;</span><br><span class="line">      dispatch(increment(data));</span><br><span class="line">    &#125;,</span><br><span class="line">    decrement(data) &#123;</span><br><span class="line">      decrement(decrement(data));</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">export default class MyComponent extends React.Component &#123;&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>使用的话就和 Wrapper 一样，直接从 this.props中拿。</p>
-<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>要使用装饰器还需要依赖一些库：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">babel-plugin-transform-decorators-legacy</span><br></pre></td></tr></table></figure>
-
-
-<p>而且package.json文件中要配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;plugins&quot;: [</span><br><span class="line">	[&quot;@babel&#x2F;plugin-proposal-decorators&quot;, &#123; &quot;legacy&quot;: true &#125;],</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/03/Store/React-Redux%E5%86%8D%E8%BF%9B%E9%98%B6/" data-id="ckb7e9a8h0015s6qecvwa8tb6" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BA%93/" rel="tag">库</a></li></ul>
 
     </footer>
   </div>
@@ -603,7 +570,7 @@
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">下一页 &amp;raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">下一页 &amp;raquo;</a>
   </nav>
 
 </section>
@@ -614,7 +581,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/JS/">JS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%80%9D%E6%83%B3/">思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%8A%80%E5%B7%A7/">技巧</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%A8%A1%E5%9D%97%E5%8C%96/">模块化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E7%BB%A7%E6%89%BF/">继承</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/0%E3%80%81%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/">0、逻辑重用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/1%E3%80%81Mixin/">1、Mixin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/2%E3%80%81-Render-Props/">2、 Render-Props</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/3%E3%80%81%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">3、高阶组件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/">4、React-Hooks</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/1%E3%80%81React-Hooks%E8%83%8C%E6%99%AF/">1、React-Hooks背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/2%E3%80%81State-Hook/">2、State-Hook</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/3%E3%80%81Effect-Hook/">3、Effect-Hook</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/4%E3%80%81Hook%E6%84%9F%E6%82%9F/">4、Hook感悟</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E7%BB%84%E4%BB%B6/">组件</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E7%BB%84%E4%BB%B6/1%E3%80%81%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E5%92%8C%E7%B1%BB%E7%BB%84%E4%BB%B6/">1、函数组件和类组件</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Expo/">Expo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/">JS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%80%9D%E6%83%B3/">思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%8A%80%E5%B7%A7/">技巧</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E6%A8%A1%E5%9D%97%E5%8C%96/">模块化</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/%E7%BB%A7%E6%89%BF/">继承</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/">技术</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/0%E3%80%81%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/">0、逻辑重用</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/1%E3%80%81Mixin/">1、Mixin</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/2%E3%80%81-Render-Props/">2、 Render-Props</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/3%E3%80%81%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">3、高阶组件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/">4、React-Hooks</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/1%E3%80%81React-Hooks%E8%83%8C%E6%99%AF/">1、React-Hooks背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/2%E3%80%81State-Hook/">2、State-Hook</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/3%E3%80%81Effect-Hook/">3、Effect-Hook</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E6%9C%AF/4%E3%80%81React-Hooks/4%E3%80%81Hook%E6%84%9F%E6%82%9F/">4、Hook感悟</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%9B%B4%E6%96%B0/">更新</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%9B%B4%E6%96%B0/1%E3%80%81%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%80%BC/">1、不可变值</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%9B%B4%E6%96%B0/2%E3%80%81%E6%9B%B4%E6%96%B0/">2、更新</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%9B%B4%E6%96%B0/3%E3%80%81setState/">3、setState</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E7%BB%84%E4%BB%B6/">组件</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E7%BB%84%E4%BB%B6/1%E3%80%81%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E5%92%8C%E7%B1%BB%E7%BB%84%E4%BB%B6/">1、函数组件和类组件</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/Vue3/">Vue3</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/Vue3/1%E3%80%81https/">1、https</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li></ul>
     </div>
   </div>
 
@@ -624,7 +591,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" rel="tag">js的一些思想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">js的一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" rel="tag">Expo调试工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FB/" rel="tag">FB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/" rel="tag">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eslint/" rel="tag">eslint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" rel="tag">js的一些思想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">js的一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9D%91/" rel="tag">坑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%93/" rel="tag">库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" rel="tag">路径别名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a></li></ul>
     </div>
   </div>
 
@@ -634,7 +601,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/React-Redux/" style="font-size: 13.33px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 16.67px;">Redux</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" style="font-size: 10px;">js的一些思想</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">js的一些技巧</a> <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">模块化</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" style="font-size: 16.67px;">状态管理</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 10px;">继承</a>
+      <a href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" style="font-size: 10px;">Expo调试工具</a> <a href="/tags/FB/" style="font-size: 10px;">FB</a> <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/React-Redux/" style="font-size: 13.33px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 16.67px;">Redux</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/eslint/" style="font-size: 10px;">eslint</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" style="font-size: 10px;">js的一些思想</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">js的一些技巧</a> <a href="/tags/%E5%9D%91/" style="font-size: 10px;">坑</a> <a href="/tags/%E5%BA%93/" style="font-size: 10px;">库</a> <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">模块化</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" style="font-size: 16.67px;">状态管理</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 13.33px;">继承</a> <a href="/tags/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" style="font-size: 10px;">路径别名</a> <a href="/tags/%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">路由</a>
     </div>
   </div>
 
@@ -643,7 +610,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
     </div>
   </div>
 
@@ -656,23 +623,23 @@
       <ul>
         
           <li>
-            <a href="/2020/06/09/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%A6%82%E6%8B%AC/">逻辑重用</a>
+            <a href="/2021/03/16/React/%E6%9B%B4%E6%96%B0/%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%80%BC/">React 更新逻辑</a>
           </li>
         
           <li>
-            <a href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Hooks%E6%84%9F%E6%82%9F/">React-Hooks</a>
+            <a href="/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/shouldComponent/">React/生命周期函数/shouldComponent</a>
           </li>
         
           <li>
-            <a href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Effect-hooks/">React-Hooks</a>
+            <a href="/2021/03/13/Vue3/https/">1、https</a>
           </li>
         
           <li>
-            <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/State-hooks/">React-Hooks</a>
+            <a href="/2021/03/04/Expo/%E5%8F%82%E8%80%83%E6%96%87%E4%BB%B6/route/">Expo/参考文件/route</a>
           </li>
         
           <li>
-            <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/">高阶组件</a>
+            <a href="/2021/02/26/React/%E6%9B%B4%E6%96%B0/setState/">React 更新逻辑</a>
           </li>
         
       </ul>
@@ -687,7 +654,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2020 WQXC<br>
+      &copy; 2021 WQXC<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
