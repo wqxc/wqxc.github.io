@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>JS/ES6的继承 | wqxc&#39;s code world</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="ES6继承一句话，主要是做了两件事 class A extends B{}A.proto &#x3D;&#x3D;&#x3D; B;  &#x2F;&#x2F;继承属性A.prototype.proto &#x3D;&#x3D; B.prototype;&#x2F;&#x2F;继承方法 es6 继承必须在 construcor 中调用super方法，否则就会报错，因为子类是没有自己的this对象的，而是继承自父类的this，然后对其进行加工，不调用super的话，就得不到this对象，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS&#x2F;ES6的继承">
+<meta property="og:url" content="http://yoursite.com/2021/03/16/JS/ES6%E7%9A%84%E7%BB%A7%E6%89%BF/index.html">
+<meta property="og:site_name" content="wqxc&#39;s code world">
+<meta property="og:description" content="ES6继承一句话，主要是做了两件事 class A extends B{}A.proto &#x3D;&#x3D;&#x3D; B;  &#x2F;&#x2F;继承属性A.prototype.proto &#x3D;&#x3D; B.prototype;&#x2F;&#x2F;继承方法 es6 继承必须在 construcor 中调用super方法，否则就会报错，因为子类是没有自己的this对象的，而是继承自父类的this，然后对其进行加工，不调用super的话，就得不到this对象，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-16T10:48:32.000Z">
+<meta property="article:modified_time" content="2021-03-16T10:59:36.000Z">
+<meta property="article:author" content="WQXC">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="wqxc&#39;s code world" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">wqxc&#39;s code world</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-JS/ES6的继承" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/16/JS/ES6%E7%9A%84%E7%BB%A7%E6%89%BF/" class="article-date">
+  <time datetime="2021-03-16T10:48:32.000Z" itemprop="datePublished">2021-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JS/ES6的继承
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ES6继承"><a href="#ES6继承" class="headerlink" title="ES6继承"></a>ES6继承</h2><p>一句话，主要是做了两件事</p>
+<p>class A extends B{}<br>A.<strong>proto</strong> === B;  //继承属性<br>A.prototype.<strong>proto</strong> == B.prototype;//继承方法</p>
+<p>es6 继承必须在 construcor 中调用super方法，否则就会报错，<br>因为子类是没有自己的this对象的，而是继承自父类的this，然后对其进行加工，不调用super的话，就得不到this对象，<br>因此，调用之后才可以使用this</p>
+<p>默认情况下，子类会自动的调用 constructor 方法，并调用super</p>
+<p>在继承的时候手动 写了 constructor 方法的话，会覆盖默认的 constructor 方法</p>
+<p>也就是说，下列两者是等价的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">class ColorPoint extends Point &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 等同于 </span><br><span class="line">class ColorPoint extends Point &#123;</span><br><span class="line">  constructor(...args) &#123;</span><br><span class="line">    super(...args);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="ES5的继承"><a href="#ES5的继承" class="headerlink" title="ES5的继承"></a>ES5的继承</h2><p>先创造子类的实例对象this，而后将父类的方法添加到this上。<br>主要是使用call/apply方法来调用：Person.apply(this)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/03/16/JS/ES6%E7%9A%84%E7%BB%A7%E6%89%BF/" data-id="ckmd1pf6u00007poafmdcbp89" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/constructor/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          生命周期函数  -- constructor
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/03/16/React/%E6%9B%B4%E6%96%B0/Immutability/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">React Immutability</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Expo/">Expo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/">JS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/Vue3/">Vue3</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/Vue3/1%E3%80%81https/">1、https</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Effect-Hook/" rel="tag">Effect-Hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" rel="tag">Expo调试工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FB/" rel="tag">FB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hook%E6%84%9F%E6%82%9F/" rel="tag">Hook感悟</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mixin/" rel="tag">Mixin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Props-%E5%92%8C-state/" rel="tag">React Props 和 state</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-%E4%B8%AD%E7%9A%84%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE-Immutability/" rel="tag">React 中的不可变数据 Immutability</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-%E7%BB%84%E4%BB%B6/" rel="tag">React 组件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Render-Props/" rel="tag">Render Props</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/State-Hook/" rel="tag">State-Hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/" rel="tag">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentWillMount/" rel="tag">componentWillMount</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentWillReciveProps/" rel="tag">componentWillReciveProps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentdidmount/" rel="tag">componentdidmount</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/constructor/" rel="tag">constructor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eslint/" rel="tag">eslint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/getDerivedStateFromProps/" rel="tag">getDerivedStateFromProps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" rel="tag">js的一些思想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">js的一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shouldComponentUpdate/" rel="tag">shouldComponentUpdate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5/" rel="tag">一些概念</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9D%91/" rel="tag">坑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%93/" rel="tag">库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A6%82%E6%8B%AC/" rel="tag">概括</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%8C%E6%99%AF/" rel="tag">背景</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" rel="tag">路径别名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" rel="tag">高阶组件</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Effect-Hook/" style="font-size: 10px;">Effect-Hook</a> <a href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" style="font-size: 10px;">Expo调试工具</a> <a href="/tags/FB/" style="font-size: 10px;">FB</a> <a href="/tags/Hook%E6%84%9F%E6%82%9F/" style="font-size: 10px;">Hook感悟</a> <a href="/tags/Mixin/" style="font-size: 10px;">Mixin</a> <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/React-Props-%E5%92%8C-state/" style="font-size: 10px;">React Props 和 state</a> <a href="/tags/React-%E4%B8%AD%E7%9A%84%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE-Immutability/" style="font-size: 10px;">React 中的不可变数据 Immutability</a> <a href="/tags/React-%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">React 组件</a> <a href="/tags/React-Redux/" style="font-size: 15px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 20px;">Redux</a> <a href="/tags/Render-Props/" style="font-size: 10px;">Render Props</a> <a href="/tags/State-Hook/" style="font-size: 10px;">State-Hook</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/componentWillMount/" style="font-size: 10px;">componentWillMount</a> <a href="/tags/componentWillReciveProps/" style="font-size: 10px;">componentWillReciveProps</a> <a href="/tags/componentdidmount/" style="font-size: 15px;">componentdidmount</a> <a href="/tags/constructor/" style="font-size: 10px;">constructor</a> <a href="/tags/eslint/" style="font-size: 10px;">eslint</a> <a href="/tags/getDerivedStateFromProps/" style="font-size: 10px;">getDerivedStateFromProps</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" style="font-size: 10px;">js的一些思想</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">js的一些技巧</a> <a href="/tags/shouldComponentUpdate/" style="font-size: 10px;">shouldComponentUpdate</a> <a href="/tags/%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5/" style="font-size: 10px;">一些概念</a> <a href="/tags/%E5%9D%91/" style="font-size: 10px;">坑</a> <a href="/tags/%E5%BA%93/" style="font-size: 10px;">库</a> <a href="/tags/%E6%A6%82%E6%8B%AC/" style="font-size: 10px;">概括</a> <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">模块化</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" style="font-size: 20px;">状态管理</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 15px;">继承</a> <a href="/tags/%E8%83%8C%E6%99%AF/" style="font-size: 10px;">背景</a> <a href="/tags/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" style="font-size: 10px;">路径别名</a> <a href="/tags/%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">路由</a> <a href="/tags/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">高阶组件</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/5%E3%80%81getDerivedStateFromProps/">生命周期函数  -- getDerivedStateFromProps</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/4%E3%80%81componentWillReciveProps/">生命周期函数  -- componentWillReciveProps</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/17/React/%E6%9B%B4%E6%96%B0/props%E5%92%8Cstate/">React Props 和 state</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/3%E3%80%81componentDidUpdate/">生命周期函数  -- componentdidmount</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/2%E3%80%81componentdidmount/">生命周期函数  -- componentdidmount</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 WQXC<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
