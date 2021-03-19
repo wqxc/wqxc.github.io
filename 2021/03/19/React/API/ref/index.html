@@ -5,14 +5,19 @@
   
 
   
-  <title>wqxc&#39;s code world</title>
+  <title>API  -- createRef | wqxc&#39;s code world</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="wqxc&#39;s code world">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="createRef创建一个通过ref属性附加到React元素的ref 只能使用在 HTML元素 或者是 类组件中，函数组件中无效 背景DOM时代，使用document.getElementById 来获取DOM，进而操作 但是在虚拟DOM时代，这样的方式是行不通的，所以，虚拟DOM都会提供一个ref属性来绑定真实DOM 使用123456789class MyComponent extends Re">
+<meta property="og:type" content="article">
+<meta property="og:title" content="API  -- createRef">
+<meta property="og:url" content="http://yoursite.com/2021/03/19/React/API/ref/index.html">
 <meta property="og:site_name" content="wqxc&#39;s code world">
+<meta property="og:description" content="createRef创建一个通过ref属性附加到React元素的ref 只能使用在 HTML元素 或者是 类组件中，函数组件中无效 背景DOM时代，使用document.getElementById 来获取DOM，进而操作 但是在虚拟DOM时代，这样的方式是行不通的，所以，虚拟DOM都会提供一个ref属性来绑定真实DOM 使用123456789class MyComponent extends Re">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-19T02:15:28.000Z">
+<meta property="article:modified_time" content="2021-03-19T05:25:16.000Z">
 <meta property="article:author" content="WQXC">
+<meta property="article:tag" content="API  -- createRef">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="wqxc&#39;s code world" type="application/atom+xml">
@@ -62,9 +67,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-React/API/ref" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-React/API/ref" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/03/19/React/API/ref/" class="article-date">
   <time datetime="2021-03-19T02:15:28.000Z" itemprop="datePublished">2021-03-19</time>
@@ -81,8 +84,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/19/React/API/ref/">API  -- createRef</a>
+    <h1 class="article-title" itemprop="name">
+      API  -- createRef
     </h1>
   
 
@@ -167,441 +170,19 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-Expo/图片缓存" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/18/Expo/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" class="article-date">
-  <time datetime="2021-03-18T08:20:12.000Z" itemprop="datePublished">2021-03-18</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Expo/">Expo</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/18/Expo/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/">图片缓存</a>
-    </h1>
+    <a href="/2021/03/18/Expo/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">图片缓存</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="使用的库"><a href="#使用的库" class="headerlink" title="使用的库"></a>使用的库</h2><p>“react-native-rn-cacheimage”: “^1.0.1”,</p>
-<p>“rn-fetch-blob”: “^0.12.0”,</p>
-<p>react-native-rn-cacheimage 依赖 rn-fetch-blob</p>
-<p>参考GitHub  <a href="https://github.com/quenice/react-native-cacheimage" target="_blank" rel="noopener">https://github.com/quenice/react-native-cacheimage</a></p>
-<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>项目使用的ts，一些三方库本身是没有types的，所以需要手动decla</p>
-<p>创建一个 .d.ts如果有的话就不用创建了</p>
-<p>declare module ‘react-native-rn-cacheimage’; </p>
-<p>之后vscode 就不会报错了</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/18/Expo/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" data-id="ckmfv1k9v000b51oa42zogsiw" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" rel="tag">图片缓存</a></li></ul>
-
-    </footer>
-  </div>
   
 </article>
-
-
-  
-    <article id="post-React/生命周期函数/9、总结" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/9%E3%80%81%E6%80%BB%E7%BB%93/" class="article-date">
-  <time datetime="2021-03-17T08:38:10.000Z" itemprop="datePublished">2021-03-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/9%E3%80%81%E6%80%BB%E7%BB%93/">生命周期函数  -- 总结</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <hr>
-<p>title: 生命周期函数  – 总结</p>
-<p>category: [“React”]</p>
-<h2 id="tags-总结"><a href="#tags-总结" class="headerlink" title="tags: 总结 "></a>tags: 总结 </h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>有三个生命函数在16版本之后逐渐被废弃了。</p>
-<p>componentWillMount<br>componentWillReciveProps<br>componentWillUpdate</p>
-<p>三个will方法被移除。</p>
-<p>这三个方法的执行都是在render之前，</p>
-<p>因为fiber的出现，很可能因为高优先级任务的出现打断现有任务导致它们被执行多次</p>
-<p>getDerivedStateFromProps 用来代替 componentWillReciveProps</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/9%E3%80%81%E6%80%BB%E7%BB%93/" data-id="ckmfv1kbf004d51oaea6u775j" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/生命周期函数/8、getSnapshotBeforeUpdate" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/8%E3%80%81getSnapshotBeforeUpdate/" class="article-date">
-  <time datetime="2021-03-17T08:32:50.000Z" itemprop="datePublished">2021-03-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/8%E3%80%81getSnapshotBeforeUpdate/">React/生命周期函数/8、getSnapshotBeforeUpdate</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <hr>
-<p>title: 生命周期函数  – getSnapshotBeforeUpdate</p>
-<p>category: [“React”]</p>
-<h2 id="tags-getSnapshotBeforeUpdate"><a href="#tags-getSnapshotBeforeUpdate" class="headerlink" title="tags: getSnapshotBeforeUpdate "></a>tags: getSnapshotBeforeUpdate </h2><h2 id="getSnapshotBeforeUpdate"><a href="#getSnapshotBeforeUpdate" class="headerlink" title="getSnapshotBeforeUpdate"></a>getSnapshotBeforeUpdate</h2><p>简单的来说：</p>
-<p>在最近一次渲染输出（提交到 DOM 节点）之前调用。它使得组件能在发生更改之前从 DOM 中捕获一些信息（例如，滚动位置）。此生命周期的任何返回值将作为参数传递给 componentDidUpdate()。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/8%E3%80%81getSnapshotBeforeUpdate/" data-id="ckmfv1kbe004a51oa0p5e1dt4" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/生命周期函数/6、componentWillUnmount" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/6%E3%80%81componentWillUnmount/" class="article-date">
-  <time datetime="2021-03-17T08:12:50.000Z" itemprop="datePublished">2021-03-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/6%E3%80%81componentWillUnmount/">React/生命周期函数/6、componentWillUnmount</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <hr>
-<p>title: 生命周期函数  – componentWillUnmount</p>
-<p>category: [“React”]</p>
-<h2 id="tags-componentWillUnmount"><a href="#tags-componentWillUnmount" class="headerlink" title="tags: componentWillUnmount "></a>tags: componentWillUnmount </h2><h2 id="componentWillUnmount"><a href="#componentWillUnmount" class="headerlink" title="componentWillUnmount"></a>componentWillUnmount</h2><p>最为简单的一个生命函数，主要用来移除一些监听，订阅，清除Timer，取消网络请求等。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/6%E3%80%81componentWillUnmount/" data-id="ckmfv1kbc004451oa4a982cyh" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/生命周期函数/5、getDerivedStateFromProps" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/5%E3%80%81getDerivedStateFromProps/" class="article-date">
-  <time datetime="2021-03-17T06:02:04.000Z" itemprop="datePublished">2021-03-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/5%E3%80%81getDerivedStateFromProps/">生命周期函数  -- getDerivedStateFromProps</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="getDerivedStateFromProps"><a href="#getDerivedStateFromProps" class="headerlink" title="getDerivedStateFromProps"></a>getDerivedStateFromProps</h2><p>作用：让组件在 props 变化时更新 state。</p>
-<p>但是，直接复制props给state是不可以的，state的来源应该尽可能的单一，<br>所谓的单一，也就是 state要么是组件自身控制的，或者是完全来源于props，而不需要自身来控制，就像是受控组件那样</p>
-<p>所以说这个函数的用处是很小的。</p>
-<p>这个hook更像是 vue的watch，<br>父组件更新了，或者是props改变了，这个方法就会被调用。</p>
-<p>所在组件的state更新了也会调用</p>
-<p>可以在这个方法中拿到props来更新子组件的state。</p>
-<h2 id="使用准则"><a href="#使用准则" class="headerlink" title="使用准则"></a>使用准则</h2><p>此方法应该适用于state用于取决于props的组件</p>
-<h2 id="一个例子："><a href="#一个例子：" class="headerlink" title="一个例子："></a>一个例子：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">class Example extends Component &#123;</span><br><span class="line">  state &#x3D; &#123;</span><br><span class="line">    filterText: &quot;&quot;,</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; *******************************************************</span><br><span class="line">  &#x2F;&#x2F; 注意：这个例子不是建议的方法。</span><br><span class="line">  &#x2F;&#x2F; 下面的例子才是建议的方法。</span><br><span class="line">  &#x2F;&#x2F; *******************************************************</span><br><span class="line"></span><br><span class="line">  static getDerivedStateFromProps(props, state) &#123;</span><br><span class="line">    &#x2F;&#x2F; 列表变化或者过滤文本变化时都重新过滤。</span><br><span class="line">    &#x2F;&#x2F; 注意我们要存储 prevFilterText 和 prevPropsList 来检测变化。</span><br><span class="line">    if (</span><br><span class="line">      props.list !&#x3D;&#x3D; state.prevPropsList ||</span><br><span class="line">      state.prevFilterText !&#x3D;&#x3D; state.filterText</span><br><span class="line">    ) &#123;</span><br><span class="line">      return &#123;</span><br><span class="line">        prevPropsList: props.list,</span><br><span class="line">        prevFilterText: state.filterText,</span><br><span class="line">        filteredList: props.list.filter(item &#x3D;&gt; item.text.includes(state.filterText))</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  handleChange &#x3D; event &#x3D;&gt; &#123;</span><br><span class="line">    this.setState(&#123; filterText: event.target.value &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;Fragment&gt;</span><br><span class="line">        &lt;input onChange&#x3D;&#123;this.handleChange&#125; value&#x3D;&#123;this.state.filterText&#125; &#x2F;&gt;</span><br><span class="line">        &lt;ul&gt;&#123;this.state.filteredList.map(item &#x3D;&gt; &lt;li key&#x3D;&#123;item.id&#125;&gt;&#123;item.text&#125;&lt;&#x2F;li&gt;)&#125;&lt;&#x2F;ul&gt;</span><br><span class="line">      &lt;&#x2F;Fragment&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>getDerivedStateFromProps 派生了三个state：prevPropsList、prevFilterText、filteredList</p>
-<p>这个组件在getDerivedStateFromProps  中过滤了一下，避免重复的计算 只有当 props.list 或者是prevFilterText 发生变化了之后，才会重新计算。</p>
-<p>这个模式避免了重复了计算，但是，太过于复杂，需要追踪 props和state的变化</p>
-<p>可以使用下边这样的方式来简化</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Example extends PureComponent &#123;</span><br><span class="line">  &#x2F;&#x2F; state 只需要保存 filter 的值：</span><br><span class="line">  state &#x3D; &#123;</span><br><span class="line">    filterText: &quot;&quot;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  handleChange &#x3D; event &#x3D;&gt; &#123;</span><br><span class="line">    this.setState(&#123; filterText: event.target.value &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    &#x2F;&#x2F; PureComponent 的 render 只有</span><br><span class="line">    &#x2F;&#x2F; 在 props.list 或 state.filterText 变化时才会调用</span><br><span class="line">    const filteredList &#x3D; this.props.list.filter(</span><br><span class="line">      item &#x3D;&gt; item.text.includes(this.state.filterText)</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    return (</span><br><span class="line">      &lt;Fragment&gt;</span><br><span class="line">        &lt;input onChange&#x3D;&#123;this.handleChange&#125; value&#x3D;&#123;this.state.filterText&#125; &#x2F;&gt;</span><br><span class="line">        &lt;ul&gt;&#123;filteredList.map(item &#x3D;&gt; &lt;li key&#x3D;&#123;item.id&#125;&gt;&#123;item.text&#125;&lt;&#x2F;li&gt;)&#125;&lt;&#x2F;ul&gt;</span><br><span class="line">      &lt;&#x2F;Fragment&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>每次render（也就是 state更新或者是props更新）之后都会调用，然后重新渲染，但是，这样就会出现一些不需要的渲染，<br>比如，父组件的state发生了变化，但是，props.list 和 filterText 都 没有变化的时候，渲染是多余的。<br>因为是 继承 了PureComponent 所以，过过滤掉一些多余的渲染，但是，别的props变化的时候，还是会触发渲染的。<br>在过滤很大的列表的时候，效率不好</p>
-<p>React提供了 memoization 函数来帮助不必要的过滤</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">import memoize from &quot;memoize-one&quot;;</span><br><span class="line"></span><br><span class="line">class Example extends Component &#123;</span><br><span class="line">  &#x2F;&#x2F; state 只需要保存当前的 filter 值：</span><br><span class="line">  state &#x3D; &#123; filterText: &quot;&quot; &#125;;</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; 在 list 或者 filter 变化时，重新运行 filter：</span><br><span class="line">  filter &#x3D; memoize(</span><br><span class="line">    (list, filterText) &#x3D;&gt; list.filter(item &#x3D;&gt; item.text.includes(filterText))</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  handleChange &#x3D; event &#x3D;&gt; &#123;</span><br><span class="line">    this.setState(&#123; filterText: event.target.value &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    &#x2F;&#x2F; 计算最新的过滤后的 list。</span><br><span class="line">    &#x2F;&#x2F; 如果和上次 render 参数一样，&#96;memoize-one&#96; 会重复使用上一次的值。</span><br><span class="line">    const filteredList &#x3D; this.filter(this.props.list, this.state.filterText);</span><br><span class="line"></span><br><span class="line">    return (</span><br><span class="line">      &lt;Fragment&gt;</span><br><span class="line">        &lt;input onChange&#x3D;&#123;this.handleChange&#125; value&#x3D;&#123;this.state.filterText&#125; &#x2F;&gt;</span><br><span class="line">        &lt;ul&gt;&#123;filteredList.map(item &#x3D;&gt; &lt;li key&#x3D;&#123;item.id&#125;&gt;&#123;item.text&#125;&lt;&#x2F;li&gt;)&#125;&lt;&#x2F;ul&gt;</span><br><span class="line">      &lt;&#x2F;Fragment&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/5%E3%80%81getDerivedStateFromProps/" data-id="ckmfv1kbb004151oa0vr9fh3l" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/getDerivedStateFromProps/" rel="tag">getDerivedStateFromProps</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/生命周期函数/4、componentWillReciveProps" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/4%E3%80%81componentWillReciveProps/" class="article-date">
-  <time datetime="2021-03-17T05:53:48.000Z" itemprop="datePublished">2021-03-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/4%E3%80%81componentWillReciveProps/">生命周期函数  -- componentWillReciveProps</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="componentWillReciveProps"><a href="#componentWillReciveProps" class="headerlink" title="componentWillReciveProps"></a>componentWillReciveProps</h2><p>1、只要父组件重新渲染 componentWillReciveProps 就会执行，内部调用setState的时候，这个方法是不会执行的</p>
-<p>2、一般用来让子组件根据新的props来更新自己的state,比如:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">state &#x3D; &#123;</span><br><span class="line">    isScrollingDown: false,</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  componentWillReceiveProps(nextProps) &#123;</span><br><span class="line">    if (this.props.currentRow !&#x3D;&#x3D; nextProps.currentRow) &#123;</span><br><span class="line">      this.setState(&#123;</span><br><span class="line">        isScrollingDown:</span><br><span class="line">          nextProps.currentRow &gt; this.props.currentRow,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-
-<p>3、17版本之中 该方法移除了，使用 static getDerivedStateFromProps 来代替</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/4%E3%80%81componentWillReciveProps/" data-id="ckmfv1kba003x51oa2tfvak8w" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/componentWillReciveProps/" rel="tag">componentWillReciveProps</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/更新/props和state" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/17/React/%E6%9B%B4%E6%96%B0/props%E5%92%8Cstate/" class="article-date">
-  <time datetime="2021-03-17T05:36:46.000Z" itemprop="datePublished">2021-03-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/17/React/%E6%9B%B4%E6%96%B0/props%E5%92%8Cstate/">React Props 和 state</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/17/React/%E6%9B%B4%E6%96%B0/props%E5%92%8Cstate/" data-id="ckmfv1kbh004m51oa3iop5fyf" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Props-%E5%92%8C-state/" rel="tag">React Props 和 state</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/生命周期函数/3、componentDidUpdate" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/3%E3%80%81componentDidUpdate/" class="article-date">
-  <time datetime="2021-03-17T03:35:18.000Z" itemprop="datePublished">2021-03-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/3%E3%80%81componentDidUpdate/">生命周期函数  -- componentdidmount</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="componentDidUpdate"><a href="#componentDidUpdate" class="headerlink" title="componentDidUpdate"></a>componentDidUpdate</h2><p>接受三个参数：</p>
-<p>preProps: 更新之前的props，可以用来和当前的props(this.props)对比<br>prevState: 更新之前的state，可以用来和当前的state（this.state）对比<br>snapshot: 组件实现了 getSnapshotBeforeUpdate 方法的话，其返回值为 该参数，否则的话就是undefined</p>
-<p>1、该生命周期函数，会在组件更新之后立即调用，首次渲染的时候不会执行。</p>
-<p>2、不要在该 hook内使用 setState，以免造成死循环。如果要使用，一定是要包裹在条件语句中</p>
-<p>3、如果shouldComponentUpdate返回了false，这个函数就不会执行</p>
-<p>4、可以在这个hook中进行DOM操作，也可以在此进行网络请求，比如下边这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">componentDidUpdate(prevProps) &#123;</span><br><span class="line">  &#x2F;&#x2F; 典型用法（不要忘记比较 props）：</span><br><span class="line">  if (this.props.userID !&#x3D;&#x3D; prevProps.userID) &#123;</span><br><span class="line">    this.fetchData(this.props.userID);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/3%E3%80%81componentDidUpdate/" data-id="ckmfv1kb8003t51oa9lkif3h8" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/componentdidmount/" rel="tag">componentdidmount</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/生命周期函数/2、componentdidmount" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/2%E3%80%81componentdidmount/" class="article-date">
-  <time datetime="2021-03-16T11:56:10.000Z" itemprop="datePublished">2021-03-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/2%E3%80%81componentdidmount/">生命周期函数  -- componentdidmount</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="componentdidmount"><a href="#componentdidmount" class="headerlink" title="componentdidmount"></a>componentdidmount</h2><p>1、调用的时机是: render之后，组件被渲染到DOM中之后运行</p>
-<p>2、一般会在这个生命函数里进行ajax请求</p>
-<p>3、在这里添加订阅，在销毁的时候取消订阅</p>
-<p>4、可以在这里直接调用setState，触发额外的渲染，但此渲染会发生在浏览器更新屏幕之前，<br>保证，即使有两次render，用户不会看到中间状态</p>
-<p>5、不能依赖第四项，如果渲染依赖DOM节点的大或者是位置，可以使用<br>比如 modals tooltips  需要先判定要展示的位置，而后才展示</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/2%E3%80%81componentdidmount/" data-id="ckmfv1kb9003u51oa0govh1r2" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/componentdidmount/" rel="tag">componentdidmount</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
-
-  <nav id="page-nav">
-    
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">下一页 &amp;raquo;</a>
-  </nav>
 
 </section>
         
