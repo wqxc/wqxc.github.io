@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>useEffect | wqxc&#39;s code world</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="useEffectuseEffect 也叫做 副作用钩子函数。顾名思义，他的作用就是用来执行一些副作用操作。 副作用什么算是副作用呢？比如一些IO操作，HTTP请求等。 副作用和纯函数是一个相对的概念，纯函数是说返回值依赖于他的参数，给定相同的参数，必然返回相等的返回值。而如何函数内部做了和运算返回值没有关系的事情，比如修改了全局变量，修改了传入的参数，发送请求，console，手动修改DOM等都">
+<meta property="og:type" content="article">
+<meta property="og:title" content="useEffect">
+<meta property="og:url" content="http://yoursite.com/2021/03/22/React/Hook/useEffect/index.html">
+<meta property="og:site_name" content="wqxc&#39;s code world">
+<meta property="og:description" content="useEffectuseEffect 也叫做 副作用钩子函数。顾名思义，他的作用就是用来执行一些副作用操作。 副作用什么算是副作用呢？比如一些IO操作，HTTP请求等。 副作用和纯函数是一个相对的概念，纯函数是说返回值依赖于他的参数，给定相同的参数，必然返回相等的返回值。而如何函数内部做了和运算返回值没有关系的事情，比如修改了全局变量，修改了传入的参数，发送请求，console，手动修改DOM等都">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-22T02:53:28.000Z">
+<meta property="article:modified_time" content="2021-03-22T07:23:48.000Z">
+<meta property="article:author" content="WQXC">
+<meta property="article:tag" content="useEffect">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="wqxc&#39;s code world" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">wqxc&#39;s code world</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-React/Hook/useEffect" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/22/React/Hook/useEffect/" class="article-date">
+  <time datetime="2021-03-22T02:53:28.000Z" itemprop="datePublished">2021-03-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      useEffect
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="useEffect"><a href="#useEffect" class="headerlink" title="useEffect"></a>useEffect</h2><p>useEffect 也叫做 副作用钩子函数。顾名思义，他的作用就是用来执行一些副作用操作。</p>
+<h3 id="副作用"><a href="#副作用" class="headerlink" title="副作用"></a>副作用</h3><p>什么算是副作用呢？比如一些IO操作，HTTP请求等。</p>
+<p>副作用和纯函数是一个相对的概念，纯函数是说返回值依赖于他的参数，给定相同的参数，必然返回相等的返回值。<br>而如何函数内部做了和运算返回值没有关系的事情，比如修改了全局变量，修改了传入的参数，发送请求，console，手动修改DOM等都是副作用</p>
+<h3 id="类比类组件"><a href="#类比类组件" class="headerlink" title="类比类组件"></a>类比类组件</h3><p>useEffect Hook 可以看做是  componentDidMount，componentDidUpdate 和 componentWillUnmount 这三个函数的组合。</p>
+<h3 id="举个例子"><a href="#举个例子" class="headerlink" title="举个例子"></a>举个例子</h3><p>一个useEffect 是类似于下边这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const [count, setCount] &#x3D; useState(0);</span><br><span class="line"></span><br><span class="line">useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    ()&#x3D;&gt;&#123;&#125;</span><br><span class="line">    return () &#x3D;&gt; ()&#x3D;&gt;&#123;&#125;;</span><br><span class="line">&#125;, [依赖的变量]);</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="useEffect执行时机"><a href="#useEffect执行时机" class="headerlink" title="useEffect执行时机"></a>useEffect执行时机</h3><p>useEffect 会在DOM更新之后调用，也就是  组件挂载 和 更新阶段执行，也就是 componentDidMount，componentDidUpdate 两个类的生命周期方法中。</p>
+<p>其实我们无需去考虑生命周期，而只需要记住，useEffect 会在DOM更新之后调用，而无需在意它是mount还是update</p>
+<h3 id="useEffect-清理函数"><a href="#useEffect-清理函数" class="headerlink" title="useEffect 清理函数"></a>useEffect 清理函数</h3><p>useEffect会返回一个函数，这个函数会在下一次 useEffect执行的时候执行。<br>举个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);</span><br><span class="line">    return function cleanup() &#123;</span><br><span class="line">      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>如上所示，下一次 useEffect 执行的时候，上一次的  cleanup会执行，一般这个都是用来清理一些东西。</p>
+<p>但是，这里需要注意一点的是，useEffect 可以接受第二个参数，一个数组，表示依赖的状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);</span><br><span class="line">    return function cleanup() &#123;</span><br><span class="line">      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;,[]);</span><br></pre></td></tr></table></figure>
+
+<p>如果是空数组，表示 useEffect 只会执行一次，这个时候，return 的清理函数就没有意义，因为清理函数是在下一次useEffect执行的之前之前，这里只会执行一次，就没有下一次了，清理函数自然就不会执行了。</p>
+<h3 id="为什么要使用useEffect"><a href="#为什么要使用useEffect" class="headerlink" title="为什么要使用useEffect"></a>为什么要使用useEffect</h3><p>class组件中，我们经常将相关的逻辑分散在不同的生命函数中，而将，不同的逻辑放在同一个生命函数中。</p>
+<p>比如我们要添加事件订阅，在mount中addEventListener 在 Unmount中移除 removeEventListener。</p>
+<p>同样的，我们在 mount中也会做很多别的操作，比如 网络请求。</p>
+<p>举个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Example2 extends React.Component &#123;</span><br><span class="line">    componentDidMount()&#123;</span><br><span class="line">        document.getElementById(&#39;id&#39;).addEventListener(()&#x3D;&gt;&#123;</span><br><span class="line">            console.log(&#39;添加事件监听&#39;)</span><br><span class="line">        &#125;)</span><br><span class="line">        axios.get(&#39;http:&#x2F;&#x2F;xxxx.xx.xx.xxx:8080&#x2F;user&#x2F;info&#39;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    componentWillUnmount()&#123;</span><br><span class="line">         document.getElementById(&#39;id&#39;).removeEventListener(()&#x3D;&gt;&#123;</span><br><span class="line">            console.log(&#39;移除事件监听&#39;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用useEffect改造一下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">useEffect(()&#x3D;&gt;&#123;</span><br><span class="line">    document.getElementById(&#39;id&#39;).addEventListener(()&#x3D;&gt;&#123;</span><br><span class="line">            console.log(&#39;添加事件监听&#39;)</span><br><span class="line">        &#125;)</span><br><span class="line">    retun ()&#x3D;&gt;&#123;</span><br><span class="line">        document.getElementById(&#39;id&#39;).removeEventListener(()&#x3D;&gt;&#123;</span><br><span class="line">            console.log(&#39;移除事件监听&#39;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">useEffect(()&#x3D;&gt;&#123;</span><br><span class="line">    axios.get(&#39;http:&#x2F;&#x2F;xxxx.xx.xx.xxx:8080&#x2F;user&#x2F;info&#39;)</span><br><span class="line">&#125;,[])</span><br></pre></td></tr></table></figure>
+
+<p>如此，将相关的操作都放在一起，逻辑清晰了许多</p>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>useEffect 调度的effect不会阻塞浏览器更新屏幕，这让应用看起来更快，大多数情况下effect不需要同步执行，<br>如果需要同步执行的话，则可以使用 useLayoutEffect Hook。</p>
+<p>举个例子吧：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function RandowEffect() &#123;</span><br><span class="line">  const [count, setCount] &#x3D; useState(0);</span><br><span class="line">  </span><br><span class="line">  useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    if (count &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">      const randomNum &#x3D; 10 + Math.random()*2000</span><br><span class="line">      setCount(10 + Math.random()*2000);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, [count]);</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">      &lt;div onClick&#x3D;&#123;() &#x3D;&gt; setCount(0)&#125;&gt;&#123;count&#125;&lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>没次点击  div的时候，div内的值，会闪烁一下，从一个随机字符串到0，而后会再次变为一个随机字符串。</p>
+<p>因为这里有一个 重置为0的过程，页面先会渲染出一个 0  而后又迅速的渲染出一个 随机数。由于更新很快，所以会闪烁。</p>
+<p>使用 useLayoutEffect 则没有这个情况。</p>
+<p>useLayoutEffect 是内部的代码执行完毕，才会去更新视图。</p>
+<p>如果机体的性能比较好，则不会有闪烁的情况，但是你可以使用延迟的方式来展现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function RandowEffect() &#123;</span><br><span class="line">  const [count, setCount] &#x3D; useState(0);</span><br><span class="line">  </span><br><span class="line">  useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">      const pre &#x3D; Date.now(); </span><br><span class="line">        while(Date.now() - pre &lt; 500) &#123;&#125; </span><br><span class="line">    if (count &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">      const randomNum &#x3D; 10 + Math.random()*2000</span><br><span class="line">      setCount(10 + Math.random()*2000);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, [count]);</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">      &lt;div onClick&#x3D;&#123;() &#x3D;&gt; setCount(0)&#125;&gt;&#123;count&#125;&lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上所示，延迟五百毫秒，可以清楚的展示，两者的不同.</p>
+<p>当然，useEffect下，闪烁不是每一次set的时候都会发生</p>
+<h3 id="useLayoutEffect"><a href="#useLayoutEffect" class="headerlink" title="useLayoutEffect"></a>useLayoutEffect</h3><p>函数签名与 useEffect相同，但是它会在所有的DOM变更之后同步调用effect。可以使用<br>它来读取DOM布局，并同步触发重渲染。</p>
+<p>这个hook可能阻塞UI的更新，所以，官方是不建议使用的，一般会在useEffect中使用的，实在没有办法的情况下，才考虑使用 useLayoutEffect。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/03/22/React/Hook/useEffect/" data-id="ckmlzkkvy004bwioa7bo72ly0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/useEffect/" rel="tag">useEffect</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/03/22/React/Hook/useEffect%E8%BF%9B%E9%98%B6/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          useEffect 进阶
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/03/22/React/Hook/%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%B8%A7/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">渲染与帧</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Expo/">Expo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/">JS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E5%B7%A7/">技巧</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React%E6%BA%90%E7%A0%81/">React源码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/Vue3/">Vue3</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/Vue3/1%E3%80%81https/">1、https</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/API-React-createContext/" rel="tag">API  -- React.createContext</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/API-createRef/" rel="tag">API  -- createRef</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Effect-Hook/" rel="tag">Effect-Hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" rel="tag">Expo调试工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FB/" rel="tag">FB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hook%E6%84%9F%E6%82%9F/" rel="tag">Hook感悟</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mixin/" rel="tag">Mixin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RN%E4%B8%8B%E7%9A%84%E9%98%B4%E5%BD%B1%E6%95%88%E6%9E%9C/" rel="tag">RN下的阴影效果</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Props-%E5%92%8C-state/" rel="tag">React Props 和 state</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-%E4%B8%AD%E7%9A%84%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE-Immutability/" rel="tag">React 中的不可变数据 Immutability</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-%E7%BB%84%E4%BB%B6/" rel="tag">React 组件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Render-Props/" rel="tag">Render Props</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/State-Hook/" rel="tag">State-Hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/" rel="tag">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentWillMount/" rel="tag">componentWillMount</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentWillReciveProps/" rel="tag">componentWillReciveProps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentdidmount/" rel="tag">componentdidmount</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/constructor/" rel="tag">constructor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eslint/" rel="tag">eslint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/getDerivedStateFromProps/" rel="tag">getDerivedStateFromProps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" rel="tag">js的一些思想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">js的一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shouldComponentUpdate/" rel="tag">shouldComponentUpdate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useEffect/" rel="tag">useEffect</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useEffect-%E8%BF%9B%E9%98%B6/" rel="tag">useEffect 进阶</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useReducer/" rel="tag">useReducer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5/" rel="tag">一些概念</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" rel="tag">图片缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9D%91/" rel="tag">坑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%93/" rel="tag">库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A6%82%E6%8B%AC/" rel="tag">概括</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%B8%A7/" rel="tag">渲染与帧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81-setState/" rel="tag">源码--setState</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%8C%E6%99%AF/" rel="tag">背景</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" rel="tag">路径别名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" rel="tag">高阶组件</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/API-React-createContext/" style="font-size: 10px;">API  -- React.createContext</a> <a href="/tags/API-createRef/" style="font-size: 10px;">API  -- createRef</a> <a href="/tags/Effect-Hook/" style="font-size: 10px;">Effect-Hook</a> <a href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" style="font-size: 10px;">Expo调试工具</a> <a href="/tags/FB/" style="font-size: 10px;">FB</a> <a href="/tags/Hook%E6%84%9F%E6%82%9F/" style="font-size: 10px;">Hook感悟</a> <a href="/tags/Mixin/" style="font-size: 10px;">Mixin</a> <a href="/tags/RN%E4%B8%8B%E7%9A%84%E9%98%B4%E5%BD%B1%E6%95%88%E6%9E%9C/" style="font-size: 10px;">RN下的阴影效果</a> <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/React-Props-%E5%92%8C-state/" style="font-size: 10px;">React Props 和 state</a> <a href="/tags/React-%E4%B8%AD%E7%9A%84%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE-Immutability/" style="font-size: 10px;">React 中的不可变数据 Immutability</a> <a href="/tags/React-%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">React 组件</a> <a href="/tags/React-Redux/" style="font-size: 15px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 20px;">Redux</a> <a href="/tags/Render-Props/" style="font-size: 10px;">Render Props</a> <a href="/tags/State-Hook/" style="font-size: 10px;">State-Hook</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/componentWillMount/" style="font-size: 10px;">componentWillMount</a> <a href="/tags/componentWillReciveProps/" style="font-size: 10px;">componentWillReciveProps</a> <a href="/tags/componentdidmount/" style="font-size: 15px;">componentdidmount</a> <a href="/tags/constructor/" style="font-size: 10px;">constructor</a> <a href="/tags/eslint/" style="font-size: 10px;">eslint</a> <a href="/tags/getDerivedStateFromProps/" style="font-size: 10px;">getDerivedStateFromProps</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" style="font-size: 10px;">js的一些思想</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">js的一些技巧</a> <a href="/tags/shouldComponentUpdate/" style="font-size: 10px;">shouldComponentUpdate</a> <a href="/tags/useEffect/" style="font-size: 10px;">useEffect</a> <a href="/tags/useEffect-%E8%BF%9B%E9%98%B6/" style="font-size: 10px;">useEffect 进阶</a> <a href="/tags/useReducer/" style="font-size: 10px;">useReducer</a> <a href="/tags/%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">一些技巧</a> <a href="/tags/%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5/" style="font-size: 10px;">一些概念</a> <a href="/tags/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" style="font-size: 10px;">图片缓存</a> <a href="/tags/%E5%9D%91/" style="font-size: 10px;">坑</a> <a href="/tags/%E5%BA%93/" style="font-size: 10px;">库</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%A6%82%E6%8B%AC/" style="font-size: 10px;">概括</a> <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">模块化</a> <a href="/tags/%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%B8%A7/" style="font-size: 10px;">渲染与帧</a> <a href="/tags/%E6%BA%90%E7%A0%81-setState/" style="font-size: 10px;">源码--setState</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" style="font-size: 20px;">状态管理</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 15px;">继承</a> <a href="/tags/%E8%83%8C%E6%99%AF/" style="font-size: 10px;">背景</a> <a href="/tags/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" style="font-size: 10px;">路径别名</a> <a href="/tags/%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">路由</a> <a href="/tags/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">高阶组件</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/03/23/React/%E6%BA%90%E7%A0%81/setState/">源码--setState</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/23/React/%E6%8A%80%E5%B7%A7/%E7%BB%84%E4%BB%B6%E7%BB%84%E5%90%88/">一些技巧</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/23/Expo/%E9%98%B4%E5%BD%B1%E6%95%88%E6%9E%9C/">RN下的阴影效果</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/22/React/API/Context/">API  -- React.createContext</a>
+          </li>
+        
+          <li>
+            <a href="/2021/03/22/React/Hook/useReducer/">useReducer</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 WQXC<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
