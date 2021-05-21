@@ -64,6 +64,479 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-React/API/Context" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/22/React/API/Context/" class="article-date">
+  <time datetime="2021-03-22T11:30:04.000Z" itemprop="datePublished">2021-03-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/22/React/API/Context/">API  -- React.createContext</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h2><p>参考文章[<a href="https://zh-hans.reactjs.org/docs/context.html#gatsby-focus-wrapper]" target="_blank" rel="noopener">https://zh-hans.reactjs.org/docs/context.html#gatsby-focus-wrapper]</a></p>
+<p>Context 提供了一个无需为每层组件手动添加props，就能再组件树间进行数据传递的方法。<br>一般父组件向子组件传值，使用props的方式，但是，如果组件的层级是下边这样的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;First&gt;</span><br><span class="line">    &lt;Second&gt;</span><br><span class="line">        &lt;Third&gt;</span><br><span class="line">            &lt;Fourth&gt;&lt;&#x2F;Fourth&gt;</span><br><span class="line">        &lt;Third&gt;</span><br><span class="line">    &lt;&#x2F;Second&gt;</span><br><span class="line">&lt;&#x2F;First&gt;</span><br></pre></td></tr></table></figure>
+
+<p>Fourth组件需要使用First组件里的一个属性，但是，Second Third 是不需要这个属性的，但是，<br>他们依旧需要接收这个属性，并向下传递。</p>
+<p>Fourth 组件需要的属性每增加或者是减少一个，都得在这个组件树里全部改动一番。</p>
+<p>Context 就可以解决这个问题，但是，Context的应用场景是  不同层级的组件都需要访问一样的数据，比如Redux 做的那样，</p>
+<p>如果只是想简单的避免属性的层层传递，还有一些其他的方式，参考[../技巧/组件组合.md]</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const MyContext &#x3D; React.createContext(defaultValue);</span><br></pre></td></tr></table></figure>
+
+<p>defaultValue 是提供的一个默认值，如果你没有在 Provider组件的 value属性传递新的值的话，子组件接受到的</p>
+<p>Context就是 defaultValue，否则就是 你传递的值。</p>
+<p>MyContext 是一个对象，其内包含了另外两个对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;Provider,Cotumer&#125; &#x3D; MyContext</span><br></pre></td></tr></table></figure>
+
+
+<p>Provider 是一个容器组件用来接收要传递的props</p>
+<h3 id="生产context"><a href="#生产context" class="headerlink" title="生产context"></a>生产context</h3><p>如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const MyContext &#x3D; React.createContext(defaultValue);</span><br><span class="line">&lt;MyContext.Provider value&#x3D;&#123;一个值&#125;&gt;&lt;&#x2F;MyContext.Provider&gt;</span><br><span class="line"></span><br><span class="line">或者是 </span><br><span class="line">const &#123;Provider,Consumer&#125; &#x3D; React.createContext(defaultValue);</span><br><span class="line">&lt;Provider value&#x3D;&#123;一个值&#125;&gt;&lt;&#x2F;Provider&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如上，我们生产了一个context，Provider内部的所有组件都可以声明自己需要context，概念上叫做 消费 context</p>
+<h3 id="消费context"><a href="#消费context" class="headerlink" title="消费context"></a>消费context</h3><p>消费Context有几种方式，</p>
+<p>1、在类组件中</p>
+<p>声明自己需要的 contextType </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class MyClass extends React.Component &#123;&#125;</span><br><span class="line">MyClass.contextType &#x3D; MyContext;</span><br></pre></td></tr></table></figure>
+
+<p>如此，我们便可以在MyClass组件的任何生命周期内都可以访问到 context,包括Render方法，访问方式是</p>
+<p>this.context</p>
+<p>2、实验性质的写法</p>
+<p>静态属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class MyClass extends React.Component &#123;</span><br><span class="line">    static  contextType &#x3D; MyContext</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>3、函数组件中</p>
+<p>函数组件中，我们需要使用 Consumer 组件 来让函数组件可以订阅context</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function ThemedButton(props) &#123;</span><br><span class="line">  &#x2F;&#x2F; ThemedButton 组件从 context 接收 theme</span><br><span class="line">  return (</span><br><span class="line">    &lt;ThemeContext.Consumer&gt;</span><br><span class="line">      &#123;theme &#x3D;&gt; &lt;Button &#123;...props&#125; theme&#x3D;&#123;theme&#125; &#x2F;&gt;&#125;</span><br><span class="line">    &lt;&#x2F;ThemeContext.Consumer&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Consumer 内需要使用一个函数来作为子元素，这个函数接收当前的context作为参数，并返回一个React节点。</p>
+<p>函数接收的参数的值等价于组件树上方距离这个context最近的Provider提供的value值</p>
+<h2 id="Context的名称"><a href="#Context的名称" class="headerlink" title="Context的名称"></a>Context的名称</h2><p>MyContext.displayName = ‘MyDisplayName’;</p>
+<p>可以为context定义一个名称，这个名称在DevTools中很有效</p>
+<h2 id="嵌套组件中更新-Context"><a href="#嵌套组件中更新-Context" class="headerlink" title="嵌套组件中更新 Context"></a>嵌套组件中更新 Context</h2><p>通过传递一个函数来更新context</p>
+<p>创建一个Context</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">theme-context.js</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">export const ThemeContext &#x3D; React.createContext(&#123;</span><br><span class="line">  theme: themes.dark,</span><br><span class="line">  toggleTheme: () &#x3D;&gt; &#123;&#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+<p>消费Context</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">import &#123;ThemeContext&#125; from &#39;.&#x2F;theme-context&#39;;</span><br><span class="line"></span><br><span class="line">function ThemeTogglerButton() &#123;</span><br><span class="line">  &#x2F;&#x2F; Theme Toggler 按钮不仅仅只获取 theme 值，</span><br><span class="line">  &#x2F;&#x2F; 它也从 context 中获取到一个 toggleTheme 函数</span><br><span class="line">  return (</span><br><span class="line">    &lt;ThemeContext.Consumer&gt;</span><br><span class="line">      &#123;(&#123;theme, toggleTheme&#125;) &#x3D;&gt; (</span><br><span class="line">        &lt;button</span><br><span class="line">          onClick&#x3D;&#123;toggleTheme&#125;</span><br><span class="line">          style&#x3D;&#123;&#123;backgroundColor: theme.background&#125;&#125;&gt;</span><br><span class="line">          Toggle Theme</span><br><span class="line">        &lt;&#x2F;button&gt;</span><br><span class="line">      )&#125;</span><br><span class="line">    &lt;&#x2F;ThemeContext.Consumer&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default ThemeTogglerButton;</span><br></pre></td></tr></table></figure>
+
+<p>生产一个context</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class App extends React.Component &#123;</span><br><span class="line">  constructor(props) &#123;</span><br><span class="line">    super(props);</span><br><span class="line"></span><br><span class="line">    this.toggleTheme &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">      this.setState(state &#x3D;&gt; (&#123;</span><br><span class="line">        theme:</span><br><span class="line">          state.theme &#x3D;&#x3D;&#x3D; themes.dark</span><br><span class="line">            ? themes.light</span><br><span class="line">            : themes.dark,</span><br><span class="line">      &#125;));</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; State 也包含了更新函数，因此它会被传递进 context provider。</span><br><span class="line">    this.state &#x3D; &#123;</span><br><span class="line">      theme: themes.light,</span><br><span class="line">      toggleTheme: this.toggleTheme,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    &#x2F;&#x2F; 整个 state 都被传递进 provider</span><br><span class="line">    return (</span><br><span class="line">      &lt;ThemeContext.Provider value&#x3D;&#123;this.state&#125;&gt;</span><br><span class="line">        &lt;Content &#x2F;&gt;</span><br><span class="line">      &lt;&#x2F;ThemeContext.Provider&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/03/22/React/API/Context/" data-id="ckoy1slq60054cfoa8r2bhsxz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/API-React-createContext/" rel="tag">API  -- React.createContext</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-React/Hook/useReducer" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/22/React/Hook/useReducer/" class="article-date">
+  <time datetime="2021-03-22T10:53:30.000Z" itemprop="datePublished">2021-03-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/22/React/Hook/useReducer/">useReducer</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="useReducer"><a href="#useReducer" class="headerlink" title="useReducer"></a>useReducer</h2><p>useReducer是一个更高一级的 useState，对于一些state逻辑很复杂而且包含多个子值等，使用useReducer更有用。</p>
+<p>其概念和redux里的reducer是一样的。</p>
+<p>主要的作用是将一些state的操作先进行分类归纳处理。</p>
+<p>举个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">const initial &#x3D; &#123;n: 1&#125;;</span><br><span class="line">&#x2F;&#x2F;把对数据的操作封装起来</span><br><span class="line">const reducer &#x3D; (state, action) &#x3D;&gt; &#123;</span><br><span class="line">    if (action.type &#x3D;&#x3D;&#x3D; &#39;add&#39;) &#123;</span><br><span class="line">        return &#123;n: state.n + action.number&#125;;</span><br><span class="line">    &#125; else if (action.type &#x3D;&#x3D;&#x3D; &#39;multi&#39;) &#123;</span><br><span class="line">        return &#123;n: state.n * action.number&#125;;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        throw new Error(&#39;没有对应操作&#39;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const App &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    &lt;!-- 初始化 reducer --&gt;</span><br><span class="line">    const [state, dispatch] &#x3D; useReducer(reducer, initial);</span><br><span class="line"></span><br><span class="line">    return(</span><br><span class="line">        &lt;&gt;</span><br><span class="line">            &lt;button onClick&#x3D;&#123;() &#x3D;&gt; dispatch(&#123;type: &#39;add&#39;, number: 10&#125;)&#125;&gt;+10&lt;&#x2F;button&gt;</span><br><span class="line">            &lt;button onClick&#x3D;&#123;() &#x3D;&gt; dispatch(&#123;type: &#39;multi&#39;, number: 5&#125;)&#125;&gt;x5&lt;&#x2F;button&gt;</span><br><span class="line">        &lt;&#x2F;&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如上对一个state可以进行不同的操作。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/03/22/React/Hook/useReducer/" data-id="ckoy1slq9005acfoa6l2k5b9x" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/useReducer/" rel="tag">useReducer</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-React/Hook/useEffect进阶" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/22/React/Hook/useEffect%E8%BF%9B%E9%98%B6/" class="article-date">
+  <time datetime="2021-03-22T07:24:00.000Z" itemprop="datePublished">2021-03-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/22/React/Hook/useEffect%E8%BF%9B%E9%98%B6/">useEffect 进阶</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="准则-1、Effect使用的函数，要定义在Effect内"><a href="#准则-1、Effect使用的函数，要定义在Effect内" class="headerlink" title="准则 1、Effect使用的函数，要定义在Effect内"></a>准则 1、Effect使用的函数，要定义在Effect内</h2><p>举个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function doSomething() &#123;</span><br><span class="line">        console.log(someProp);</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    doSomething();</span><br><span class="line">&#125;, []);</span><br></pre></td></tr></table></figure>
+
+<p>doSomething 函数定义在外边，如果要记住所有的 外部函数都依赖了那些props或者是state是一个很难的事情，比如doSomething 依赖了 someProp。<br>一般我们将其定义在 Effect内部，如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    function doSomething() &#123;</span><br><span class="line">        console.log(someProp);</span><br><span class="line">    &#125;</span><br><span class="line">    doSomething()</span><br><span class="line">&#125;, [someProp]);</span><br></pre></td></tr></table></figure>
+<p>如上，我们一眼就能看出来 doSomething 依赖了 someProp，所以，我们也将 someProp 放置在 数组中作为Effect的第二个参数，以此避免bug。<br>比如，第一种方式，一般来说  someProp 发生变化的话 doSomething 应该被重新调用的，但是 Effect中又没有依赖这个props，所以Effect只会在<br>挂载的时候执行一次。即使 someProp 变化了，这个 doSomething 依旧不会执行，这明显是一个bug</p>
+<p>另外如果，我们在Effect内部定义了之后，依旧没有用到 props或者state，那就可以定义第二个参数 为 空数组</p>
+<p>如下所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    function doSomething() &#123;</span><br><span class="line">        console.log(&quot;Hello World&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    doSomething()</span><br><span class="line">&#125;, []);</span><br></pre></td></tr></table></figure>
+<p>这时候，我们使用 [] 来作为第二个参数，是安全的。</p>
+<h2 id="依赖频繁变化"><a href="#依赖频繁变化" class="headerlink" title="依赖频繁变化"></a>依赖频繁变化</h2><p>有个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function Counter() &#123;</span><br><span class="line">  const [count, setCount] &#x3D; useState(0);</span><br><span class="line"></span><br><span class="line">  useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    const id &#x3D; setInterval(() &#x3D;&gt; &#123;</span><br><span class="line">      setCount(count + 1); &#x2F;&#x2F; 这个 effect 依赖于 &#96;count&#96; state</span><br><span class="line">    &#125;, 1000);</span><br><span class="line">    return () &#x3D;&gt; clearInterval(id);</span><br><span class="line">  &#125;, []); &#x2F;&#x2F; 🔴 Bug: &#96;count&#96; 没有被指定为依赖</span><br><span class="line"></span><br><span class="line">  return &lt;h1&gt;&#123;count&#125;&lt;&#x2F;h1&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时，我们没有为useEffect 指定依赖，这将会造成一个问题。<br>首先：<br>setInterval 确实会被执行，而且也是每隔一秒钟执行一次，但是，count却永远是 1。</p>
+<p>这是因为 useEffect 执行的时候，React会创建一个闭包，并将当前的count（函数组件当前的state也都会保存在里边）保存在闭包中，<br>初始值是0，所以 每隔一秒中调用 setCount (0+1),所以说count永远都是1。</p>
+<p>我们为Effect指定依赖列表来修复这个问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function Counter() &#123;</span><br><span class="line">  const [count, setCount] &#x3D; useState(0);</span><br><span class="line"></span><br><span class="line">  useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    const id &#x3D; setInterval(() &#x3D;&gt; &#123;</span><br><span class="line">      setCount(count + 1); &#x2F;&#x2F; 这个 effect 依赖于 &#96;count&#96; state</span><br><span class="line">    &#125;, 1000);</span><br><span class="line">    return () &#x3D;&gt; clearInterval(id);</span><br><span class="line">  &#125;, [count]); &#x2F;&#x2F; 🔴 Bug: &#96;count&#96; 没有被指定为依赖</span><br><span class="line"></span><br><span class="line">  return &lt;h1&gt;&#123;count&#125;&lt;&#x2F;h1&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样 count变化的时候 Effect就会重新执行，重新构建一个 闭包，闭包内的count就是当前的count。setCount(count+1)的表现就是正常的。</p>
+<p>但是，这样一来，每一次count改变额时候定时器都会被重置。<br>而且，每一个setInterval被清楚之前，都会调用一次。</p>
+<p>要解决这个问题，我们可以不在Effect中引用count。比如使用setState的 函数形式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">function Counter() &#123;</span><br><span class="line">  const [count, setCount] &#x3D; useState(0);</span><br><span class="line"></span><br><span class="line">  useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    const id &#x3D; setInterval(() &#x3D;&gt; &#123;</span><br><span class="line">      setCount(c &#x3D;&gt; c + 1); &#x2F;&#x2F; ✅ 在这不依赖于外部的 &#96;count&#96; 变量</span><br><span class="line">    &#125;, 1000);</span><br><span class="line">    return () &#x3D;&gt; clearInterval(id);</span><br><span class="line">  &#125;, []); &#x2F;&#x2F; ✅ 我们的 effect 不使用组件作用域中的任何变量</span><br><span class="line"></span><br><span class="line">  return &lt;h1&gt;&#123;count&#125;&lt;&#x2F;h1&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数形式的 setState相比对象形式的 setState，它只是描述要如何更新stat额，而不是自身去获取state。</p>
+<p>如此一来，我们在Effect中就没有在引用count了，所以依赖列表就不需要了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/03/22/React/Hook/useEffect%E8%BF%9B%E9%98%B6/" data-id="ckoy1slq80058cfoadwjt30k0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/useEffect-%E8%BF%9B%E9%98%B6/" rel="tag">useEffect 进阶</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-React/Hook/useEffect" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/22/React/Hook/useEffect/" class="article-date">
+  <time datetime="2021-03-22T02:53:28.000Z" itemprop="datePublished">2021-03-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/22/React/Hook/useEffect/">useEffect</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="useEffect"><a href="#useEffect" class="headerlink" title="useEffect"></a>useEffect</h2><p>useEffect 也叫做 副作用钩子函数。顾名思义，他的作用就是用来执行一些副作用操作。</p>
+<h3 id="副作用"><a href="#副作用" class="headerlink" title="副作用"></a>副作用</h3><p>什么算是副作用呢？比如一些IO操作，HTTP请求等。</p>
+<p>副作用和纯函数是一个相对的概念，纯函数是说返回值依赖于他的参数，给定相同的参数，必然返回相等的返回值。<br>而如何函数内部做了和运算返回值没有关系的事情，比如修改了全局变量，修改了传入的参数，发送请求，console，手动修改DOM等都是副作用</p>
+<h3 id="类比类组件"><a href="#类比类组件" class="headerlink" title="类比类组件"></a>类比类组件</h3><p>useEffect Hook 可以看做是  componentDidMount，componentDidUpdate 和 componentWillUnmount 这三个函数的组合。</p>
+<h3 id="举个例子"><a href="#举个例子" class="headerlink" title="举个例子"></a>举个例子</h3><p>一个useEffect 是类似于下边这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const [count, setCount] &#x3D; useState(0);</span><br><span class="line"></span><br><span class="line">useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    ()&#x3D;&gt;&#123;&#125;</span><br><span class="line">    return () &#x3D;&gt; ()&#x3D;&gt;&#123;&#125;;</span><br><span class="line">&#125;, [依赖的变量]);</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="useEffect执行时机"><a href="#useEffect执行时机" class="headerlink" title="useEffect执行时机"></a>useEffect执行时机</h3><p>useEffect 会在DOM更新之后调用，也就是  组件挂载 和 更新阶段执行，也就是 componentDidMount，componentDidUpdate 两个类的生命周期方法中。</p>
+<p>其实我们无需去考虑生命周期，而只需要记住，useEffect 会在DOM更新之后调用，而无需在意它是mount还是update</p>
+<h3 id="useEffect-清理函数"><a href="#useEffect-清理函数" class="headerlink" title="useEffect 清理函数"></a>useEffect 清理函数</h3><p>useEffect会返回一个函数，这个函数会在下一次 useEffect执行的时候执行。<br>举个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);</span><br><span class="line">    return function cleanup() &#123;</span><br><span class="line">      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>如上所示，下一次 useEffect 执行的时候，上一次的  cleanup会执行，一般这个都是用来清理一些东西。</p>
+<p>但是，这里需要注意一点的是，useEffect 可以接受第二个参数，一个数组，表示依赖的状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);</span><br><span class="line">    return function cleanup() &#123;</span><br><span class="line">      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;,[]);</span><br></pre></td></tr></table></figure>
+
+<p>如果是空数组，表示 useEffect 只会执行一次，这个时候，return 的清理函数就没有意义，因为清理函数是在下一次useEffect执行的之前之前，这里只会执行一次，就没有下一次了，清理函数自然就不会执行了。</p>
+<h3 id="为什么要使用useEffect"><a href="#为什么要使用useEffect" class="headerlink" title="为什么要使用useEffect"></a>为什么要使用useEffect</h3><p>class组件中，我们经常将相关的逻辑分散在不同的生命函数中，而将，不同的逻辑放在同一个生命函数中。</p>
+<p>比如我们要添加事件订阅，在mount中addEventListener 在 Unmount中移除 removeEventListener。</p>
+<p>同样的，我们在 mount中也会做很多别的操作，比如 网络请求。</p>
+<p>举个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Example2 extends React.Component &#123;</span><br><span class="line">    componentDidMount()&#123;</span><br><span class="line">        document.getElementById(&#39;id&#39;).addEventListener(()&#x3D;&gt;&#123;</span><br><span class="line">            console.log(&#39;添加事件监听&#39;)</span><br><span class="line">        &#125;)</span><br><span class="line">        axios.get(&#39;http:&#x2F;&#x2F;xxxx.xx.xx.xxx:8080&#x2F;user&#x2F;info&#39;)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    componentWillUnmount()&#123;</span><br><span class="line">         document.getElementById(&#39;id&#39;).removeEventListener(()&#x3D;&gt;&#123;</span><br><span class="line">            console.log(&#39;移除事件监听&#39;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用useEffect改造一下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">useEffect(()&#x3D;&gt;&#123;</span><br><span class="line">    document.getElementById(&#39;id&#39;).addEventListener(()&#x3D;&gt;&#123;</span><br><span class="line">            console.log(&#39;添加事件监听&#39;)</span><br><span class="line">        &#125;)</span><br><span class="line">    retun ()&#x3D;&gt;&#123;</span><br><span class="line">        document.getElementById(&#39;id&#39;).removeEventListener(()&#x3D;&gt;&#123;</span><br><span class="line">            console.log(&#39;移除事件监听&#39;)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">useEffect(()&#x3D;&gt;&#123;</span><br><span class="line">    axios.get(&#39;http:&#x2F;&#x2F;xxxx.xx.xx.xxx:8080&#x2F;user&#x2F;info&#39;)</span><br><span class="line">&#125;,[])</span><br></pre></td></tr></table></figure>
+
+<p>如此，将相关的操作都放在一起，逻辑清晰了许多</p>
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><p>useEffect 调度的effect不会阻塞浏览器更新屏幕，这让应用看起来更快，大多数情况下effect不需要同步执行，<br>如果需要同步执行的话，则可以使用 useLayoutEffect Hook。</p>
+<p>举个例子吧：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function RandowEffect() &#123;</span><br><span class="line">  const [count, setCount] &#x3D; useState(0);</span><br><span class="line">  </span><br><span class="line">  useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">    if (count &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">      const randomNum &#x3D; 10 + Math.random()*2000</span><br><span class="line">      setCount(10 + Math.random()*2000);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, [count]);</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">      &lt;div onClick&#x3D;&#123;() &#x3D;&gt; setCount(0)&#125;&gt;&#123;count&#125;&lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>没次点击  div的时候，div内的值，会闪烁一下，从一个随机字符串到0，而后会再次变为一个随机字符串。</p>
+<p>因为这里有一个 重置为0的过程，页面先会渲染出一个 0  而后又迅速的渲染出一个 随机数。由于更新很快，所以会闪烁。</p>
+<p>使用 useLayoutEffect 则没有这个情况。</p>
+<p>useLayoutEffect 是内部的代码执行完毕，才会去更新视图。</p>
+<p>如果机体的性能比较好，则不会有闪烁的情况，但是你可以使用延迟的方式来展现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function RandowEffect() &#123;</span><br><span class="line">  const [count, setCount] &#x3D; useState(0);</span><br><span class="line">  </span><br><span class="line">  useEffect(() &#x3D;&gt; &#123;</span><br><span class="line">      const pre &#x3D; Date.now(); </span><br><span class="line">        while(Date.now() - pre &lt; 500) &#123;&#125; </span><br><span class="line">    if (count &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">      const randomNum &#x3D; 10 + Math.random()*2000</span><br><span class="line">      setCount(10 + Math.random()*2000);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;, [count]);</span><br><span class="line"></span><br><span class="line">  return (</span><br><span class="line">      &lt;div onClick&#x3D;&#123;() &#x3D;&gt; setCount(0)&#125;&gt;&#123;count&#125;&lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上所示，延迟五百毫秒，可以清楚的展示，两者的不同.</p>
+<p>当然，useEffect下，闪烁不是每一次set的时候都会发生</p>
+<h3 id="useLayoutEffect"><a href="#useLayoutEffect" class="headerlink" title="useLayoutEffect"></a>useLayoutEffect</h3><p>函数签名与 useEffect相同，但是它会在所有的DOM变更之后同步调用effect。可以使用<br>它来读取DOM布局，并同步触发重渲染。</p>
+<p>这个hook可能阻塞UI的更新，所以，官方是不建议使用的，一般会在useEffect中使用的，实在没有办法的情况下，才考虑使用 useLayoutEffect。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/03/22/React/Hook/useEffect/" data-id="ckoy1slq70057cfoaelsgbvae" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/useEffect/" rel="tag">useEffect</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-React/Hook/渲染与帧" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/22/React/Hook/%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%B8%A7/" class="article-date">
+  <time datetime="2021-03-22T02:07:54.000Z" itemprop="datePublished">2021-03-22</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/22/React/Hook/%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%B8%A7/">渲染与帧</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="帧的概念"><a href="#帧的概念" class="headerlink" title="帧的概念"></a>帧的概念</h2><p>参考文章：[<a href="https://musicfe.dev/react-hooks/]" target="_blank" rel="noopener">https://musicfe.dev/react-hooks/]</a></p>
+<p>我们可以认为每一次组件的渲染被认为是一帧</p>
+<h2 id="每一帧都拥有自己的状态"><a href="#每一帧都拥有自己的状态" class="headerlink" title="每一帧都拥有自己的状态"></a>每一帧都拥有自己的状态</h2><p>当然，这个状态在函数组件中表现的更为明显，举个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">function Example2() &#123;</span><br><span class="line">    const [count, setCount] &#x3D; useState(0);</span><br><span class="line"></span><br><span class="line">    const handleClick &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">        setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">            setCount(count + 1);</span><br><span class="line">        &#125;, 3000);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    return (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;p&gt;&#123;count&#125;&lt;&#x2F;p&gt;</span><br><span class="line">            &lt;button onClick&#x3D;&#123;() &#x3D;&gt; setCount(count + 1)&#125;&gt;</span><br><span class="line">                setCount</span><br><span class="line">            &lt;&#x2F;button&gt;</span><br><span class="line">            &lt;button onClick&#x3D;&#123;handleClick&#125;&gt;</span><br><span class="line">                Delay setCount</span><br><span class="line">            &lt;&#x2F;button&gt;</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们定义了一个组件 Example2,考虑一下先点击一下 Delay setCount 按钮，而后在三秒内连续点击三次setCount按钮，最终 count 的值会是多少呢？<br>直观上来看count应该是 4。但是，事实上 count应该是1。</p>
+<p>步骤如下：</p>
+<p>1、点击 Delay setCount ，setTimeout函数等待执行<br>2、点击了三次setCount (当然，这是在seTimeout等待执行的三秒内点击的三次)，count变为3<br>3、seTimeout 定义的回调函数执行了，此时的核心是 回调函数里的count  是多少？</p>
+<p>考虑一下，我们在点击 Delay setCount 按钮的时候，count是多少呢？ 此时是 0，应该是毫无疑问的。<br>也就是 三秒之后 执行 setCount(0 + 1);</p>
+<p>接下来是点击了三次 setCount 按钮之后，count 变成了3</p>
+<p>此时的count并不会影响setTimeout函数内的count值，这就是React中帧的概念，每一帧的状态都是没有一点关系的独立个体。</p>
+<h3 id="详细的分析一下"><a href="#详细的分析一下" class="headerlink" title="详细的分析一下"></a>详细的分析一下</h3><p>Delay setCount 点击的时候做了什么？<br>首先是  handleClick 被调用了 ，count是多少呢？我们可以认为是下边这样的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function Example2() &#123;</span><br><span class="line">&lt;!-- 这里count来自 const [count, setCount] &#x3D; useState(0);  --&gt;</span><br><span class="line">const count &#x3D; 0</span><br><span class="line"> const handleClick &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">        setCount(0 + 1);</span><br><span class="line">    &#125;, 3000);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来，第一次点击 setCount 按钮, count 被更新了 函数重新执行，以渲染。<br>count 变成了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function Example2() &#123;</span><br><span class="line">const count &#x3D; 1</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来是第二次，第三次，函数依旧会重新执行，count 就变成了 3</p>
+<p>最后，setTimeout的回调函数到期开始执行，执行的方法当然是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setCount(0 + 1);</span><br></pre></td></tr></table></figure>
+
+<p>count 又恢复到了 1</p>
+<h3 id="类组件中的表现"><a href="#类组件中的表现" class="headerlink" title="类组件中的表现"></a>类组件中的表现</h3><p>函数组件 或者是叫做 hook组件，我们应该将其和类组件完全的分割开来，hook本身不是用来代替类组件的。同样的例子，我们看一下在类组件中的表现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">class Example2 extends React.Component &#123;</span><br><span class="line">    constructor(props)&#123;</span><br><span class="line">        super(props)</span><br><span class="line">        this.state&#x3D;&#123;</span><br><span class="line">            count:0</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    handleClick &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">        setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">            alert(this.state.count);</span><br><span class="line">        &#125;, 3000);</span><br><span class="line">    &#125;;</span><br><span class="line">    increment(state, props) &#123;</span><br><span class="line">        return &#123;count: state.count + 1&#125;;</span><br><span class="line">      &#125;</span><br><span class="line">    render() &#123;</span><br><span class="line">        return (</span><br><span class="line">            &lt;div&gt;</span><br><span class="line">                &lt;h2&gt;Example2&lt;&#x2F;h2&gt;</span><br><span class="line">                &lt;p&gt;&#123;this.state.count&#125;&lt;&#x2F;p&gt;</span><br><span class="line">                &lt;button onClick&#x3D;&#123;() &#x3D;&gt; this.setState(this.increment)&#125;&gt;</span><br><span class="line">                    setCount</span><br><span class="line">                &lt;&#x2F;button&gt;</span><br><span class="line">                &lt;button onClick&#x3D;&#123;this.handleClick&#125;&gt;Alert Count&lt;&#x2F;button&gt;</span><br><span class="line">            &lt;&#x2F;div&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default Example2</span><br></pre></td></tr></table></figure>
+
+<p>调用一次Alert Count 按钮，而后点击 三次  setCount ，最后alert 的 count值是 4.</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>为什么出现上边这样的差距呢？核心是 在于 this。</p>
+<p>类组件有自己的实例，每一次的修改是在实例上修改的，this永远指向的是最新的实例，最新实例拥有最新的state。</p>
+<p>函数组件没有自己的实例，每次渲染都是执行一次函数，函数执行完毕之后就被销毁了，每一次渲染，<br>虽然函数组件内的函数，属性都看着和原来的一样，但是，实际上他们已经被销毁之后又再次创建了。</p>
+<p>当然，函数组件可以使用 useRef来实现跨组件的保存状态</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/03/22/React/Hook/%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%B8%A7/" data-id="ckoy1slqa005ecfoa89ky5ah4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%B8%A7/" rel="tag">渲染与帧</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-React/API/ref" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/19/React/API/ref/" class="article-date">
+  <time datetime="2021-03-19T02:15:28.000Z" itemprop="datePublished">2021-03-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/19/React/API/ref/">API  -- createRef</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="createRef"><a href="#createRef" class="headerlink" title="createRef"></a>createRef</h2><p>创建一个通过ref属性附加到React元素的ref</p>
+<p>只能使用在 HTML元素 或者是 类组件中，函数组件中无效</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>DOM时代，使用document.getElementById 来获取DOM，进而操作</p>
+<p>但是在虚拟DOM时代，这样的方式是行不通的，所以，虚拟DOM都会提供一个ref属性来绑定真实DOM</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class MyComponent extends React.Component &#123;</span><br><span class="line">  constructor(props) &#123;</span><br><span class="line">    super(props);</span><br><span class="line">    this.myRef &#x3D; React.createRef();</span><br><span class="line">  &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return &lt;div ref&#x3D;&#123;this.myRef&#125; &#x2F;&gt;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>像下边这样拿到DOM</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const node &#x3D; this.myRef.current;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="ref的值"><a href="#ref的值" class="headerlink" title="ref的值"></a>ref的值</h2><p>1、ref用在html元素上的时候，current属性接收底层的DOM作为其值</p>
+<p>2、ref用在类组件上的话，current 的值是 类组件的实例,因为拿到的是类组件的实例，所以可以调用实例里的方法，<br>    如此便可以在父组件上操控子组件的方法</p>
+<p>3、函数组件没有实例，所以也不会有ref</p>
+<h2 id="ref属性更新的时机"><a href="#ref属性更新的时机" class="headerlink" title="ref属性更新的时机"></a>ref属性更新的时机</h2><p>在componentDidMount之前，或者componentDidUpdate 触发之前更新ref属性的值</p>
+<h2 id="ref回调函数"><a href="#ref回调函数" class="headerlink" title="ref回调函数"></a>ref回调函数</h2><p>React 将在组件挂载时，会调用 ref 回调函数并传入 DOM 元素，当卸载时调用它并传入 null。在 componentDidMount 或 componentDidUpdate 触发前，React 会保证 refs 一定是最新的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">this.textInput &#x3D; null</span><br><span class="line">this.setTextInputRef &#x3D; element &#x3D;&gt; &#123;</span><br><span class="line">      this.textInput &#x3D; element;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"> &lt;input</span><br><span class="line">          type&#x3D;&quot;text&quot;</span><br><span class="line">          ref&#x3D;&#123;this.setTextInputRef&#125;</span><br><span class="line">        &#x2F;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>ref 属性接收一个回调函数，来讲DOM元素存储在组件的变量中</p>
+<p>回调形式的ref，可以在组件之间传递</p>
+<p>举个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function CustomTextInput(props) &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;input ref&#x3D;&#123;props.inputRef&#125; &#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Parent extends React.Component &#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;CustomTextInput</span><br><span class="line">        inputRef&#x3D;&#123;el &#x3D;&gt; this.inputElement &#x3D; el&#125;</span><br><span class="line">      &#x2F;&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在上面的例子中，Parent 把它的 refs 回调函数当作 inputRef props 传递给了 CustomTextInput，而且 CustomTextInput 把相同的函数作为特殊的 ref 属性传递给了 <input>。结果是，在 Parent 中的 this.inputElement 会被设置为与 CustomTextInput 中的 input 元素相对应的 DOM 节点。</p>
+<h2 id="ref转发"><a href="#ref转发" class="headerlink" title="ref转发"></a>ref转发</h2><p>在父组件中为子组件添加ref可以访问子组件的实例，但是，这样就打破了组件的封装原则，耦合加深，<br>所以可以使用ref转发来做到这样的事情。</p>
+<p>ref转发就是允许组件接收ref，并将其向下转发给子组件。</p>
+<h3 id="forwardRef"><a href="#forwardRef" class="headerlink" title="forwardRef"></a>forwardRef</h3><p>porps对象里是没有ref属性的，所以，ref不能被转发，forwardRef 做的就是接受ref转发给需要的组件。</p>
+<p>1、实现对函数组件的ref引用，我们知道ref只能针对 html元素或者是class组件有效，函数组件是无效的</p>
+<p>先使用 forwardRef 将ref属性转发给 组件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const FancyButton &#x3D; React.forwardRef((props, ref) &#x3D;&gt; (</span><br><span class="line">    &lt;button ref&#x3D;&#123;ref&#125; className&#x3D;&quot;FancyButton&quot; style&#x3D;&#123;&#123;width:&#39;200px&#39;,border:&#39;1px solid red&#39;,margin:&quot;20px&quot;&#125;&#125;&gt;</span><br><span class="line">      &#123;props.children&#125;</span><br><span class="line">    &lt;&#x2F;button&gt;</span><br><span class="line">));</span><br><span class="line">export default FancyButton</span><br></pre></td></tr></table></figure>
+
+
+<p>使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import FbButton from &#39;.&#x2F;components&#x2F;Ref&#39;</span><br><span class="line"></span><br><span class="line">this.ref &#x3D; React.createRef()</span><br><span class="line"></span><br><span class="line">&lt;FbButton ref&#x3D;&#123;this.ref&#125;&gt;这是一个button&lt;&#x2F;FbButton&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如此我们便可以拿到button的DOM</p>
+<h3 id="高阶组件中的ref转发"><a href="#高阶组件中的ref转发" class="headerlink" title="高阶组件中的ref转发"></a>高阶组件中的ref转发</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function logProps(WrappedComponent) &#123;</span><br><span class="line">  class LogProps extends React.Component &#123;</span><br><span class="line">    componentDidUpdate(prevProps) &#123;</span><br><span class="line">      console.log(&#39;old props:&#39;, prevProps);</span><br><span class="line">      console.log(&#39;new props:&#39;, this.props);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    render() &#123;</span><br><span class="line">      return &lt;WrappedComponent &#123;...this.props&#125; &#x2F;&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return LogProps;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个要被包装的组件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class FancyButton extends React.Component &#123;</span><br><span class="line">  focus() &#123;</span><br><span class="line">    &#x2F;&#x2F; ...</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  render()&#123;</span><br><span class="line">      return (</span><br><span class="line">        &lt;button ref&#x3D;&#123;ref&#125; className&#x3D;&quot;FancyButton&quot; style&#x3D;&#123;&#123;width:&#39;200px&#39;,border:&#39;1px solid red&#39;,margin:&quot;20px&quot;&#125;&#125;&gt;</span><br><span class="line">            &#123;props.children&#125;</span><br><span class="line">        &lt;&#x2F;button&gt;</span><br><span class="line">      )</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 我们导出 LogProps，而不是 FancyButton。</span><br><span class="line">&#x2F;&#x2F; 虽然它也会渲染一个 FancyButton。</span><br><span class="line">export default logProps(FancyButton);</span><br></pre></td></tr></table></figure>
+
+<p>使用的时候</p>
+<p>我们认为ref指向的是 FancyButton，但是事实上ref指向的是logProps。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import FancyButton from &#39;.&#x2F;FancyButton&#39;;</span><br><span class="line"></span><br><span class="line">const ref &#x3D; React.createRef();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 我们导入的 FancyButton 组件是高阶组件（HOC）LogProps。</span><br><span class="line">&#x2F;&#x2F; 尽管渲染结果将是一样的，</span><br><span class="line">&#x2F;&#x2F; 但我们的 ref 将指向 LogProps 而不是内部的 FancyButton 组件！</span><br><span class="line">&#x2F;&#x2F; 这意味着我们不能调用例如 ref.current.focus() 这样的方法</span><br><span class="line">&lt;FancyButton</span><br><span class="line">  label&#x3D;&quot;Click Me&quot;</span><br><span class="line">  handleClick&#x3D;&#123;handleClick&#125;</span><br><span class="line">  ref&#x3D;&#123;ref&#125;</span><br><span class="line">&#x2F;&gt;;</span><br></pre></td></tr></table></figure>
+
+
+<p>接下来，我们仍ref返回的是FancyButton 的引用</p>
+<p>修改高阶组件logProps</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">function logProps(WrappedComponent) &#123;</span><br><span class="line">  class LogProps extends React.Component &#123;</span><br><span class="line">    componentDidUpdate(prevProps) &#123;</span><br><span class="line">      console.log(&#39;old props:&#39;, prevProps);</span><br><span class="line">      console.log(&#39;new props:&#39;, this.props);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    render() &#123;</span><br><span class="line">      const &#123;forwardedRef, ...rest&#125; &#x3D; this.props;</span><br><span class="line">      return &lt;WrappedComponent ref&#x3D;&#123;forwardedRef&#125; &#123;...rest&#125;  &#x2F;&gt;;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  return React.forwardRef((props, ref) &#x3D;&gt; &#123;</span><br><span class="line">    return &lt;LogProps &#123;...props&#125; forwardedRef&#x3D;&#123;ref&#125; &#x2F;&gt;;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如此在使用的时候</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;FancyButton</span><br><span class="line">  label&#x3D;&quot;Click Me&quot;</span><br><span class="line">  handleClick&#x3D;&#123;handleClick&#125;</span><br><span class="line">  ref&#x3D;&#123;ref&#125;</span><br><span class="line">&#x2F;&gt;;</span><br></pre></td></tr></table></figure>
+
+
+<p>ref指向的便是 FancyButton 的实例，这里，我们将ref转给了 FancyButton的实例，同样的我们可以将ref再向下转。</p>
+<p>修改 FancyButton 组件,这里 FancyButton 是函数组件的形式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const FancyButton &#x3D; React.forwardRef((props, ref) &#x3D;&gt; (</span><br><span class="line">    &lt;button ref&#x3D;&#123;ref&#125; className&#x3D;&quot;FancyButton&quot; style&#x3D;&#123;&#123;width:&#39;200px&#39;,border:&#39;1px solid red&#39;,margin:&quot;20px&quot;&#125;&#125;&gt;</span><br><span class="line">      &#123;props.children&#125;</span><br><span class="line">    &lt;&#x2F;button&gt;</span><br><span class="line">));</span><br></pre></td></tr></table></figure>
+
+<p>这个时候，如下使用的时候</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;FancyButton</span><br><span class="line">  label&#x3D;&quot;Click Me&quot;</span><br><span class="line">  handleClick&#x3D;&#123;handleClick&#125;</span><br><span class="line">  ref&#x3D;&#123;ref&#125;</span><br><span class="line">&#x2F;&gt;;</span><br></pre></td></tr></table></figure>
+
+<p>ref 指向的便是 button这个真是的DOM</p>
+<p>forwardRef 针对函数组件使用，而类组件是不建议使用的，如果要使用的话，就需要将其转换为函数组件，比如下边这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">function OutWrapper() &#123;</span><br><span class="line">    class FancyButton extends React.Component &#123;</span><br><span class="line">        focus() &#123;</span><br><span class="line">          &#x2F;&#x2F; ...</span><br><span class="line">        &#125;</span><br><span class="line">        componentDidMount() &#123;</span><br><span class="line">            console.log(&quot;FancyButtonFancyButtonFancyButton&quot;, this.props.inputRef)</span><br><span class="line">        &#125;</span><br><span class="line">        render() &#123;</span><br><span class="line">            const &#123; inputRef &#125; &#x3D; this.props;</span><br><span class="line">            return (</span><br><span class="line">                &lt;button ref&#x3D;&#123;inputRef&#125; className&#x3D;&quot;FancyButton&quot; style&#x3D;&#123;&#123;width:&#39;200px&#39;,border:&#39;1px solid red&#39;,margin:&quot;20px&quot;&#125;&#125;&gt;</span><br><span class="line">                  &#123;this.props.children&#125;</span><br><span class="line">              &lt;&#x2F;button&gt;</span><br><span class="line">                </span><br><span class="line">            )</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return React.forwardRef((props, ref) &#x3D;&gt; &#123;</span><br><span class="line">        return &lt;FancyButton &#123;...props&#125; inputRef&#x3D;&#123;ref&#125; &#x2F;&gt;;</span><br><span class="line">      &#125;);</span><br><span class="line">&#125;</span><br><span class="line">  export default logProps(OutWrapper());</span><br></pre></td></tr></table></figure>
+
+
+<p>如上所示,在高阶组件 logProps中，将ref转发给了真实的DOM</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/03/19/React/API/ref/" data-id="ckoy1slq70055cfoa8gcl73hq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/API-createRef/" rel="tag">API  -- createRef</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Expo/图片缓存" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/03/18/Expo/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" class="article-date">
@@ -102,7 +575,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/18/Expo/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" data-id="ckmuaxwzh0010mloa2albgjyg" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/18/Expo/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" data-id="ckoy1slof0002cfoa38i0c6sn" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" rel="tag">图片缓存</a></li></ul>
@@ -153,7 +626,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/9%E3%80%81%E6%80%BB%E7%BB%93/" data-id="ckmuaxx0x004mmloafotvd2pu" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/9%E3%80%81%E6%80%BB%E7%BB%93/" data-id="ckoy1slqx0076cfoa7l3l95lp" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a></li></ul>
@@ -196,7 +669,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/8%E3%80%81getSnapshotBeforeUpdate/" data-id="ckmuaxx0r0046mloaa1s7fedw" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/8%E3%80%81getSnapshotBeforeUpdate/" data-id="ckoy1slqx0074cfoahl58ap8a" class="article-share-link">Share</a>
       
       
     </footer>
@@ -236,300 +709,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/6%E3%80%81componentWillUnmount/" data-id="ckmuaxx0p0040mloa1mqpeokl" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/6%E3%80%81componentWillUnmount/" data-id="ckoy1slqw0071cfoa6y4zeam8" class="article-share-link">Share</a>
       
       
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/生命周期函数/5、getDerivedStateFromProps" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/5%E3%80%81getDerivedStateFromProps/" class="article-date">
-  <time datetime="2021-03-17T06:02:04.000Z" itemprop="datePublished">2021-03-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/5%E3%80%81getDerivedStateFromProps/">getDerivedStateFromProps</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="getDerivedStateFromProps"><a href="#getDerivedStateFromProps" class="headerlink" title="getDerivedStateFromProps"></a>getDerivedStateFromProps</h2><p>作用：让组件在 props 变化时更新 state。</p>
-<p>但是，直接复制props给state是不可以的，state的来源应该尽可能的单一，<br>所谓的单一，也就是 state要么是组件自身控制的，或者是完全来源于props，而不需要自身来控制，就像是受控组件那样</p>
-<p>所以说这个函数的用处是很小的。</p>
-<p>这个hook更像是 vue的watch，<br>父组件更新了，或者是props改变了，这个方法就会被调用。</p>
-<p>所在组件的state更新了也会调用</p>
-<p>可以在这个方法中拿到props来更新子组件的state。</p>
-<h2 id="使用准则"><a href="#使用准则" class="headerlink" title="使用准则"></a>使用准则</h2><p>此方法应该适用于state用于取决于props的组件</p>
-<h2 id="一个例子："><a href="#一个例子：" class="headerlink" title="一个例子："></a>一个例子：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">class Example extends Component &#123;</span><br><span class="line">  state &#x3D; &#123;</span><br><span class="line">    filterText: &quot;&quot;,</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; *******************************************************</span><br><span class="line">  &#x2F;&#x2F; 注意：这个例子不是建议的方法。</span><br><span class="line">  &#x2F;&#x2F; 下面的例子才是建议的方法。</span><br><span class="line">  &#x2F;&#x2F; *******************************************************</span><br><span class="line"></span><br><span class="line">  static getDerivedStateFromProps(props, state) &#123;</span><br><span class="line">    &#x2F;&#x2F; 列表变化或者过滤文本变化时都重新过滤。</span><br><span class="line">    &#x2F;&#x2F; 注意我们要存储 prevFilterText 和 prevPropsList 来检测变化。</span><br><span class="line">    if (</span><br><span class="line">      props.list !&#x3D;&#x3D; state.prevPropsList ||</span><br><span class="line">      state.prevFilterText !&#x3D;&#x3D; state.filterText</span><br><span class="line">    ) &#123;</span><br><span class="line">      return &#123;</span><br><span class="line">        prevPropsList: props.list,</span><br><span class="line">        prevFilterText: state.filterText,</span><br><span class="line">        filteredList: props.list.filter(item &#x3D;&gt; item.text.includes(state.filterText))</span><br><span class="line">      &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    return null;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  handleChange &#x3D; event &#x3D;&gt; &#123;</span><br><span class="line">    this.setState(&#123; filterText: event.target.value &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    return (</span><br><span class="line">      &lt;Fragment&gt;</span><br><span class="line">        &lt;input onChange&#x3D;&#123;this.handleChange&#125; value&#x3D;&#123;this.state.filterText&#125; &#x2F;&gt;</span><br><span class="line">        &lt;ul&gt;&#123;this.state.filteredList.map(item &#x3D;&gt; &lt;li key&#x3D;&#123;item.id&#125;&gt;&#123;item.text&#125;&lt;&#x2F;li&gt;)&#125;&lt;&#x2F;ul&gt;</span><br><span class="line">      &lt;&#x2F;Fragment&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>getDerivedStateFromProps 派生了三个state：prevPropsList、prevFilterText、filteredList</p>
-<p>这个组件在getDerivedStateFromProps  中过滤了一下，避免重复的计算 只有当 props.list 或者是prevFilterText 发生变化了之后，才会重新计算。</p>
-<p>这个模式避免了重复了计算，但是，太过于复杂，需要追踪 props和state的变化</p>
-<p>可以使用下边这样的方式来简化</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">class Example extends PureComponent &#123;</span><br><span class="line">  &#x2F;&#x2F; state 只需要保存 filter 的值：</span><br><span class="line">  state &#x3D; &#123;</span><br><span class="line">    filterText: &quot;&quot;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  handleChange &#x3D; event &#x3D;&gt; &#123;</span><br><span class="line">    this.setState(&#123; filterText: event.target.value &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    &#x2F;&#x2F; PureComponent 的 render 只有</span><br><span class="line">    &#x2F;&#x2F; 在 props.list 或 state.filterText 变化时才会调用</span><br><span class="line">    const filteredList &#x3D; this.props.list.filter(</span><br><span class="line">      item &#x3D;&gt; item.text.includes(this.state.filterText)</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    return (</span><br><span class="line">      &lt;Fragment&gt;</span><br><span class="line">        &lt;input onChange&#x3D;&#123;this.handleChange&#125; value&#x3D;&#123;this.state.filterText&#125; &#x2F;&gt;</span><br><span class="line">        &lt;ul&gt;&#123;filteredList.map(item &#x3D;&gt; &lt;li key&#x3D;&#123;item.id&#125;&gt;&#123;item.text&#125;&lt;&#x2F;li&gt;)&#125;&lt;&#x2F;ul&gt;</span><br><span class="line">      &lt;&#x2F;Fragment&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>每次render（也就是 state更新或者是props更新）之后都会调用，然后重新渲染，但是，这样就会出现一些不需要的渲染，<br>比如，父组件的state发生了变化，但是，props.list 和 filterText 都 没有变化的时候，渲染是多余的。<br>因为是 继承 了PureComponent 所以，过过滤掉一些多余的渲染，但是，别的props变化的时候，还是会触发渲染的。<br>在过滤很大的列表的时候，效率不好</p>
-<p>React提供了 memoization 函数来帮助不必要的过滤</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">import memoize from &quot;memoize-one&quot;;</span><br><span class="line"></span><br><span class="line">class Example extends Component &#123;</span><br><span class="line">  &#x2F;&#x2F; state 只需要保存当前的 filter 值：</span><br><span class="line">  state &#x3D; &#123; filterText: &quot;&quot; &#125;;</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; 在 list 或者 filter 变化时，重新运行 filter：</span><br><span class="line">  filter &#x3D; memoize(</span><br><span class="line">    (list, filterText) &#x3D;&gt; list.filter(item &#x3D;&gt; item.text.includes(filterText))</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  handleChange &#x3D; event &#x3D;&gt; &#123;</span><br><span class="line">    this.setState(&#123; filterText: event.target.value &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  render() &#123;</span><br><span class="line">    &#x2F;&#x2F; 计算最新的过滤后的 list。</span><br><span class="line">    &#x2F;&#x2F; 如果和上次 render 参数一样，&#96;memoize-one&#96; 会重复使用上一次的值。</span><br><span class="line">    const filteredList &#x3D; this.filter(this.props.list, this.state.filterText);</span><br><span class="line"></span><br><span class="line">    return (</span><br><span class="line">      &lt;Fragment&gt;</span><br><span class="line">        &lt;input onChange&#x3D;&#123;this.handleChange&#125; value&#x3D;&#123;this.state.filterText&#125; &#x2F;&gt;</span><br><span class="line">        &lt;ul&gt;&#123;filteredList.map(item &#x3D;&gt; &lt;li key&#x3D;&#123;item.id&#125;&gt;&#123;item.text&#125;&lt;&#x2F;li&gt;)&#125;&lt;&#x2F;ul&gt;</span><br><span class="line">      &lt;&#x2F;Fragment&gt;</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/5%E3%80%81getDerivedStateFromProps/" data-id="ckmuaxx0o003wmloab7ot4o31" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/getDerivedStateFromProps/" rel="tag">getDerivedStateFromProps</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/生命周期函数/4、componentWillReciveProps" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/4%E3%80%81componentWillReciveProps/" class="article-date">
-  <time datetime="2021-03-17T05:53:48.000Z" itemprop="datePublished">2021-03-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/4%E3%80%81componentWillReciveProps/">componentWillReciveProps</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="componentWillReciveProps"><a href="#componentWillReciveProps" class="headerlink" title="componentWillReciveProps"></a>componentWillReciveProps</h2><p>1、只要父组件重新渲染 componentWillReciveProps 就会执行，内部调用setState的时候，这个方法是不会执行的</p>
-<p>2、一般用来让子组件根据新的props来更新自己的state,比如:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">state &#x3D; &#123;</span><br><span class="line">    isScrollingDown: false,</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  componentWillReceiveProps(nextProps) &#123;</span><br><span class="line">    if (this.props.currentRow !&#x3D;&#x3D; nextProps.currentRow) &#123;</span><br><span class="line">      this.setState(&#123;</span><br><span class="line">        isScrollingDown:</span><br><span class="line">          nextProps.currentRow &gt; this.props.currentRow,</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
-
-<p>3、17版本之中 该方法移除了，使用 static getDerivedStateFromProps 来代替</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/4%E3%80%81componentWillReciveProps/" data-id="ckmuaxx0n003tmloabpmdbmju" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/componentWillReciveProps/" rel="tag">componentWillReciveProps</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/更新/props和state" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/17/React/%E6%9B%B4%E6%96%B0/props%E5%92%8Cstate/" class="article-date">
-  <time datetime="2021-03-17T05:36:46.000Z" itemprop="datePublished">2021-03-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/17/React/%E6%9B%B4%E6%96%B0/props%E5%92%8Cstate/">React Props 和 state</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/17/React/%E6%9B%B4%E6%96%B0/props%E5%92%8Cstate/" data-id="ckmuaxx0e0033mloae59b6g28" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React-Props-%E5%92%8C-state/" rel="tag">React Props 和 state</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/生命周期函数/3、componentDidUpdate" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/3%E3%80%81componentDidUpdate/" class="article-date">
-  <time datetime="2021-03-17T03:35:18.000Z" itemprop="datePublished">2021-03-17</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/3%E3%80%81componentDidUpdate/">componentdidmount</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="componentDidUpdate"><a href="#componentDidUpdate" class="headerlink" title="componentDidUpdate"></a>componentDidUpdate</h2><p>接受三个参数：</p>
-<p>preProps: 更新之前的props，可以用来和当前的props(this.props)对比<br>prevState: 更新之前的state，可以用来和当前的state（this.state）对比<br>snapshot: 组件实现了 getSnapshotBeforeUpdate 方法的话，其返回值为 该参数，否则的话就是undefined</p>
-<p>1、该生命周期函数，会在组件更新之后立即调用，首次渲染的时候不会执行。</p>
-<p>2、不要在该 hook内使用 setState，以免造成死循环。如果要使用，一定是要包裹在条件语句中</p>
-<p>3、如果shouldComponentUpdate返回了false，这个函数就不会执行</p>
-<p>4、可以在这个hook中进行DOM操作，也可以在此进行网络请求，比如下边这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">componentDidUpdate(prevProps) &#123;</span><br><span class="line">  &#x2F;&#x2F; 典型用法（不要忘记比较 props）：</span><br><span class="line">  if (this.props.userID !&#x3D;&#x3D; prevProps.userID) &#123;</span><br><span class="line">    this.fetchData(this.props.userID);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/17/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/3%E3%80%81componentDidUpdate/" data-id="ckmuaxx0m003pmloa0xgx1p7o" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/componentdidmount/" rel="tag">componentdidmount</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/生命周期函数/2、componentdidmount" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/2%E3%80%81componentdidmount/" class="article-date">
-  <time datetime="2021-03-16T11:56:10.000Z" itemprop="datePublished">2021-03-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/2%E3%80%81componentdidmount/">componentdidmount</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="componentdidmount"><a href="#componentdidmount" class="headerlink" title="componentdidmount"></a>componentdidmount</h2><p>1、调用的时机是: render之后，组件被渲染到DOM中之后运行</p>
-<p>2、一般会在这个生命函数里进行ajax请求</p>
-<p>3、在这里添加订阅，在销毁的时候取消订阅</p>
-<p>4、可以在这里直接调用setState，触发额外的渲染，但此渲染会发生在浏览器更新屏幕之前，<br>保证，即使有两次render，用户不会看到中间状态</p>
-<p>5、不能依赖第四项，如果渲染依赖DOM节点的大或者是位置，可以使用<br>比如 modals tooltips  需要先判定要展示的位置，而后才展示</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/2%E3%80%81componentdidmount/" data-id="ckmuaxx0k003imloa2esmdm04" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/componentdidmount/" rel="tag">componentdidmount</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/生命周期函数/1、componentWillMount" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/1%E3%80%81componentWillMount/" class="article-date">
-  <time datetime="2021-03-16T11:14:16.000Z" itemprop="datePublished">2021-03-16</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/1%E3%80%81componentWillMount/">componentWillMount</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="componentWillMount"><a href="#componentWillMount" class="headerlink" title="componentWillMount"></a>componentWillMount</h2><p>1、该生命函数中执行this.setState 是不会触发第二次渲染的。</p>
-<p>2、它的作用和constructor的作用其实是一样的。</p>
-<p>3、React不推荐在 componentWillMount 中发送异步请求</p>
-<p>4、componentWillMount 是在render之前执行的，如果在该函数中执行异步请求的话，不能保证在render之前完成请求（如果render之后完成了ajax请求，即使调用了setState，也不会再触发重新渲染了。请求的数据就不能被渲染在页面上。）</p>
-<p>5、它的作用是在服务端渲染的时候，componentDidMount 不会被执行，因此可以在 componentWillMount 中执行ajax请求</p>
-<p>6、不推荐在 componentWillMount 里ajax请求的另一个原因与同构有关，如果在该函数里ajax则会在服务和客户端各自调用一次</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/1%E3%80%81componentWillMount/" data-id="ckmuaxx0h003bmloa04j39cqo" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/componentWillMount/" rel="tag">componentWillMount</a></li></ul>
-
     </footer>
   </div>
   
@@ -541,7 +723,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">&amp;laquo; 上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">下一页 &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; 上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/">下一页 &amp;raquo;</a>
   </nav>
 
 </section>
@@ -552,7 +734,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Expo/">Expo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/">JS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E5%B7%A7/">技巧</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React%E6%BA%90%E7%A0%81/">React源码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/Vue3/">Vue3</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/Vue3/1%E3%80%81https/">1、https</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Expo/">Expo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/">JS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Other/">Other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E5%B7%A7/">技巧</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React%E6%BA%90%E7%A0%81/">React源码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/Vue3/">Vue3</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/Vue3/1%E3%80%81https/">1、https</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/">浏览器原理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9E%B6%E6%9E%84/">浏览器架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B5%81%E6%B0%B4%E7%BA%BF/">浏览器流水线</a></li></ul></li></ul>
     </div>
   </div>
 
@@ -562,7 +744,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/API-React-createContext/" rel="tag">API  -- React.createContext</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/API-createRef/" rel="tag">API  -- createRef</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Effect-Hook/" rel="tag">Effect-Hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" rel="tag">Expo调试工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FB/" rel="tag">FB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hook%E6%84%9F%E6%82%9F/" rel="tag">Hook感悟</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mixin/" rel="tag">Mixin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RN%E4%B8%8B%E7%9A%84%E9%98%B4%E5%BD%B1%E6%95%88%E6%9E%9C/" rel="tag">RN下的阴影效果</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Props-%E5%92%8C-state/" rel="tag">React Props 和 state</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-%E4%B8%AD%E7%9A%84%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE-Immutability/" rel="tag">React 中的不可变数据 Immutability</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-%E7%BB%84%E4%BB%B6/" rel="tag">React 组件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Render-Props/" rel="tag">Render Props</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/State-Hook/" rel="tag">State-Hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/" rel="tag">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentWillMount/" rel="tag">componentWillMount</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentWillReciveProps/" rel="tag">componentWillReciveProps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentdidmount/" rel="tag">componentdidmount</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/constructor/" rel="tag">constructor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eslint/" rel="tag">eslint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/getDerivedStateFromProps/" rel="tag">getDerivedStateFromProps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" rel="tag">js的一些思想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">js的一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shouldComponentUpdate/" rel="tag">shouldComponentUpdate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useEffect/" rel="tag">useEffect</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useEffect-%E8%BF%9B%E9%98%B6/" rel="tag">useEffect 进阶</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useReducer/" rel="tag">useReducer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5/" rel="tag">一些概念</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" rel="tag">图片缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9D%91/" rel="tag">坑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%93/" rel="tag">库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A6%82%E6%8B%AC/" rel="tag">概括</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%B8%A7/" rel="tag">渲染与帧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81-setState/" rel="tag">源码--setState</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81-useState/" rel="tag">源码--useState</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%8C%E6%99%AF/" rel="tag">背景</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" rel="tag">路径别名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" rel="tag">高阶组件</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/API-React-createContext/" rel="tag">API  -- React.createContext</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/API-createRef/" rel="tag">API  -- createRef</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie/" rel="tag">Cookie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Effect-Hook/" rel="tag">Effect-Hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" rel="tag">Expo调试工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FB/" rel="tag">FB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hook%E6%84%9F%E6%82%9F/" rel="tag">Hook感悟</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mixin/" rel="tag">Mixin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RN%E4%B8%8B%E7%9A%84%E9%98%B4%E5%BD%B1%E6%95%88%E6%9E%9C/" rel="tag">RN下的阴影效果</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Props-%E5%92%8C-state/" rel="tag">React Props 和 state</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-%E4%B8%AD%E7%9A%84%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE-Immutability/" rel="tag">React 中的不可变数据 Immutability</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-%E7%BB%84%E4%BB%B6/" rel="tag">React 组件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Render-Props/" rel="tag">Render Props</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/State-Hook/" rel="tag">State-Hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/" rel="tag">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentWillMount/" rel="tag">componentWillMount</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentWillReciveProps/" rel="tag">componentWillReciveProps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentdidmount/" rel="tag">componentdidmount</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/constructor/" rel="tag">constructor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eslint/" rel="tag">eslint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/getDerivedStateFromProps/" rel="tag">getDerivedStateFromProps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" rel="tag">js的一些思想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">js的一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shouldComponentUpdate/" rel="tag">shouldComponentUpdate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useEffect/" rel="tag">useEffect</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useEffect-%E8%BF%9B%E9%98%B6/" rel="tag">useEffect 进阶</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useReducer/" rel="tag">useReducer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5/" rel="tag">一些概念</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" rel="tag">图片缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9D%91/" rel="tag">坑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%93/" rel="tag">库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A6%82%E6%8B%AC/" rel="tag">概括</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%B8%A7/" rel="tag">渲染与帧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81-setState/" rel="tag">源码--setState</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81-update/" rel="tag">源码--update</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81-useState/" rel="tag">源码--useState</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%8C%E6%99%AF/" rel="tag">背景</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" rel="tag">路径别名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" rel="tag">高阶组件</a></li></ul>
     </div>
   </div>
 
@@ -572,7 +754,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/API-React-createContext/" style="font-size: 10px;">API  -- React.createContext</a> <a href="/tags/API-createRef/" style="font-size: 10px;">API  -- createRef</a> <a href="/tags/Effect-Hook/" style="font-size: 10px;">Effect-Hook</a> <a href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" style="font-size: 10px;">Expo调试工具</a> <a href="/tags/FB/" style="font-size: 10px;">FB</a> <a href="/tags/Hook%E6%84%9F%E6%82%9F/" style="font-size: 10px;">Hook感悟</a> <a href="/tags/Mixin/" style="font-size: 10px;">Mixin</a> <a href="/tags/RN%E4%B8%8B%E7%9A%84%E9%98%B4%E5%BD%B1%E6%95%88%E6%9E%9C/" style="font-size: 10px;">RN下的阴影效果</a> <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/React-Props-%E5%92%8C-state/" style="font-size: 10px;">React Props 和 state</a> <a href="/tags/React-%E4%B8%AD%E7%9A%84%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE-Immutability/" style="font-size: 10px;">React 中的不可变数据 Immutability</a> <a href="/tags/React-%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">React 组件</a> <a href="/tags/React-Redux/" style="font-size: 15px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 20px;">Redux</a> <a href="/tags/Render-Props/" style="font-size: 10px;">Render Props</a> <a href="/tags/State-Hook/" style="font-size: 10px;">State-Hook</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/componentWillMount/" style="font-size: 10px;">componentWillMount</a> <a href="/tags/componentWillReciveProps/" style="font-size: 10px;">componentWillReciveProps</a> <a href="/tags/componentdidmount/" style="font-size: 15px;">componentdidmount</a> <a href="/tags/constructor/" style="font-size: 10px;">constructor</a> <a href="/tags/eslint/" style="font-size: 10px;">eslint</a> <a href="/tags/getDerivedStateFromProps/" style="font-size: 10px;">getDerivedStateFromProps</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" style="font-size: 10px;">js的一些思想</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">js的一些技巧</a> <a href="/tags/shouldComponentUpdate/" style="font-size: 10px;">shouldComponentUpdate</a> <a href="/tags/useEffect/" style="font-size: 10px;">useEffect</a> <a href="/tags/useEffect-%E8%BF%9B%E9%98%B6/" style="font-size: 10px;">useEffect 进阶</a> <a href="/tags/useReducer/" style="font-size: 10px;">useReducer</a> <a href="/tags/%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">一些技巧</a> <a href="/tags/%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5/" style="font-size: 10px;">一些概念</a> <a href="/tags/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" style="font-size: 10px;">图片缓存</a> <a href="/tags/%E5%9D%91/" style="font-size: 10px;">坑</a> <a href="/tags/%E5%BA%93/" style="font-size: 10px;">库</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%A6%82%E6%8B%AC/" style="font-size: 10px;">概括</a> <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">模块化</a> <a href="/tags/%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%B8%A7/" style="font-size: 10px;">渲染与帧</a> <a href="/tags/%E6%BA%90%E7%A0%81-setState/" style="font-size: 10px;">源码--setState</a> <a href="/tags/%E6%BA%90%E7%A0%81-useState/" style="font-size: 10px;">源码--useState</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" style="font-size: 20px;">状态管理</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 15px;">继承</a> <a href="/tags/%E8%83%8C%E6%99%AF/" style="font-size: 10px;">背景</a> <a href="/tags/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" style="font-size: 10px;">路径别名</a> <a href="/tags/%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">路由</a> <a href="/tags/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">高阶组件</a>
+      <a href="/tags/API-React-createContext/" style="font-size: 10px;">API  -- React.createContext</a> <a href="/tags/API-createRef/" style="font-size: 10px;">API  -- createRef</a> <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/Effect-Hook/" style="font-size: 10px;">Effect-Hook</a> <a href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" style="font-size: 10px;">Expo调试工具</a> <a href="/tags/FB/" style="font-size: 10px;">FB</a> <a href="/tags/Hook%E6%84%9F%E6%82%9F/" style="font-size: 10px;">Hook感悟</a> <a href="/tags/Mixin/" style="font-size: 10px;">Mixin</a> <a href="/tags/RN%E4%B8%8B%E7%9A%84%E9%98%B4%E5%BD%B1%E6%95%88%E6%9E%9C/" style="font-size: 10px;">RN下的阴影效果</a> <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/React-Props-%E5%92%8C-state/" style="font-size: 10px;">React Props 和 state</a> <a href="/tags/React-%E4%B8%AD%E7%9A%84%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE-Immutability/" style="font-size: 10px;">React 中的不可变数据 Immutability</a> <a href="/tags/React-%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">React 组件</a> <a href="/tags/React-Redux/" style="font-size: 15px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 20px;">Redux</a> <a href="/tags/Render-Props/" style="font-size: 10px;">Render Props</a> <a href="/tags/State-Hook/" style="font-size: 10px;">State-Hook</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/componentWillMount/" style="font-size: 10px;">componentWillMount</a> <a href="/tags/componentWillReciveProps/" style="font-size: 10px;">componentWillReciveProps</a> <a href="/tags/componentdidmount/" style="font-size: 15px;">componentdidmount</a> <a href="/tags/constructor/" style="font-size: 10px;">constructor</a> <a href="/tags/eslint/" style="font-size: 10px;">eslint</a> <a href="/tags/getDerivedStateFromProps/" style="font-size: 10px;">getDerivedStateFromProps</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" style="font-size: 10px;">js的一些思想</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">js的一些技巧</a> <a href="/tags/shouldComponentUpdate/" style="font-size: 10px;">shouldComponentUpdate</a> <a href="/tags/useEffect/" style="font-size: 10px;">useEffect</a> <a href="/tags/useEffect-%E8%BF%9B%E9%98%B6/" style="font-size: 10px;">useEffect 进阶</a> <a href="/tags/useReducer/" style="font-size: 10px;">useReducer</a> <a href="/tags/%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">一些技巧</a> <a href="/tags/%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5/" style="font-size: 10px;">一些概念</a> <a href="/tags/%E5%8A%A8%E7%94%BB/" style="font-size: 10px;">动画</a> <a href="/tags/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" style="font-size: 10px;">图片缓存</a> <a href="/tags/%E5%9D%91/" style="font-size: 10px;">坑</a> <a href="/tags/%E5%BA%93/" style="font-size: 10px;">库</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%A6%82%E6%8B%AC/" style="font-size: 10px;">概括</a> <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">模块化</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 15px;">浏览器</a> <a href="/tags/%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%B8%A7/" style="font-size: 10px;">渲染与帧</a> <a href="/tags/%E6%BA%90%E7%A0%81-setState/" style="font-size: 10px;">源码--setState</a> <a href="/tags/%E6%BA%90%E7%A0%81-update/" style="font-size: 10px;">源码--update</a> <a href="/tags/%E6%BA%90%E7%A0%81-useState/" style="font-size: 10px;">源码--useState</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" style="font-size: 20px;">状态管理</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 15px;">继承</a> <a href="/tags/%E8%83%8C%E6%99%AF/" style="font-size: 10px;">背景</a> <a href="/tags/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" style="font-size: 10px;">路径别名</a> <a href="/tags/%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">路由</a> <a href="/tags/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">高阶组件</a>
     </div>
   </div>
 
@@ -581,7 +763,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
     </div>
   </div>
 
@@ -594,23 +776,23 @@
       <ul>
         
           <li>
-            <a href="/2021/03/24/React/%E6%BA%90%E7%A0%81/useState/">源码--useState</a>
+            <a href="/2021/05/21/%E6%B5%8F%E8%A7%88%E5%99%A8/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9E%B6%E6%9E%84/">浏览器原理</a>
           </li>
         
           <li>
-            <a href="/2021/03/23/React/%E6%BA%90%E7%A0%81/setState/">源码--setState</a>
+            <a href="/2021/05/21/%E6%B5%8F%E8%A7%88%E5%99%A8/%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/">浏览器原理</a>
           </li>
         
           <li>
-            <a href="/2021/03/23/React/%E6%8A%80%E5%B7%A7/%E7%BB%84%E4%BB%B6%E7%BB%84%E5%90%88/">一些技巧</a>
+            <a href="/2021/04/06/JS/%E5%8A%A8%E7%94%BB/">前端的动画</a>
           </li>
         
           <li>
-            <a href="/2021/03/23/Expo/%E9%98%B4%E5%BD%B1%E6%95%88%E6%9E%9C/">RN下的阴影效果</a>
+            <a href="/2021/04/06/Css/animation/">Css/animation</a>
           </li>
         
           <li>
-            <a href="/2021/03/22/React/API/Context/">API  -- React.createContext</a>
+            <a href="/2021/03/30/React/%E6%BA%90%E7%A0%81/update/">源码--update</a>
           </li>
         
       </ul>

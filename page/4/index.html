@@ -64,6 +64,334 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-React/更新/不可变值" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/16/React/%E6%9B%B4%E6%96%B0/%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%80%BC/" class="article-date">
+  <time datetime="2021-03-16T06:28:44.000Z" itemprop="datePublished">2021-03-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/16/React/%E6%9B%B4%E6%96%B0/%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%80%BC/">React 更新逻辑</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="不可变值"><a href="#不可变值" class="headerlink" title="不可变值"></a>不可变值</h2><p>setState 必须使用不可变值：</p>
+<p>举个例子吧：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">this.state &#x3D; &#123;</span><br><span class="line">    list: [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">this.setState(&#123;</span><br><span class="line">    list: this.state.list.push(&#39;d&#39;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>this.state.list.push(‘d’) 就不是 不可变量。</p>
+<p>push会修改原数组，当 this.state.list.push(‘d’) 的时候state.list 就已经被修改了</p>
+<p>如果使用了变量会发生什么。</p>
+<p>一般而言，即使在setState里使用了变量也没有影响，但是，在性能优化的时候就会有问题。</p>
+<p>也就是使用shouldComponent函数的时候</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">shouldComponentUpdate(nextProps, nextState) &#123;</span><br><span class="line"></span><br><span class="line">   if(isEqual(nextState.list,this.state.list))&#123;</span><br><span class="line">       return false</span><br><span class="line">   &#125;</span><br><span class="line">   return true</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>shouldComponentUpdate 中可以决定是否渲染组件，我们这里比较了 nextState.list 和 this.state.list</p>
+<p>因为使用了可变量 this.state.list ==[‘a’, ‘b’, ‘c’,’d’]</p>
+<p>nextState.list 也等于 [‘a’, ‘b’, ‘c’,’d’]  所以 shouldComponentUpdate 永远都返回false，组件不会渲染</p>
+<p>解释一下：nextState.list 和 this.state.list 为什么都等于 [‘a’, ‘b’, ‘c’,’d’]</p>
+<p>首先：nextState.list == [‘a’, ‘b’, ‘c’,’d’]  是因为 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">this.setState(&#123;</span><br><span class="line">    list: this.state.list.push(&#39;d&#39;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>而this.state.list == [‘a’, ‘b’, ‘c’,’d’]</p>
+<p>是因为 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">this.setState(&#123;</span><br><span class="line">    list: this.state.list.push(&#39;d&#39;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">中 this.state.list.push(&#39;d&#39;)使用了push方法，push是会修改原数组的</span><br></pre></td></tr></table></figure>
+
+
+<p>所以这里要使用不可变数据，<br>比如：</p>
+<p>this.setState({<br>    list: this.state.list.concat([‘d’])<br>})</p>
+<p>concat 方法不会修改原数组。</p>
+<p>这里的不可变两更多的是，对于引用数据的处理。</p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>在使用引用类型的数据的时候，一定要注意，修改的方式。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/03/16/React/%E6%9B%B4%E6%96%B0/%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%80%BC/" data-id="ckoy1slql0061cfoa88u9awxo" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-React/生命周期函数/7、shouldComponentUpdate" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/7%E3%80%81shouldComponentUpdate/" class="article-date">
+  <time datetime="2021-03-16T06:16:42.000Z" itemprop="datePublished">2021-03-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/7%E3%80%81shouldComponentUpdate/">shouldComponentUpdate</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="shouldComponentUpdate-具有拦截渲染的租用"><a href="#shouldComponentUpdate-具有拦截渲染的租用" class="headerlink" title="shouldComponentUpdate 具有拦截渲染的租用"></a>shouldComponentUpdate 具有拦截渲染的租用</h2><p>shouldComponentUpdate 接收两个参数：</p>
+<p>nextProps，nextState</p>
+<p>nextProps:接下来要渲染的组件的props(父组件传来的,本次渲染是因为父组件传递的props发生变化而引起的)<br>nextState: 接下来要渲染的组件的 state（state是组件自身）</p>
+<p>一般我们会和 this.state来对比。</p>
+<p>渲染结束之后 this.state才会发生变化，所以，this.state我们可以将它认为是当前的state状态，nextState是接下来state的状态，<br>通过对比来确认是否需要更新。</p>
+<p>需要更新就返回 true<br>否则就返回false</p>
+<h3 id="调用的时机"><a href="#调用的时机" class="headerlink" title="调用的时机"></a>调用的时机</h3><p>会在props 或者是state发生变化的时候，渲染之前调用</p>
+<p>但是，首次渲染，或者是 使用了forceUpdate的时候，不会调用该方法</p>
+<h3 id="使用的原则"><a href="#使用的原则" class="headerlink" title="使用的原则"></a>使用的原则</h3><p>这个方法应该作为性能优化的方式而存在<br>不能在这个方法中使用深层次的比较或者是json.stringfy ，这样比较影响性能</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/03/16/React/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%87%BD%E6%95%B0/7%E3%80%81shouldComponentUpdate/" data-id="ckoy1slqv006ycfoade38a0ku" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shouldComponentUpdate/" rel="tag">shouldComponentUpdate</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Vue3/https" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/13/Vue3/https/" class="article-date">
+  <time datetime="2021-03-13T05:18:38.000Z" itemprop="datePublished">2021-03-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Vue/">Vue</a>►<a class="article-category-link" href="/categories/Vue/Vue3/">Vue3</a>►<a class="article-category-link" href="/categories/Vue/Vue3/1%E3%80%81https/">1、https</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/13/Vue3/https/">1、https</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="vue3中开启https会导致热更新失效"><a href="#vue3中开启https会导致热更新失效" class="headerlink" title="vue3中开启https会导致热更新失效"></a>vue3中开启https会导致热更新失效</h2><p>控制台报错</p>
+<p>VUE报错代码： sockjs.js:1606 GET <a href="https://192.168.1.102:8080/sockjs-node/info?t=1615612302391" target="_blank" rel="noopener">https://192.168.1.102:8080/sockjs-node/info?t=1615612302391</a> net::ERR_CONNECTION_REFUSED</p>
+<p>sockjs 是被用来和本地进行通信的，这个通信中断了，HMR就失效了，代码更改了之后，进行保存之后是无法热更新的，需要手动更新。</p>
+<p>我这里出现这个的问题是因为在本地开启了https，因为要测试Facebook登录，必须要使用https</p>
+<p>因为开启了https，但是没有证书所以通信是失败的。</p>
+<p>我们需要做的不是去node_modules里将代码注销掉，而是手动的安装一个证书</p>
+<h3 id="安装一个生产证书的工具-mkcert-环境是-Mac"><a href="#安装一个生产证书的工具-mkcert-环境是-Mac" class="headerlink" title="安装一个生产证书的工具 mkcert 环境是 Mac"></a>安装一个生产证书的工具 mkcert 环境是 Mac</h3><p>brew install mkcert</p>
+<h3 id="进入项目中（将证书生成存在项目的根目录下）"><a href="#进入项目中（将证书生成存在项目的根目录下）" class="headerlink" title="进入项目中（将证书生成存在项目的根目录下）"></a>进入项目中（将证书生成存在项目的根目录下）</h3><p>mkcert -install</p>
+<h3 id="配置一下vue-config-js"><a href="#配置一下vue-config-js" class="headerlink" title="配置一下vue.config.js"></a>配置一下vue.config.js</h3><p>devServer: {<br>    proxy: process.env.VUE_APP_PROXY,<br>    https: {<br>      key: fs.readFileSync(path.resolve(<strong>dirname, ‘./key.pem’)),<br>      cert: fs.readFileSync(path.resolve(</strong>dirname, ‘./cert.pem’))<br>    }<br>}</p>
+<p>mkcert local.shanyue.tech  命令可以查询生成的证书信息</p>
+<p>mkcert 生成的证书名字是<br>cer ====&gt; ./local.shanyue.tech.pem<br>key ====&gt;  ./local.shanyue.tech-key.pem<br>这里生成的证书名字我是修改cheng  key.pem  和  cert.pem</p>
+<p>如果配置之后发现控制台依旧在报错，查看一下 key  和 cert 对应的证书是否正确</p>
+<p>如果是正确的，依旧报错，重启一下电脑，重新跑一次项目，应该就OK了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/03/13/Vue3/https/" data-id="ckoy1slp2001icfoahbwyeawr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Vue/" rel="tag">Vue</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Expo/参考文件/route" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/04/Expo/%E5%8F%82%E8%80%83%E6%96%87%E4%BB%B6/route/" class="article-date">
+  <time datetime="2021-03-04T07:51:04.000Z" itemprop="datePublished">2021-03-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/04/Expo/%E5%8F%82%E8%80%83%E6%96%87%E4%BB%B6/route/">Expo/参考文件/route</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">import &quot;react-native-gesture-handler&quot;;</span><br><span class="line">import * as React from &quot;react&quot;;</span><br><span class="line">&#x2F;&#x2F; import &#123; Text&#125; from &#39;react-native&#39;;</span><br><span class="line">import &#123; NavigationContainer &#125; from &quot;@react-navigation&#x2F;native&quot;;</span><br><span class="line">import &#123; createStackNavigator &#125; from &quot;@react-navigation&#x2F;stack&quot;;</span><br><span class="line">import HomeScreen from &quot;@pages&#x2F;home&quot;;</span><br><span class="line">import LoginScreen from &quot;@pages&#x2F;login&quot;;</span><br><span class="line">import UserCenterScreen from &quot;@pages&#x2F;userCenter&#x2F;index&quot;;</span><br><span class="line">import ShippingAddress from &quot;@pages&#x2F;userCenter&#x2F;shippingAddress&quot;;</span><br><span class="line">import ShippingAddressForm from &quot;@pages&#x2F;userCenter&#x2F;shippingAddress&#x2F;ShippingAddressForm&quot;;</span><br><span class="line">import OTPInitalScreen from &quot;@pages&#x2F;userCenter&#x2F;otp&#x2F;index&quot;;</span><br><span class="line">import VerifyScreen from &quot;@pages&#x2F;userCenter&#x2F;otp&#x2F;verify&quot;;</span><br><span class="line">import RobotScreen from &quot;@pages&#x2F;userCenter&#x2F;otp&#x2F;robot&quot;;</span><br><span class="line">import OrderScreen from &quot;@pages&#x2F;userCenter&#x2F;orders&#x2F;index&quot;;</span><br><span class="line">import BankAccount from &quot;@pages&#x2F;userCenter&#x2F;bankAccount&quot;;</span><br><span class="line">import BankAccountForm from &quot;@pages&#x2F;userCenter&#x2F;bankAccount&#x2F;BankAccountForm&quot;;</span><br><span class="line">import LogoutScreen from &quot;@pages&#x2F;setting&#x2F;logout&quot;</span><br><span class="line">import NavigationService from &#39;@util&#x2F;globalNavigation&#39;</span><br><span class="line">import &#123; CardStyleInterpolators &#125; from &#39;@react-navigation&#x2F;stack&#39;;</span><br><span class="line"></span><br><span class="line">const Stack &#x3D; createStackNavigator();</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; const forFade &#x3D; (&#123; current &#125;) &#x3D;&gt; (&#123;</span><br><span class="line">&#x2F;&#x2F;   cardStyle: &#123;</span><br><span class="line">&#x2F;&#x2F;     opacity: current.progress,</span><br><span class="line">&#x2F;&#x2F;   &#125;,</span><br><span class="line">&#x2F;&#x2F; &#125;);</span><br><span class="line">export default function RouteNavagation() &#123;</span><br><span class="line">  return (</span><br><span class="line">    &lt;NavigationContainer ref&#x3D;&#123;navigatorRef &#x3D;&gt; &#123;</span><br><span class="line">      NavigationService.setTopLevelNavigator(navigatorRef);</span><br><span class="line">    &#125;&#125;&gt;</span><br><span class="line">      &lt;Stack.Navigator initialRouteName&#x3D;&quot;Home&quot; mode&#x3D;&quot;modal&quot;</span><br><span class="line">      headerMode&#x3D;&quot;none&quot; </span><br><span class="line">      &gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;Home&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,</span><br><span class="line">          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,</span><br><span class="line">          &#125;&#125;</span><br><span class="line">          component&#x3D;&#123;HomeScreen&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;UserCenter&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,</span><br><span class="line">          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,</span><br><span class="line">          &#125;&#125;</span><br><span class="line">          component&#x3D;&#123;UserCenterScreen&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;ShippingAddress&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line">          component&#x3D;&#123;ShippingAddress&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;ShippingAddressForm&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line">          component&#x3D;&#123;ShippingAddressForm&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;OTPInital&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line">          component&#x3D;&#123;OTPInitalScreen&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;Verify&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line">          component&#x3D;&#123;VerifyScreen&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;Robot&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line">          component&#x3D;&#123;RobotScreen&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;Order&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line">          component&#x3D;&#123;OrderScreen&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;Login&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line"></span><br><span class="line">          component&#x3D;&#123;LoginScreen&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;BankAccount&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line"></span><br><span class="line">          component&#x3D;&#123;BankAccount&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen</span><br><span class="line">          name&#x3D;&quot;BankAccountForm&quot;</span><br><span class="line">          options&#x3D;&#123;&#123; headerShown: false,gestureDirection:&quot;horizontal&quot;,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS&#125;&#125;</span><br><span class="line"></span><br><span class="line">          component&#x3D;&#123;BankAccountForm&#125;</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">        &lt;Stack.Screen name&#x3D;&quot;Logout&quot; options&#x3D;&#123;&#123;headerShown: false,cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,&#125;&#125; component&#x3D;&#123;LogoutScreen&#125; &#x2F;&gt;</span><br><span class="line">      &lt;&#x2F;Stack.Navigator&gt;</span><br><span class="line">    &lt;&#x2F;NavigationContainer&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/03/04/Expo/%E5%8F%82%E8%80%83%E6%96%87%E4%BB%B6/route/" data-id="ckoy1slq50053cfoagl3s4y5e" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-React/更新/setState" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/02/26/React/%E6%9B%B4%E6%96%B0/setState/" class="article-date">
+  <time datetime="2021-02-26T10:33:48.000Z" itemprop="datePublished">2021-02-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/React/">React</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/26/React/%E6%9B%B4%E6%96%B0/setState/">React 更新逻辑</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="setState"><a href="#setState" class="headerlink" title="setState"></a>setState</h2><p>关键点:</p>
+<p>setState不会立刻改变React组件中state的值；<br>setState通过引发一次组件的更新过程来引发重新绘制；<br>多次setState函数调用产生的效果会合并。</p>
+<h3 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h3><p>不像是是vue监听响应式属性的变化来引发watcher，进而重新渲染。<br>React 则是依靠setState 这个API来引发一次组件的更新过程，进而渲染页面</p>
+<p>多次调用setState 会引发批处理<br>isBatchingUpdate 会被设定为true</p>
+<p>setState 引发的生命周期函数</p>
+<p>shouldComponentUpdate<br>componentWillUpdate<br>render<br>componentDidUpdate</p>
+<p>+++++++<br>顺带一说，props变化引发渲染，所调用的的生命周期函数比state多了一个：</p>
+<p>componentWillReceiveProps<br>+++++++</p>
+<p>shouldComponentUpdate  return false 的时候 state就已经发生了变化</p>
+<p>shouldComponentUpdate return true 的时候 state还没有变化<br>componentWillUpdate  state也没有变化<br>render 这个阶段 state才更新了</p>
+<p>所以说，我们setState的时候，是没法立刻拿到更新后的state的值得</p>
+<h2 id="setState-缺点"><a href="#setState-缺点" class="headerlink" title="setState 缺点"></a>setState 缺点</h2><p>唯一的缺点就是 不像是字面上理解的那样理解修改state，而是延迟处理。</p>
+<p>但是，依旧有方法解决这个问题。</p>
+<p>那就是接受一个函数来作为参数</p>
+<p>setState({count: count + 1})<br>setState({count: count + 1})<br>setState({count: count + 1})</p>
+<p>同一时间调用三次，最终也只会执行一次 count +1</p>
+<p>想要达到加三次的效果，就需要使用函数参数</p>
+<p>function increment(state,props){<br>    retun {count: state.count + 1}<br>}</p>
+<p>setState(increment)</p>
+<p>setState(increment)</p>
+<p>就可以实现加两次。</p>
+<p>另外的一种方式是使用 addeventListener 添加事件，</p>
+<p>addeventListener 添加的事件，不会开启批处理，也就是不会合并state</p>
+<h2 id="setState不依赖当前的state进行更新"><a href="#setState不依赖当前的state进行更新" class="headerlink" title="setState不依赖当前的state进行更新"></a>setState不依赖当前的state进行更新</h2><p>setState可以接受一个函数，这个函数描述了state如何去更新，而不是直接去更新state</p>
+<p>setCount(c =&gt; c + 1);</p>
+<p>描述了，将state 加 1</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/02/26/React/%E6%9B%B4%E6%96%B0/setState/" data-id="ckoy1slqm0062cfoah3x6cwgl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Expo/fb" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/02/26/Expo/fb/" class="article-date">
+  <time datetime="2021-02-26T09:52:54.000Z" itemprop="datePublished">2021-02-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Expo/">Expo</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/26/Expo/fb/">FB</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="返回想要的头像大小"><a href="#返回想要的头像大小" class="headerlink" title="返回想要的头像大小"></a>返回想要的头像大小</h2><pre><code>const response = await fetch(
+  `https://graph.facebook.com/me?scope=email&amp;fields=id,name,email,picture.width(400).height(400)&amp;access_token=${result.token}`
+);
+
+
+默认返回的用户的头像是50X50的，加参数就可以获取想要的头像大小
+
+picture.width(400).height(400)</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2021/02/26/Expo/fb/" data-id="ckoy1sloe0001cfoa7oan0c1m" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FB/" rel="tag">FB</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-React/更新/更新" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/02/26/React/%E6%9B%B4%E6%96%B0/%E6%9B%B4%E6%96%B0/" class="article-date">
@@ -99,7 +427,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/02/26/React/%E6%9B%B4%E6%96%B0/%E6%9B%B4%E6%96%B0/" data-id="ckmuaxx0g0038mloa454m2y6c" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/02/26/React/%E6%9B%B4%E6%96%B0/%E6%9B%B4%E6%96%B0/" data-id="ckoy1slqn0064cfoad91oa86j" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/React/" rel="tag">React</a></li></ul>
@@ -142,7 +470,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/02/24/Expo/%E5%9D%91/" data-id="ckmuaxwzg000zmloa15uh93yv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/02/24/Expo/%E5%9D%91/" data-id="ckoy1sloi0005cfoaae3vgkly" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%9D%91/" rel="tag">坑</a></li></ul>
@@ -194,7 +522,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/02/24/Expo/%E8%B0%83%E8%AF%95/" data-id="ckmuaxwzk0013mloaecg26i31" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/02/24/Expo/%E8%B0%83%E8%AF%95/" data-id="ckoy1slom000bcfoacd698hye" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" rel="tag">Expo调试工具</a></li></ul>
@@ -237,320 +565,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/02/23/Expo/%E5%BA%93/" data-id="ckmuaxwzj0012mloacz2k916k" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/02/23/Expo/%E5%BA%93/" data-id="ckoy1sloj0006cfoa17ae53lu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BA%93/" rel="tag">库</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Expo/路径别名" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/02/22/Expo/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" class="article-date">
-  <time datetime="2021-02-22T06:15:44.000Z" itemprop="datePublished">2021-02-22</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Expo/">Expo</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/22/Expo/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/">路径别名</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="库"><a href="#库" class="headerlink" title="库"></a>库</h2><p>npm install babel-plugin-root-import –save-dev</p>
-<h2 id="tsconfig文件"><a href="#tsconfig文件" class="headerlink" title="tsconfig文件"></a>tsconfig文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">compilerOptions: &#123;</span><br><span class="line">    &quot;baseUrl&quot;: &quot;.&quot;,</span><br><span class="line">    &quot;paths&quot;: &#123;</span><br><span class="line">      &quot;@pages&#x2F;*&quot;: [</span><br><span class="line">        &quot;src&#x2F;pages&#x2F;*&quot;</span><br><span class="line">      ],</span><br><span class="line">      &quot;@components&#x2F;*&quot;: [</span><br><span class="line">        &quot;src&#x2F;components&#x2F;*&quot;</span><br><span class="line">      ]</span><br><span class="line">     &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="babel-配置"><a href="#babel-配置" class="headerlink" title="babel 配置"></a>babel 配置</h2><p>使用插件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">babel-plugin-module-resolver</span><br><span class="line"></span><br><span class="line">   plugins: [</span><br><span class="line">      [</span><br><span class="line">        require.resolve(&#39;babel-plugin-root-import&#39;),</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;paths&quot;: [</span><br><span class="line">            &#123;</span><br><span class="line">              &quot;rootPathSuffix&quot;: &quot;.&#x2F;src&#x2F;components&quot;,</span><br><span class="line">              &quot;rootPathPrefix&quot;: &quot;@components&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">              &quot;rootPathSuffix&quot;: &quot;.&#x2F;src&#x2F;pages&quot;,</span><br><span class="line">              &quot;rootPathPrefix&quot;: &quot;@pages&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    ]</span><br></pre></td></tr></table></figure>
-<h2 id="使用了eslint"><a href="#使用了eslint" class="headerlink" title="使用了eslint"></a>使用了eslint</h2><p>出现 波浪线错误</p>
-<p>需要在eslint的配置文件中使用<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;settings&quot;: &#123;</span><br><span class="line">    &quot;import&#x2F;resolver&quot;: &#123;</span><br><span class="line">        &quot;babel-plugin-root-import&quot;: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure></p>
-<h2 id="最后重启vscode"><a href="#最后重启vscode" class="headerlink" title="最后重启vscode"></a>最后重启vscode</h2>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/02/22/Expo/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" data-id="ckmuaxwzm0019mloa2r6pczws" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" rel="tag">路径别名</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Expo/配置eslint" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/02/20/Expo/%E9%85%8D%E7%BD%AEeslint/" class="article-date">
-  <time datetime="2021-02-20T09:23:28.000Z" itemprop="datePublished">2021-02-20</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Expo/">Expo</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/20/Expo/%E9%85%8D%E7%BD%AEeslint/">eslint</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="下载eslint"><a href="#下载eslint" class="headerlink" title="下载eslint"></a>下载eslint</h2><p>首先要选择版本 我选择的是 6.7.2</p>
-<p>而后 eslint –init (这是全局安装eslint之后的方法)<br>或者  npx eslint –init</p>
-<p>而后选择适合的配置方式就OK</p>
-<h2 id="使用husky"><a href="#使用husky" class="headerlink" title="使用husky"></a>使用husky</h2><p>这里有版本要求，4版本和5版本的配置有很大区别</p>
-<p>我这里使用4版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">npm install husky@4 --save-dev</span><br><span class="line"></span><br><span class="line">  &quot;scripts&quot;: &#123;</span><br><span class="line">    &quot;start&quot;: &quot;expo start &amp; yarn lint&quot;,</span><br><span class="line">    &quot;android&quot;: &quot;expo start --android&quot;,</span><br><span class="line">    &quot;ios&quot;: &quot;expo start --ios&quot;,</span><br><span class="line">    &quot;web&quot;: &quot;expo start --web&quot;,</span><br><span class="line">    &quot;eject&quot;: &quot;expo eject&quot;,</span><br><span class="line">    &quot;lint&quot;: &quot;eslint --ext .tsx src&#x2F;&quot;,</span><br><span class="line">    &quot;lint-fix&quot;: &quot;eslint --fix --ext .tsx  src&#x2F;&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;husky&quot;: &#123;</span><br><span class="line">    &quot;hooks&quot;: &#123;</span><br><span class="line">      &quot;pre-commit&quot;: &quot;yarn lint&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
-
-
-<p>  钩子 pre-commit 会调用 yarn lint 做一次eslint 检查，通过了才能提交代码，否则不能提交。</p>
-<p>  sourceTree下有问题，使用 命令行的方式 open /Applications/SourceTree.app/Contents/MacOS/SourceTree 打开 sourceTree就可以了</p>
-<h2 id="使用-list-staged"><a href="#使用-list-staged" class="headerlink" title="使用 list-staged"></a>使用 list-staged</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&quot;lint-staged&quot;: &quot;&gt;&#x3D;10&quot;,</span><br><span class="line"></span><br><span class="line">&quot;lint-staged&quot;: &#123;</span><br><span class="line">    &quot;*.tsx&quot;: [</span><br><span class="line">      &quot;eslint --fix --ext .tsx  src&#x2F;&quot;,</span><br><span class="line">      &quot;git add .&quot;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/02/20/Expo/%E9%85%8D%E7%BD%AEeslint/" data-id="ckmuaxwzo001fmloa4vplchuf" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/eslint/" rel="tag">eslint</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Expo/报错" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/02/20/Expo/%E6%8A%A5%E9%94%99/" class="article-date">
-  <time datetime="2021-02-20T03:08:42.000Z" itemprop="datePublished">2021-02-20</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Expo/">Expo</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/20/Expo/%E6%8A%A5%E9%94%99/">Expo的报错</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Tried-to-register-two-views-with-the-same-name-RNCSafeAreaProvider"><a href="#Tried-to-register-two-views-with-the-same-name-RNCSafeAreaProvider" class="headerlink" title="Tried to register two views with the same name RNCSafeAreaProvider"></a>Tried to register two views with the same name RNCSafeAreaProvider</h2><p>expo install react-native-safe-area-context</p>
-<p>重启</p>
-<h2 id="The-package-“eslint-plugin-github”-was-not-found-when-loaded-as-a-Node-module-from-the-directory-“-Users-wqxc-Project”"><a href="#The-package-“eslint-plugin-github”-was-not-found-when-loaded-as-a-Node-module-from-the-directory-“-Users-wqxc-Project”" class="headerlink" title="The package “eslint-plugin-github” was not found when loaded as a Node module from the directory “/Users/wqxc/Project”.)"></a>The package “eslint-plugin-github” was not found when loaded as a Node module from the directory “/Users/wqxc/Project”.)</h2><p>npm install eslint-plugin-github<br>或者是因为 eslint 的版本过高，我用的7.0.0版本，总是报错<br>修改为 6.7.2版本就没事了</p>
-<h2 id="Cannot-read-property-‘match’-of-undefined"><a href="#Cannot-read-property-‘match’-of-undefined" class="headerlink" title="Cannot read property ‘match’ of undefined"></a>Cannot read property ‘match’ of undefined</h2><p>删除lock.json文件</p>
-<h2 id="sourceTree-mac上无法十一-pre-commit"><a href="#sourceTree-mac上无法十一-pre-commit" class="headerlink" title="sourceTree mac上无法十一 pre-commit"></a>sourceTree mac上无法十一 pre-commit</h2><p>使用如下方式打开 sourceTree<br>open /Applications/SourceTree.app/Contents/MacOS/SourceTree<br>就可以了</p>
-<h2 id="route的params-is-undefined"><a href="#route的params-is-undefined" class="headerlink" title="route的params is undefined"></a>route的params is undefined</h2><p>函数组件的参数 route必须写在navigation前边</p>
-<p>如下：<br>export default function RobotScreen ({navigation}: {navigation: any},{route}:{route:any}) {<br>  const { phoneNumber } = route.params<br>}</p>
-<p>报错：</p>
-<p>Cannot read property ‘params’ of undefined</p>
-<p>写作下边这样的</p>
-<p>export default function RobotScreen ({route}:{route:any},{navigation}: {navigation: any}) {<br>    const { phoneNumber } = route.params<br>}</p>
-<p>不报错了,但是，navigation找不到了。</p>
-<p>正确的写法是：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export default function RobotScreen (&#123;route,navigation&#125;:&#123;route:any,navigation: any&#125;) &#123;</span><br><span class="line">    const &#123; phoneNumber &#125; &#x3D; route.params</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/02/20/Expo/%E6%8A%A5%E9%94%99/" data-id="ckmuaxwzk0015mloahlgv1pa4" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Expo/路由" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/02/19/Expo/%E8%B7%AF%E7%94%B1/" class="article-date">
-  <time datetime="2021-02-19T09:58:04.000Z" itemprop="datePublished">2021-02-19</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Expo/">Expo</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/19/Expo/%E8%B7%AF%E7%94%B1/">路由</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="react-navigation"><a href="#react-navigation" class="headerlink" title="react-navigation"></a>react-navigation</h2><p><a href="https://reactnavigation.org/docs/navigating" target="_blank" rel="noopener">https://reactnavigation.org/docs/navigating</a>  5.x版本</p>
-<p>参考文件 ./参考文件/router.tsx</p>
-<h2 id="路由的切换模式"><a href="#路由的切换模式" class="headerlink" title="路由的切换模式"></a>路由的切换模式</h2><p>自定义淡入淡出模式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const forFade &#x3D; (&#123; current &#125;) &#x3D;&gt; (&#123;</span><br><span class="line">  cardStyle: &#123;</span><br><span class="line">    opacity: current.progress,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">&lt;Stack.Screen</span><br><span class="line">  name&#x3D;&quot;Profile&quot;</span><br><span class="line">  component&#x3D;&#123;Profile&#125;</span><br><span class="line">  options&#x3D;&#123;&#123; cardStyleInterpolator: forFade &#125;&#125;</span><br><span class="line">&#x2F;&gt;</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="CardStyleInterpolators"><a href="#CardStyleInterpolators" class="headerlink" title="CardStyleInterpolators"></a>CardStyleInterpolators</h2><p>定义路由切换的动画形式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import &#123; CardStyleInterpolators &#125; from &#39;@react-navigation&#x2F;stack&#39;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; ...</span><br><span class="line"></span><br><span class="line">&lt;Stack.Screen</span><br><span class="line">  name&#x3D;&quot;Profile&quot;</span><br><span class="line">  component&#x3D;&#123;Profile&#125;</span><br><span class="line">  options&#x3D;&#123;&#123;</span><br><span class="line">    title: &#39;Profile&#39;,</span><br><span class="line">    cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,</span><br><span class="line">  &#125;&#125;</span><br><span class="line">&#x2F;&gt;;</span><br></pre></td></tr></table></figure>
-
-
-<p>forFadeFromBottomAndroid 像是安卓那样都是从底部弹出<br>forHorizontalIOS：像是IOS那样左右弹出消失</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2021/02/19/Expo/%E8%B7%AF%E7%94%B1/" data-id="ckmuaxwzn001cmloa0dgkgnnl" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/逻辑重用/概括" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/09/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%A6%82%E6%8B%AC/" class="article-date">
-  <time datetime="2020-06-09T03:25:12.000Z" itemprop="datePublished">2020-06-09</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/09/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%A6%82%E6%8B%AC/">概括</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="逻辑重用"><a href="#逻辑重用" class="headerlink" title="逻辑重用"></a>逻辑重用</h1><p>代码复用是一个很大的主题，React 社区也一直有各种各样的代码复用的技术。</p>
-<p>从 Mixins 到 Render Props 到 HOC 再到 Hook，对于 代码复用，我们一直在探索，</p>
-<p>每一种的技术在当时来说都是比较优秀的解决方案，但是，随着时间的推移，这些方案也都出现了</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/09/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%A6%82%E6%8B%AC/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/09/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E6%A6%82%E6%8B%AC/" data-id="ckmuaxx0z004tmloagt3a3ryc" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%A6%82%E6%8B%AC/" rel="tag">概括</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-React/逻辑重用/Hooks感悟" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Hooks%E6%84%9F%E6%82%9F/" class="article-date">
-  <time datetime="2020-06-06T09:38:50.000Z" itemprop="datePublished">2020-06-06</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/React/">React</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Hooks%E6%84%9F%E6%82%9F/">React-Hooks -  Hook感悟</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一些感悟"><a href="#一些感悟" class="headerlink" title="一些感悟"></a>一些感悟</h2><p>我们知道，函数组件其实就是 一个函数，函数不像是 类实例那样可以保存下来，无需重复的实例化，而<br>函数组件每一次的加载都是重新执行了一遍函数，所以函数内的 hook 其实也是重新被执行了，</p>
-<p>只是，React 在内部的机制中将其保存了一下，</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Hooks%E6%84%9F%E6%82%9F/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/06/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/Hooks%E6%84%9F%E6%82%9F/" data-id="ckmuaxx0t004cmloaabtkev7e" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hook%E6%84%9F%E6%82%9F/" rel="tag">Hook感悟</a></li></ul>
 
     </footer>
   </div>
@@ -563,7 +581,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/3/">&amp;laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/">下一页 &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/3/">&amp;laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/">下一页 &amp;raquo;</a>
   </nav>
 
 </section>
@@ -574,7 +592,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Expo/">Expo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/">JS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E5%B7%A7/">技巧</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React%E6%BA%90%E7%A0%81/">React源码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/Vue3/">Vue3</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/Vue3/1%E3%80%81https/">1、https</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Expo/">Expo</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/JS/">JS</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Other/">Other</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/React/">React</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/React/%E6%8A%80%E5%B7%A7/">技巧</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/React%E6%BA%90%E7%A0%81/">React源码</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/">Vue</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/Vue3/">Vue3</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Vue/Vue3/1%E3%80%81https/">1、https</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/1%E3%80%81%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%83%8C%E6%99%AF/">1、状态管理背景</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/2%E3%80%81MVC%E6%80%9D%E6%83%B3/">2、MVC思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/3%E3%80%81Flux%E6%80%9D%E6%83%B3/">3、Flux思想</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/">4、Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/4%E3%80%81Redux/Redux%E8%BF%9B%E9%98%B6/">Redux进阶</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/React-Redux%E8%BF%9B%E9%98%B6/">React-Redux进阶</a></li></ul></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/">浏览器原理</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9E%B6%E6%9E%84/">浏览器架构</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B5%81%E6%B0%B4%E7%BA%BF/">浏览器流水线</a></li></ul></li></ul>
     </div>
   </div>
 
@@ -584,7 +602,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/API-React-createContext/" rel="tag">API  -- React.createContext</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/API-createRef/" rel="tag">API  -- createRef</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Effect-Hook/" rel="tag">Effect-Hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" rel="tag">Expo调试工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FB/" rel="tag">FB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hook%E6%84%9F%E6%82%9F/" rel="tag">Hook感悟</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mixin/" rel="tag">Mixin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RN%E4%B8%8B%E7%9A%84%E9%98%B4%E5%BD%B1%E6%95%88%E6%9E%9C/" rel="tag">RN下的阴影效果</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Props-%E5%92%8C-state/" rel="tag">React Props 和 state</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-%E4%B8%AD%E7%9A%84%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE-Immutability/" rel="tag">React 中的不可变数据 Immutability</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-%E7%BB%84%E4%BB%B6/" rel="tag">React 组件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Render-Props/" rel="tag">Render Props</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/State-Hook/" rel="tag">State-Hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/" rel="tag">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentWillMount/" rel="tag">componentWillMount</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentWillReciveProps/" rel="tag">componentWillReciveProps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentdidmount/" rel="tag">componentdidmount</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/constructor/" rel="tag">constructor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eslint/" rel="tag">eslint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/getDerivedStateFromProps/" rel="tag">getDerivedStateFromProps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" rel="tag">js的一些思想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">js的一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shouldComponentUpdate/" rel="tag">shouldComponentUpdate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useEffect/" rel="tag">useEffect</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useEffect-%E8%BF%9B%E9%98%B6/" rel="tag">useEffect 进阶</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useReducer/" rel="tag">useReducer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5/" rel="tag">一些概念</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" rel="tag">图片缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9D%91/" rel="tag">坑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%93/" rel="tag">库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A6%82%E6%8B%AC/" rel="tag">概括</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%B8%A7/" rel="tag">渲染与帧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81-setState/" rel="tag">源码--setState</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81-useState/" rel="tag">源码--useState</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%8C%E6%99%AF/" rel="tag">背景</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" rel="tag">路径别名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" rel="tag">高阶组件</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/API-React-createContext/" rel="tag">API  -- React.createContext</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/API-createRef/" rel="tag">API  -- createRef</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cookie/" rel="tag">Cookie</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Effect-Hook/" rel="tag">Effect-Hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" rel="tag">Expo调试工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FB/" rel="tag">FB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hook%E6%84%9F%E6%82%9F/" rel="tag">Hook感悟</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mixin/" rel="tag">Mixin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RN%E4%B8%8B%E7%9A%84%E9%98%B4%E5%BD%B1%E6%95%88%E6%9E%9C/" rel="tag">RN下的阴影效果</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React/" rel="tag">React</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Props-%E5%92%8C-state/" rel="tag">React Props 和 state</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-%E4%B8%AD%E7%9A%84%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE-Immutability/" rel="tag">React 中的不可变数据 Immutability</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-%E7%BB%84%E4%BB%B6/" rel="tag">React 组件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/React-Redux/" rel="tag">React-Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Render-Props/" rel="tag">Render Props</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/State-Hook/" rel="tag">State-Hook</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vue/" rel="tag">Vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentWillMount/" rel="tag">componentWillMount</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentWillReciveProps/" rel="tag">componentWillReciveProps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/componentdidmount/" rel="tag">componentdidmount</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/constructor/" rel="tag">constructor</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/eslint/" rel="tag">eslint</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/getDerivedStateFromProps/" rel="tag">getDerivedStateFromProps</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" rel="tag">js的一些思想</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">js的一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shouldComponentUpdate/" rel="tag">shouldComponentUpdate</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useEffect/" rel="tag">useEffect</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useEffect-%E8%BF%9B%E9%98%B6/" rel="tag">useEffect 进阶</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/useReducer/" rel="tag">useReducer</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" rel="tag">一些技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5/" rel="tag">一些概念</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8A%A8%E7%94%BB/" rel="tag">动画</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" rel="tag">图片缓存</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%9D%91/" rel="tag">坑</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BA%93/" rel="tag">库</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%BB%E7%BB%93/" rel="tag">总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A6%82%E6%8B%AC/" rel="tag">概括</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" rel="tag">模块化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%B8%A7/" rel="tag">渲染与帧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81-setState/" rel="tag">源码--setState</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81-update/" rel="tag">源码--update</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BA%90%E7%A0%81-useState/" rel="tag">源码--useState</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" rel="tag">状态管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%83%8C%E6%99%AF/" rel="tag">背景</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" rel="tag">路径别名</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag">路由</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" rel="tag">高阶组件</a></li></ul>
     </div>
   </div>
 
@@ -594,7 +612,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/API-React-createContext/" style="font-size: 10px;">API  -- React.createContext</a> <a href="/tags/API-createRef/" style="font-size: 10px;">API  -- createRef</a> <a href="/tags/Effect-Hook/" style="font-size: 10px;">Effect-Hook</a> <a href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" style="font-size: 10px;">Expo调试工具</a> <a href="/tags/FB/" style="font-size: 10px;">FB</a> <a href="/tags/Hook%E6%84%9F%E6%82%9F/" style="font-size: 10px;">Hook感悟</a> <a href="/tags/Mixin/" style="font-size: 10px;">Mixin</a> <a href="/tags/RN%E4%B8%8B%E7%9A%84%E9%98%B4%E5%BD%B1%E6%95%88%E6%9E%9C/" style="font-size: 10px;">RN下的阴影效果</a> <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/React-Props-%E5%92%8C-state/" style="font-size: 10px;">React Props 和 state</a> <a href="/tags/React-%E4%B8%AD%E7%9A%84%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE-Immutability/" style="font-size: 10px;">React 中的不可变数据 Immutability</a> <a href="/tags/React-%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">React 组件</a> <a href="/tags/React-Redux/" style="font-size: 15px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 20px;">Redux</a> <a href="/tags/Render-Props/" style="font-size: 10px;">Render Props</a> <a href="/tags/State-Hook/" style="font-size: 10px;">State-Hook</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/componentWillMount/" style="font-size: 10px;">componentWillMount</a> <a href="/tags/componentWillReciveProps/" style="font-size: 10px;">componentWillReciveProps</a> <a href="/tags/componentdidmount/" style="font-size: 15px;">componentdidmount</a> <a href="/tags/constructor/" style="font-size: 10px;">constructor</a> <a href="/tags/eslint/" style="font-size: 10px;">eslint</a> <a href="/tags/getDerivedStateFromProps/" style="font-size: 10px;">getDerivedStateFromProps</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" style="font-size: 10px;">js的一些思想</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">js的一些技巧</a> <a href="/tags/shouldComponentUpdate/" style="font-size: 10px;">shouldComponentUpdate</a> <a href="/tags/useEffect/" style="font-size: 10px;">useEffect</a> <a href="/tags/useEffect-%E8%BF%9B%E9%98%B6/" style="font-size: 10px;">useEffect 进阶</a> <a href="/tags/useReducer/" style="font-size: 10px;">useReducer</a> <a href="/tags/%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">一些技巧</a> <a href="/tags/%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5/" style="font-size: 10px;">一些概念</a> <a href="/tags/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" style="font-size: 10px;">图片缓存</a> <a href="/tags/%E5%9D%91/" style="font-size: 10px;">坑</a> <a href="/tags/%E5%BA%93/" style="font-size: 10px;">库</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%A6%82%E6%8B%AC/" style="font-size: 10px;">概括</a> <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">模块化</a> <a href="/tags/%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%B8%A7/" style="font-size: 10px;">渲染与帧</a> <a href="/tags/%E6%BA%90%E7%A0%81-setState/" style="font-size: 10px;">源码--setState</a> <a href="/tags/%E6%BA%90%E7%A0%81-useState/" style="font-size: 10px;">源码--useState</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" style="font-size: 20px;">状态管理</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 15px;">继承</a> <a href="/tags/%E8%83%8C%E6%99%AF/" style="font-size: 10px;">背景</a> <a href="/tags/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" style="font-size: 10px;">路径别名</a> <a href="/tags/%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">路由</a> <a href="/tags/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">高阶组件</a>
+      <a href="/tags/API-React-createContext/" style="font-size: 10px;">API  -- React.createContext</a> <a href="/tags/API-createRef/" style="font-size: 10px;">API  -- createRef</a> <a href="/tags/Cookie/" style="font-size: 10px;">Cookie</a> <a href="/tags/Effect-Hook/" style="font-size: 10px;">Effect-Hook</a> <a href="/tags/Expo%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7/" style="font-size: 10px;">Expo调试工具</a> <a href="/tags/FB/" style="font-size: 10px;">FB</a> <a href="/tags/Hook%E6%84%9F%E6%82%9F/" style="font-size: 10px;">Hook感悟</a> <a href="/tags/Mixin/" style="font-size: 10px;">Mixin</a> <a href="/tags/RN%E4%B8%8B%E7%9A%84%E9%98%B4%E5%BD%B1%E6%95%88%E6%9E%9C/" style="font-size: 10px;">RN下的阴影效果</a> <a href="/tags/React/" style="font-size: 20px;">React</a> <a href="/tags/React-Props-%E5%92%8C-state/" style="font-size: 10px;">React Props 和 state</a> <a href="/tags/React-%E4%B8%AD%E7%9A%84%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE-Immutability/" style="font-size: 10px;">React 中的不可变数据 Immutability</a> <a href="/tags/React-%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">React 组件</a> <a href="/tags/React-Redux/" style="font-size: 15px;">React-Redux</a> <a href="/tags/Redux/" style="font-size: 20px;">Redux</a> <a href="/tags/Render-Props/" style="font-size: 10px;">Render Props</a> <a href="/tags/State-Hook/" style="font-size: 10px;">State-Hook</a> <a href="/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/tags/componentWillMount/" style="font-size: 10px;">componentWillMount</a> <a href="/tags/componentWillReciveProps/" style="font-size: 10px;">componentWillReciveProps</a> <a href="/tags/componentdidmount/" style="font-size: 15px;">componentdidmount</a> <a href="/tags/constructor/" style="font-size: 10px;">constructor</a> <a href="/tags/eslint/" style="font-size: 10px;">eslint</a> <a href="/tags/getDerivedStateFromProps/" style="font-size: 10px;">getDerivedStateFromProps</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%9D%E6%83%B3/" style="font-size: 10px;">js的一些思想</a> <a href="/tags/js%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">js的一些技巧</a> <a href="/tags/shouldComponentUpdate/" style="font-size: 10px;">shouldComponentUpdate</a> <a href="/tags/useEffect/" style="font-size: 10px;">useEffect</a> <a href="/tags/useEffect-%E8%BF%9B%E9%98%B6/" style="font-size: 10px;">useEffect 进阶</a> <a href="/tags/useReducer/" style="font-size: 10px;">useReducer</a> <a href="/tags/%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7/" style="font-size: 10px;">一些技巧</a> <a href="/tags/%E4%B8%80%E4%BA%9B%E6%A6%82%E5%BF%B5/" style="font-size: 10px;">一些概念</a> <a href="/tags/%E5%8A%A8%E7%94%BB/" style="font-size: 10px;">动画</a> <a href="/tags/%E5%9B%BE%E7%89%87%E7%BC%93%E5%AD%98/" style="font-size: 10px;">图片缓存</a> <a href="/tags/%E5%9D%91/" style="font-size: 10px;">坑</a> <a href="/tags/%E5%BA%93/" style="font-size: 10px;">库</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%A6%82%E6%8B%AC/" style="font-size: 10px;">概括</a> <a href="/tags/%E6%A8%A1%E5%9D%97%E5%8C%96/" style="font-size: 10px;">模块化</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 15px;">浏览器</a> <a href="/tags/%E6%B8%B2%E6%9F%93%E4%B8%8E%E5%B8%A7/" style="font-size: 10px;">渲染与帧</a> <a href="/tags/%E6%BA%90%E7%A0%81-setState/" style="font-size: 10px;">源码--setState</a> <a href="/tags/%E6%BA%90%E7%A0%81-update/" style="font-size: 10px;">源码--update</a> <a href="/tags/%E6%BA%90%E7%A0%81-useState/" style="font-size: 10px;">源码--useState</a> <a href="/tags/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/" style="font-size: 20px;">状态管理</a> <a href="/tags/%E7%BB%A7%E6%89%BF/" style="font-size: 15px;">继承</a> <a href="/tags/%E8%83%8C%E6%99%AF/" style="font-size: 10px;">背景</a> <a href="/tags/%E8%B7%AF%E5%BE%84%E5%88%AB%E5%90%8D/" style="font-size: 10px;">路径别名</a> <a href="/tags/%E8%B7%AF%E7%94%B1/" style="font-size: 10px;">路由</a> <a href="/tags/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" style="font-size: 10px;">高阶组件</a>
     </div>
   </div>
 
@@ -603,7 +621,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">五月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">四月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">三月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">二月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li></ul>
     </div>
   </div>
 
@@ -616,23 +634,23 @@
       <ul>
         
           <li>
-            <a href="/2021/03/24/React/%E6%BA%90%E7%A0%81/useState/">源码--useState</a>
+            <a href="/2021/05/21/%E6%B5%8F%E8%A7%88%E5%99%A8/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9E%B6%E6%9E%84/">浏览器原理</a>
           </li>
         
           <li>
-            <a href="/2021/03/23/React/%E6%BA%90%E7%A0%81/setState/">源码--setState</a>
+            <a href="/2021/05/21/%E6%B5%8F%E8%A7%88%E5%99%A8/%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF/">浏览器原理</a>
           </li>
         
           <li>
-            <a href="/2021/03/23/React/%E6%8A%80%E5%B7%A7/%E7%BB%84%E4%BB%B6%E7%BB%84%E5%90%88/">一些技巧</a>
+            <a href="/2021/04/06/JS/%E5%8A%A8%E7%94%BB/">前端的动画</a>
           </li>
         
           <li>
-            <a href="/2021/03/23/Expo/%E9%98%B4%E5%BD%B1%E6%95%88%E6%9E%9C/">RN下的阴影效果</a>
+            <a href="/2021/04/06/Css/animation/">Css/animation</a>
           </li>
         
           <li>
-            <a href="/2021/03/22/React/API/Context/">API  -- React.createContext</a>
+            <a href="/2021/03/30/React/%E6%BA%90%E7%A0%81/update/">源码--update</a>
           </li>
         
       </ul>
