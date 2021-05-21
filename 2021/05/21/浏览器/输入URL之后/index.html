@@ -5,20 +5,22 @@
   
 
   
-  <title>React-Redux 的再次进阶 | wqxc&#39;s code world</title>
+  <title>输入URL之后 | wqxc&#39;s code world</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="优化 Redux缺陷回顾一下，React-redux 提供了 Provider 和 connect  来 生成 容器组件和 传递 store。 Provider的使用已经是足够简洁了，但是，connect的使用却是有一些奇怪，先看看它是怎么使用的 1234567891011121314151617181920212223import &amp;#123; connect &amp;#125; from &amp;quot">
+  <meta name="description" content="输入URL之后发生了什么事情 如上所示是在浏览器中输入一个URl后所经过的操作。 整个过程需要不同的进程相互配合。 用户输入用户输入的内容总的来说有两种形式 123456789一个url地址httt:&#x2F;&#x2F;www.baidu.combaidu.comtaobao.com一个搜索关键字人为啥活着百度谷歌  浏览器会判断用户输入的是一个url还是关键字。主要是判断输入的内容是否符合">
 <meta property="og:type" content="article">
-<meta property="og:title" content="React-Redux 的再次进阶">
-<meta property="og:url" content="http://yoursite.com/2020/06/03/Store/React-Redux%E5%86%8D%E8%BF%9B%E9%98%B6/index.html">
+<meta property="og:title" content="输入URL之后">
+<meta property="og:url" content="http://yoursite.com/2021/05/21/%E6%B5%8F%E8%A7%88%E5%99%A8/%E8%BE%93%E5%85%A5URL%E4%B9%8B%E5%90%8E/index.html">
 <meta property="og:site_name" content="wqxc&#39;s code world">
-<meta property="og:description" content="优化 Redux缺陷回顾一下，React-redux 提供了 Provider 和 connect  来 生成 容器组件和 传递 store。 Provider的使用已经是足够简洁了，但是，connect的使用却是有一些奇怪，先看看它是怎么使用的 1234567891011121314151617181920212223import &amp;#123; connect &amp;#125; from &amp;quot">
+<meta property="og:description" content="输入URL之后发生了什么事情 如上所示是在浏览器中输入一个URl后所经过的操作。 整个过程需要不同的进程相互配合。 用户输入用户输入的内容总的来说有两种形式 123456789一个url地址httt:&#x2F;&#x2F;www.baidu.combaidu.comtaobao.com一个搜索关键字人为啥活着百度谷歌  浏览器会判断用户输入的是一个url还是关键字。主要是判断输入的内容是否符合">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-03T07:49:30.000Z">
-<meta property="article:modified_time" content="2020-06-03T07:49:30.000Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210416171643925.png">
+<meta property="article:published_time" content="2021-05-21T09:16:56.000Z">
+<meta property="article:modified_time" content="2021-05-21T09:17:26.000Z">
 <meta property="article:author" content="WQXC">
-<meta property="article:tag" content="Redux">
+<meta property="article:tag" content="浏览器">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210416171643925.png">
   
     <link rel="alternate" href="/atom.xml" title="wqxc&#39;s code world" type="application/atom+xml">
   
@@ -67,14 +69,14 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Store/React-Redux再进阶" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-浏览器/输入URL之后" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/03/Store/React-Redux%E5%86%8D%E8%BF%9B%E9%98%B6/" class="article-date">
-  <time datetime="2020-06-03T07:49:30.000Z" itemprop="datePublished">2020-06-03</time>
+    <a href="/2021/05/21/%E6%B5%8F%E8%A7%88%E5%99%A8/%E8%BE%93%E5%85%A5URL%E4%B9%8B%E5%90%8E/" class="article-date">
+  <time datetime="2021-05-21T09:16:56.000Z" itemprop="datePublished">2021-05-21</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a>
+    <a class="article-category-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/">浏览器原理</a>
   </div>
 
   </div>
@@ -85,7 +87,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      React-Redux 的再次进阶
+      输入URL之后
     </h1>
   
 
@@ -93,48 +95,36 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="优化-Redux"><a href="#优化-Redux" class="headerlink" title="优化 Redux"></a>优化 Redux</h1><h2 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h2><p>回顾一下，React-redux 提供了 Provider 和 connect  来 生成 容器组件和 传递 store。</p>
-<p>Provider的使用已经是足够简洁了，但是，connect的使用却是有一些奇怪，先看看它是怎么使用的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &#123; connect &#125; from &quot;react-redux&quot;;</span><br><span class="line">import &#123; increment, decrement, reset &#125; from &quot;.&#x2F;actionCreators&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Class MyComponent extends Component&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const mapStateToProps &#x3D; (state &#x2F;*, ownProps*&#x2F;) &#x3D;&gt; &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    counter: state.counter</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const mapDispatchToProps &#x3D; &#123; increment, decrement, reset &#125;;</span><br><span class="line"></span><br><span class="line">export default connect(</span><br><span class="line">  mapStateToProps,</span><br><span class="line">  mapDispatchToProps</span><br><span class="line">)(MyComponent);</span><br></pre></td></tr></table></figure>
+        <h2 id="输入URL之后发生了什么事情"><a href="#输入URL之后发生了什么事情" class="headerlink" title="输入URL之后发生了什么事情"></a>输入URL之后发生了什么事情</h2><p><img src="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210416171643925.png" alt="image-20210416171643925"></p>
+<p>如上所示是在浏览器中输入一个URl后所经过的操作。</p>
+<p>整个过程需要不同的进程相互配合。</p>
+<h4 id="用户输入"><a href="#用户输入" class="headerlink" title="用户输入"></a>用户输入</h4><p>用户输入的内容总的来说有两种形式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">一个url地址</span><br><span class="line">httt:&#x2F;&#x2F;www.baidu.com</span><br><span class="line">baidu.com</span><br><span class="line">taobao.com</span><br><span class="line"></span><br><span class="line">一个搜索关键字</span><br><span class="line">人为啥活着</span><br><span class="line">百度</span><br><span class="line">谷歌</span><br></pre></td></tr></table></figure>
 
-<p>我们通过 mapStateToProps mapDispatchToProps 两个方法，将store内的内容映射到 组件中，如此一来，便可以在组件中愉快的更新 状态了。</p>
-<p>这样的写法看起来不是很美观，</p>
-<p>所以有了 </p>
-<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p>上边的connect写法就是典型的 wrapper ，所以需要使用 装饰器来搞定这个东西,有如下两种模式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import &#123; connect &#125; from &quot;react-redux&quot;;</span><br><span class="line">import &#123; increment, decrement, reset &#125; from &quot;.&#x2F;actionCreators&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">const mapStateToProps &#x3D; (state &#x2F;*, ownProps*&#x2F;) &#x3D;&gt; &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    counter: state.counter</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const mapDispatchToProps &#x3D; &#123; increment, decrement, reset &#125;;</span><br><span class="line"></span><br><span class="line">@connect(mapStateToProps, mapDispatchToProps)</span><br><span class="line">export default class MyComponent extends React.Component &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>浏览器会判断用户输入的是一个url还是关键字。主要是判断输入的内容是否符合 URL规则</p>
+<p>如果是一个搜索关键词，浏览器会将其整理一下，使用默认的搜索引擎合成带有搜索字样的url然后发起网络请求。</p>
+<p>用户按下回车键之后，tab标签会开始旋转的loading。这个时候，页面依旧还是停留在原来的页面上的。需要到提交文档阶段，页面内容才会被替换。</p>
+<h4 id="网络进程"><a href="#网络进程" class="headerlink" title="网络进程"></a>网络进程</h4><p>一个url核心是获取一个网络资源，这就需要用到网络进程，这就需要浏览器进程将url请求发送到网络进程，让网络进程来下载资源。这里chrome是依靠进程间通道（IPC）来实现不同进程之间的通信的。</p>
+<p><strong>URL请求流程</strong></p>
+<p>先查找缓存，看看有木有缓存资源，有的话就返回缓存资源，没有缓存就进入网络请求流程</p>
+<p>接着是DNS解析，解析域名所对应的IP地址，然后利用IP地址和服务器建立TCP链接</p>
+<p>链接建立之后，浏览器构造请求行，请求头等信息，然后将和该域名相关的cookie加入到附加请求头中，</p>
+<p>然后发送请求信息</p>
+<p>服务器接受到信息之后，生成响应数据返回给网络进程，网络进程解析响应信息</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">***网络进程的解析***</span><br><span class="line"></span><br><span class="line">主要是根据状态码进行解析，</span><br><span class="line"></span><br><span class="line">如果是<span class="number">301</span>、<span class="number">302</span>，那么响应头中必然存在Location字段，是用来重定向的。</span><br><span class="line"></span><br><span class="line">响应的数据类型</span><br><span class="line"></span><br><span class="line">Content-Type 告诉浏览器返回的数据是什么类型的。</span><br><span class="line">text/html 表示返回的是一个html文件</span><br><span class="line">application/octet-stream 表示是一个字节流，一般浏览器会按照下载类型来处理，将这个请求内容下载下来</span><br></pre></td></tr></table></figure>
 
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &#123; connect &#125; from &quot;react-redux&quot;;</span><br><span class="line">import &#123; increment, decrement, reset &#125; from &quot;.&#x2F;actionCreators&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@connect(</span><br><span class="line">	(&#123; counter, address &#125;) &#x3D;&gt; (&#123;</span><br><span class="line">    	address,</span><br><span class="line">    	counter,</span><br><span class="line">  	&#125;),</span><br><span class="line">	dispatch &#x3D;&gt; (&#123;</span><br><span class="line">    increment(data) &#123;</span><br><span class="line">      dispatch(increment(data));</span><br><span class="line">    &#125;,</span><br><span class="line">    decrement(data) &#123;</span><br><span class="line">      decrement(decrement(data));</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">export default class MyComponent extends React.Component &#123;&#125;</span><br></pre></td></tr></table></figure>
-
-
-<p>使用的话就和 Wrapper 一样，直接从 this.props中拿。</p>
-<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>要使用装饰器还需要依赖一些库：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">babel-plugin-transform-decorators-legacy</span><br></pre></td></tr></table></figure>
-
-
-<p>而且package.json文件中要配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;plugins&quot;: [</span><br><span class="line">	[&quot;@babel&#x2F;plugin-proposal-decorators&quot;, &#123; &quot;legacy&quot;: true &#125;],</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
+<p>网络进程之后，拿到了html文件，浏览器就需要准备渲染进程</p>
+<p>接下来是提交文档阶段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">这里的文档是URL请求的响应体数据</span><br><span class="line">提交文档的消息是由浏览器进程发出的</span><br><span class="line">浏览器进程发出了提交文档的消息，渲染进程接受这个消息后就知道文档准备好了，可以接收了。</span><br><span class="line">渲染进程和网络进程建立数据的传输通道，也就是IPC</span><br><span class="line">数据传输完毕之后，渲染进程发送消息 &#39;确认提交&#39; 给浏览器进程，表示数据接收完毕了。</span><br><span class="line">收到 &#39;确认提交&#39;的消息之后，浏览器进程处理url输入框，更新前进后退按钮的状态，以及安全锁的状态，并更新web页面</span><br><span class="line">这个时候，页面开始从老页面转向新的页面。</span><br><span class="line">	这也是为什么，输入url之后，我们依旧停留在原有的页面上，过了一会儿，页面才会更新。</span><br><span class="line"> </span><br><span class="line">到此，一个导航流程结束了，接下来就进入到渲染阶段了。</span><br></pre></td></tr></table></figure>
 
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/03/Store/React-Redux%E5%86%8D%E8%BF%9B%E9%98%B6/" data-id="ckoy7a4d6002uipoa3vsq5ux3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/05/21/%E6%B5%8F%E8%A7%88%E5%99%A8/%E8%BE%93%E5%85%A5URL%E4%B9%8B%E5%90%8E/" data-id="ckoy7a4cy002iipoabk7p91yk" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
 
     </footer>
   </div>
@@ -142,19 +132,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          高阶组件
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/05/30/JS/%E5%89%8D%E7%AB%AF%E7%9A%84%E6%A8%A1%E5%9D%97%E5%8C%96/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2021/05/21/%E6%B5%8F%E8%A7%88%E5%99%A8/%E5%88%9B%E5%BB%BADOM/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">前端的模块化进程</div>
+      <div class="article-nav-title">HTML转换为DOM</div>
     </a>
   
 </nav>

@@ -5,20 +5,28 @@
   
 
   
-  <title>React-Redux 的再次进阶 | wqxc&#39;s code world</title>
+  <title>HTML转换为DOM | wqxc&#39;s code world</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="优化 Redux缺陷回顾一下，React-redux 提供了 Provider 和 connect  来 生成 容器组件和 传递 store。 Provider的使用已经是足够简洁了，但是，connect的使用却是有一些奇怪，先看看它是怎么使用的 1234567891011121314151617181920212223import &amp;#123; connect &amp;#125; from &amp;quot">
+  <meta name="description" content="关于DOMHTML解析为DOM首先，前端写的是一个html文件。 这些html本身是没有意义的，有意义的是DOM，html转换为DOM的步骤如下所示： 1、html文件通过网络进程被下载之后，传输给渲染进程。 2、渲染进程中又一个HTML解析器，这个解析器的职责就是负责将HTML转换为DOM。 3、渲染进程的核心线程会调用HTML解析器将HTML文件转换为DOM。 4、HTMl文件是一边下载，HT">
 <meta property="og:type" content="article">
-<meta property="og:title" content="React-Redux 的再次进阶">
-<meta property="og:url" content="http://yoursite.com/2020/06/03/Store/React-Redux%E5%86%8D%E8%BF%9B%E9%98%B6/index.html">
+<meta property="og:title" content="HTML转换为DOM">
+<meta property="og:url" content="http://yoursite.com/2021/05/21/%E6%B5%8F%E8%A7%88%E5%99%A8/%E5%88%9B%E5%BB%BADOM/index.html">
 <meta property="og:site_name" content="wqxc&#39;s code world">
-<meta property="og:description" content="优化 Redux缺陷回顾一下，React-redux 提供了 Provider 和 connect  来 生成 容器组件和 传递 store。 Provider的使用已经是足够简洁了，但是，connect的使用却是有一些奇怪，先看看它是怎么使用的 1234567891011121314151617181920212223import &amp;#123; connect &amp;#125; from &amp;quot">
+<meta property="og:description" content="关于DOMHTML解析为DOM首先，前端写的是一个html文件。 这些html本身是没有意义的，有意义的是DOM，html转换为DOM的步骤如下所示： 1、html文件通过网络进程被下载之后，传输给渲染进程。 2、渲染进程中又一个HTML解析器，这个解析器的职责就是负责将HTML转换为DOM。 3、渲染进程的核心线程会调用HTML解析器将HTML文件转换为DOM。 4、HTMl文件是一边下载，HT">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-03T07:49:30.000Z">
-<meta property="article:modified_time" content="2020-06-03T07:49:30.000Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210427140028237.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210427140536026.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210427140645972.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210427140948673.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210427154946777.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210427160946635.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210427161827207.png">
+<meta property="article:published_time" content="2021-05-21T09:05:16.000Z">
+<meta property="article:modified_time" content="2021-05-21T09:05:50.000Z">
 <meta property="article:author" content="WQXC">
-<meta property="article:tag" content="Redux">
+<meta property="article:tag" content="浏览器">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210427140028237.png">
   
     <link rel="alternate" href="/atom.xml" title="wqxc&#39;s code world" type="application/atom+xml">
   
@@ -67,14 +75,14 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-Store/React-Redux再进阶" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-浏览器/创建DOM" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/06/03/Store/React-Redux%E5%86%8D%E8%BF%9B%E9%98%B6/" class="article-date">
-  <time datetime="2020-06-03T07:49:30.000Z" itemprop="datePublished">2020-06-03</time>
+    <a href="/2021/05/21/%E6%B5%8F%E8%A7%88%E5%99%A8/%E5%88%9B%E5%BB%BADOM/" class="article-date">
+  <time datetime="2021-05-21T09:05:16.000Z" itemprop="datePublished">2021-05-21</time>
 </a>
     
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/">状态管理</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/">5、React-Redux</a>►<a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86/5%E3%80%81React-Redux/RReact-Redux%E5%86%8D%E6%AC%A1%E8%BF%9B%E9%98%B6/">RReact-Redux再次进阶</a>
+    <a class="article-category-link" href="/categories/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%8E%9F%E7%90%86/">浏览器原理</a>
   </div>
 
   </div>
@@ -85,7 +93,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      React-Redux 的再次进阶
+      HTML转换为DOM
     </h1>
   
 
@@ -93,48 +101,96 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="优化-Redux"><a href="#优化-Redux" class="headerlink" title="优化 Redux"></a>优化 Redux</h1><h2 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h2><p>回顾一下，React-redux 提供了 Provider 和 connect  来 生成 容器组件和 传递 store。</p>
-<p>Provider的使用已经是足够简洁了，但是，connect的使用却是有一些奇怪，先看看它是怎么使用的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &#123; connect &#125; from &quot;react-redux&quot;;</span><br><span class="line">import &#123; increment, decrement, reset &#125; from &quot;.&#x2F;actionCreators&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Class MyComponent extends Component&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const mapStateToProps &#x3D; (state &#x2F;*, ownProps*&#x2F;) &#x3D;&gt; &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    counter: state.counter</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const mapDispatchToProps &#x3D; &#123; increment, decrement, reset &#125;;</span><br><span class="line"></span><br><span class="line">export default connect(</span><br><span class="line">  mapStateToProps,</span><br><span class="line">  mapDispatchToProps</span><br><span class="line">)(MyComponent);</span><br></pre></td></tr></table></figure>
+        <h2 id="关于DOM"><a href="#关于DOM" class="headerlink" title="关于DOM"></a>关于DOM</h2><h4 id="HTML解析为DOM"><a href="#HTML解析为DOM" class="headerlink" title="HTML解析为DOM"></a>HTML解析为DOM</h4><p>首先，前端写的是一个html文件。</p>
+<p>这些html本身是没有意义的，有意义的是DOM，html转换为DOM的步骤如下所示：</p>
+<p>1、html文件通过网络进程被下载之后，传输给渲染进程。</p>
+<p>2、渲染进程中又一个HTML解析器，这个解析器的职责就是负责将HTML转换为DOM。</p>
+<p>3、渲染进程的核心线程会调用HTML解析器将HTML文件转换为DOM。</p>
+<p>4、HTMl文件是一边下载，HTML解析器一边解析，网络进程和渲染进程之间会建立一个共享数据的管道，html文    件一边下载，一边被html解析器解析</p>
+<p>5、HTMl解析器的原理，首先也是叫做分词</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;body&gt;    </span><br><span class="line">  	&lt;div&gt;<span class="number">1</span>&lt;<span class="regexp">/div&gt;    </span></span><br><span class="line"><span class="regexp">		&lt;div&gt;test&lt;/</span>div&gt;</span><br><span class="line">	&lt;<span class="regexp">/body&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>html&gt;</span><br></pre></td></tr></table></figure>
 
-<p>我们通过 mapStateToProps mapDispatchToProps 两个方法，将store内的内容映射到 组件中，如此一来，便可以在组件中愉快的更新 状态了。</p>
-<p>这样的写法看起来不是很美观，</p>
-<p>所以有了 </p>
-<h2 id="装饰器"><a href="#装饰器" class="headerlink" title="装饰器"></a>装饰器</h2><p>上边的connect写法就是典型的 wrapper ，所以需要使用 装饰器来搞定这个东西,有如下两种模式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import &#123; connect &#125; from &quot;react-redux&quot;;</span><br><span class="line">import &#123; increment, decrement, reset &#125; from &quot;.&#x2F;actionCreators&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">const mapStateToProps &#x3D; (state &#x2F;*, ownProps*&#x2F;) &#x3D;&gt; &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    counter: state.counter</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const mapDispatchToProps &#x3D; &#123; increment, decrement, reset &#125;;</span><br><span class="line"></span><br><span class="line">@connect(mapStateToProps, mapDispatchToProps)</span><br><span class="line">export default class MyComponent extends React.Component &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>以上分词的结果如下：</p>
+<p><img src="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210427140028237.png" alt="image-20210427140028237"></p>
+<p>然后一个个的词被放进栈中，如果放进去的是 StartTag Token ,HTML解析器会为该Token创建一个DOM节点。然后将该节点放入DOM树中，它的父节点就是栈中相邻的那个元素生成的节点。</p>
+<p>初始状态下，HTML解析器会默认创建一个根DOM节点 Document节点。</p>
+<p>然后，以上边的例子来说：</p>
+<p>StartTag HTML 放在栈中，而后创建一个HTML DOM节点，并挂载在Document下。</p>
+<p>像是这样：</p>
+<p><img src="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210427140536026.png" alt="image-20210427140536026"></p>
+<p>然后呢，创建 body div，状态如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210427140645972.png" alt="image-20210427140645972"></p>
+<p>接下来，到了文本 1，HTML解析器发现，这个不是一个HTMl标签，而是一个文本，这个时候HTML解析器会创建一个文本节点，而后将其挂载到上一个DOM节点上。如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210427140948673.png" alt="image-20210427140948673"></p>
+<p>再往后，遇到了EndTag div ,HTML解析器回去判断当前栈顶的元素是不是 StartTag div 如果是，那么就说明这一对标签创建完成了。就将StartTag div 弹出。</p>
+<p>依次往下，整个DOM树就构建完成了。</p>
+<h4 id="JS影响DOM"><a href="#JS影响DOM" class="headerlink" title="JS影响DOM"></a>JS影响DOM</h4><p>结论：js影响DOM的解析</p>
+<p>HTML解析器在解析HTML的时候，遇到了 <strong>script</strong> ，HTML解析器就会停下HTML解析</p>
+<p>script  有两种形式</p>
+<p>其一是：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;    </span><br><span class="line">  <span class="keyword">let</span> div1 = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'div'</span>)[<span class="number">0</span>]    </span><br><span class="line">	div1.innerText = <span class="string">'time.geekbang'</span>    </span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其二是：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script src=<span class="string">"a.js"</span>&gt;&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>区别是，第二种情况会调用网络进程，进行下载。</p>
+<p>JS可以操作DOM，如果不管js而直接解析DOM，解析完了，js再操作一番DOM，那之前的解析就白费了，所以这里遇到js的时候回停止HTML的解析，等待js下载，而后执行，完毕了之后继续解析HTML。</p>
+<p>一般现代的浏览器会在渲染进程中，开启一个预解析线程，预解析线程会扫描HTML文件中包含的JavaScript、CSS等相关文件，预先下载这些文件。</p>
+<p>所以说：js会阻塞HTML的解析</p>
+<p>解决策略：</p>
+<p>是使用deffer  和 async来标记script代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script <span class="keyword">async</span> type=<span class="string">"text/javascript"</span> src=<span class="string">'foo.js'</span>&gt;&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">&lt;script defer type="text/</span>javascript<span class="string">" src='foo.js'&gt;&lt;/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>Async :表示js文件下载完成之后理立即行这些代码 可能在 DOMContentLoaded 之前或者之后执行</p>
+<p>Deffer：则是表示下载完成之后，在DOMContentLoaded事件之前执行。</p>
+<h4 id="JS-CSS"><a href="#JS-CSS" class="headerlink" title="JS CSS"></a>JS CSS</h4><p>js中可能出现以下类似代码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">div1.style.color=<span class="string">'red'</span></span><br></pre></td></tr></table></figure>
+
+<p>这些代码是用来操作CSSOM的，所以在操作css之前，必须让css都下载下来，所以，如果代码里引用了外部的css文件，那就必须等这些css下载完成，并解析成CSSOM对象之后，才能执行JS脚本。</p>
+<p>然后，js引擎在执行js的时候，是不知道这个js文件是不是操作了cssom，所以，js引擎，直接一刀切，不管当前js是否操作了CSSOM,直接等待所有的css都下载了之后，再操作js。</p>
+<p>所以说css会阻塞js的执行。</p>
+<p>js又会阻塞html的解析。</p>
+<p>同理，css会阻塞html的解析</p>
+<h4 id="渲染流程1"><a href="#渲染流程1" class="headerlink" title="渲染流程1"></a>渲染流程1</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//theme.css </span></span><br><span class="line">div&#123;     <span class="attr">color</span> : coral;    background-color:black&#125;</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;    </span><br><span class="line">  	&lt;link href=<span class="string">"theme.css"</span> rel=<span class="string">"stylesheet"</span>&gt;</span><br><span class="line">  &lt;<span class="regexp">/head&gt;</span></span><br><span class="line"><span class="regexp">	&lt;body&gt;    </span></span><br><span class="line"><span class="regexp">    &lt;div&gt;geekbang com&lt;/</span>div&gt;</span><br><span class="line">	&lt;<span class="regexp">/body&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>html&gt;</span><br></pre></td></tr></table></figure>
 
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &#123; connect &#125; from &quot;react-redux&quot;;</span><br><span class="line">import &#123; increment, decrement, reset &#125; from &quot;.&#x2F;actionCreators&quot;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@connect(</span><br><span class="line">	(&#123; counter, address &#125;) &#x3D;&gt; (&#123;</span><br><span class="line">    	address,</span><br><span class="line">    	counter,</span><br><span class="line">  	&#125;),</span><br><span class="line">	dispatch &#x3D;&gt; (&#123;</span><br><span class="line">    increment(data) &#123;</span><br><span class="line">      dispatch(increment(data));</span><br><span class="line">    &#125;,</span><br><span class="line">    decrement(data) &#123;</span><br><span class="line">      decrement(decrement(data));</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">export default class MyComponent extends React.Component &#123;&#125;</span><br></pre></td></tr></table></figure>
 
+<p>html文件引用了外部的css文件</p>
+<p>它的渲染过程如下所示：</p>
+<p><img src="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210427154946777.png" alt="image-20210427154946777"></p>
+<p>首先是发起了网络请求，这个网络请求可能是浏览器主进程发起的，也可以是我们的渲染进程发起的。</p>
+<p>而后网络进程接收到返回结果后，提交给渲染进程。这个过程有一个空闲时间，这个空闲时间可能会影响性能。</p>
+<p>产生这个空闲的原因有可能是网络延迟。</p>
+<p>然后渲染进程解析HTML，前边我们说到，渲染进程会开启一个预解析线程，进行css的下载。</p>
+<p>再然后，css下载完成了，使用css解析器解析css文件为CSSOM对象。</p>
+<p>然后看一下更复杂的一点情景：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//theme.css</span></span><br><span class="line">div&#123;     </span><br><span class="line">  color : coral;    </span><br><span class="line">  background-color:black</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;    </span><br><span class="line">  	&lt;link href=<span class="string">"theme.css"</span> rel=<span class="string">"stylesheet"</span>&gt;</span><br><span class="line">  &lt;<span class="regexp">/head&gt;</span></span><br><span class="line"><span class="regexp">&lt;body&gt;    </span></span><br><span class="line"><span class="regexp">    &lt;div&gt;geekbang com&lt;/</span>div&gt;    </span><br><span class="line">		&lt;script&gt;        <span class="built_in">console</span>.log(<span class="string">'time.geekbang.org'</span>)    &lt;<span class="regexp">/script&gt;    </span></span><br><span class="line"><span class="regexp">		&lt;div&gt;geekbang com&lt;/</span>div&gt;</span><br><span class="line">&lt;<span class="regexp">/body&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>html&gt;</span><br></pre></td></tr></table></figure>
 
-<p>使用的话就和 Wrapper 一样，直接从 this.props中拿。</p>
-<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>要使用装饰器还需要依赖一些库：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">babel-plugin-transform-decorators-legacy</span><br></pre></td></tr></table></figure>
+<p>渲染进程如下：</p>
+<p><img src="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210427160946635.png" alt="image-20210427160946635"></p>
+<p>如上，渲染进程的中间，构建DOM的时候，有一段被js阻止。</p>
+<p>可以看得出来，CSSOM构建之后，才会执行JavaScript，JavaScript执行完了，就会继续构建DOM。</p>
+<p>然后，更复杂的情况：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//theme.css</span></span><br><span class="line">div&#123;     </span><br><span class="line">  color : coral;    </span><br><span class="line">  background-color:black</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//foo.js</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'time.geekbang.org'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">  &lt;head&gt;    </span><br><span class="line">  	&lt;link href=<span class="string">"theme.css"</span> rel=<span class="string">"stylesheet"</span>&gt;</span><br><span class="line">  &lt;<span class="regexp">/head&gt;</span></span><br><span class="line"><span class="regexp">&lt;body&gt;    </span></span><br><span class="line"><span class="regexp">    &lt;div&gt;geekbang com&lt;/</span>div&gt;    </span><br><span class="line">		&lt;script src=<span class="string">'foo.js'</span>&gt;&lt;<span class="regexp">/script&gt;    </span></span><br><span class="line"><span class="regexp">		&lt;div&gt;geekbang com&lt;/</span>div&gt;</span><br><span class="line">&lt;<span class="regexp">/body&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>html&gt;</span><br></pre></td></tr></table></figure>
 
-
-<p>而且package.json文件中要配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;plugins&quot;: [</span><br><span class="line">	[&quot;@babel&#x2F;plugin-proposal-decorators&quot;, &#123; &quot;legacy&quot;: true &#125;],</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
+<p><img src="https://raw.githubusercontent.com/wqxc/Picture/main/chrome/image-20210427161827207.png" alt="image-20210427161827207"></p>
+<p>这里的核心是，不管css文件和js文件谁先到达，都要先等到CSS文件下载完成并生成CSSOM之后，js才会开始执行。js执行完毕了之后，才会开始继续渲染。</p>
+<p><strong>白屏阶段</strong>：提交数据之后，渲染进程会创建一个空白页面，这个阶段被称之为白屏阶段。这个阶段等待css文件和js文件加载完成，生成CSSOM和DOM，然后合成布局树，而后经过一系列的准备后，就开始首次渲染</p>
+<p><strong>提交数据</strong>：就是网络进程下载完毕之后，将下载结果提交给渲染进程，叫做提交数据</p>
+<p>白屏时间过长，影响用户体验。</p>
+<p>白屏过长的优化手段：</p>
+<p>1、通过内联js、内联css，就无需下载，节省时间</p>
+<p>2、减少体积</p>
+<p>3、async deffer</p>
+<p>4、比较大的css可以使用media区分</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/03/Store/React-Redux%E5%86%8D%E8%BF%9B%E9%98%B6/" data-id="ckoy7a4d6002uipoa3vsq5ux3" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2021/05/21/%E6%B5%8F%E8%A7%88%E5%99%A8/%E5%88%9B%E5%BB%BADOM/" data-id="ckoy7a4cv002dipoa053tcn11" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redux/" rel="tag">Redux</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
 
     </footer>
   </div>
@@ -142,19 +198,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/06/05/React/%E9%80%BB%E8%BE%91%E9%87%8D%E7%94%A8/%E9%AB%98%E9%98%B6%E7%BB%84%E4%BB%B6/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2021/05/21/%E6%B5%8F%E8%A7%88%E5%99%A8/%E8%BE%93%E5%85%A5URL%E4%B9%8B%E5%90%8E/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          高阶组件
+          输入URL之后
         
       </div>
     </a>
   
   
-    <a href="/2020/05/30/JS/%E5%89%8D%E7%AB%AF%E7%9A%84%E6%A8%A1%E5%9D%97%E5%8C%96/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2021/05/21/%E6%B5%8F%E8%A7%88%E5%99%A8/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%9E%B6%E6%9E%84/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">前端的模块化进程</div>
+      <div class="article-nav-title">浏览器架构</div>
     </a>
   
 </nav>
